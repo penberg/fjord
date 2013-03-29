@@ -23,13 +23,15 @@ To build F#, run:
 mvn package
 ```
 
-Then, to launch the F# interactive REPL run:
+### Trying it out
+
+To launch the F# interactive shell run:
 
 ```
 ./bin/fji
 ```
 
-and you are greeted with the interactive REPL:
+and you are greeted with:
 
 ```
 Fjord
