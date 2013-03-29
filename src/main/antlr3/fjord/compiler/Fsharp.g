@@ -963,3 +963,120 @@ IdentChar
 IdentText
   : LetterChar IdentChar*
   ;
+
+/*
+ * A.1.6 Numeric Literals
+ */
+
+fragment
+Digit
+  : '0'..'9'
+  ;
+
+fragment
+Hexdigit
+  : Digit
+  | 'A'..'F'
+  | 'a'..'f'
+  ;
+
+fragment
+Octaldigit
+  : '0'..'7'
+  ;
+
+fragment
+Bitdigit
+  : '0'..'1'
+  ;
+
+fragment
+Int
+  : Digit+
+  ;
+
+fragment
+Xint
+  : '0' ('x' | 'X') Hexdigit+
+  | '0' ('o' | 'O') Octaldigit+
+  | '0' ('b' | 'B') Bitdigit+
+  ;
+
+fragment
+Sbyte
+  : (Int | Xint) 'y'
+  ;
+
+fragment
+Byte
+  : (Int | Xint) 'uy'
+  ;
+
+fragment
+Int16
+  : (Int | Xint) 's'
+  ;
+
+fragment
+Uint16
+  : (Int | Xint) 'us'
+  ;
+
+fragment
+Int32
+  : (Int | Xint) 'l'
+  ;
+
+fragment
+Uint32
+  : (Int | Xint) 'ul'
+  ;
+
+fragment
+NativeInt
+  : (Int | Xint) 'n'
+  ;
+
+fragment
+NativeUint
+  : (Int | Xint) 'un'
+  ;
+
+fragment
+Int64
+  : (Int | Xint) 'L'
+  ;
+
+fragment
+Uint64
+  : (Int | Xint) 'UL'
+  | (Int | Xint) 'uL'
+  ;
+
+fragment
+Ieee32
+  : Float ('F' | 'f')
+  | Xint 'lf'
+  ;
+
+fragment
+Ieee64
+  : Float
+  | Xint 'LF'
+  ;
+
+fragment
+Bignum
+  : Int ('Q' | 'R' | 'Z' | 'I' | 'N' | 'G')
+  ;
+
+fragment
+Decimal
+  : ( Float | Int ) ('M' | 'm')
+  ;
+
+fragment
+Float
+  : Digit+ '.' Digit+
+  | Digit+ ( '.' Digit* )? ('e' | 'E') ('+' | '-')? Digit+
+  ;
