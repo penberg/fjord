@@ -1133,6 +1133,98 @@ IdentText
   ;
 
 /*
+ * A.1.5 Strings and Characters
+ */
+
+fragment
+EscapeChar
+  : '\\' ('"' | '\'' | 'n' | 't' | 'b' | 'r')
+  ;
+
+fragment
+NonEscapeChars
+  : '\\' ~('"' | '\'' | 'n' | 't' | 'b' | 'r')
+  ;
+
+fragment
+SimpleCharChar
+  : ~('\n' | '\t' | '\r' | '\b' | '\'' | '\\' | '"')
+  ;
+
+fragment
+UnicodegraphShort
+  : '\\' 'u' Hexdigit Hexdigit Hexdigit Hexdigit
+  ;
+
+fragment
+UnicodegraphLong
+  : '\\' 'U' Hexdigit Hexdigit Hexdigit Hexdigit Hexdigit Hexdigit Hexdigit Hexdigit
+  ;
+
+fragment
+Trigraph
+  : '\\' DigitChar DigitChar DigitChar
+  ;
+
+fragment
+CharChar
+  : (SimpleCharChar | EscapeChar | Trigraph | UnicodegraphShort)
+  ;
+
+fragment
+StringChar
+  : (SimpleCharChar | EscapeChar | NonEscapeChars | Trigraph | UnicodegraphShort | UnicodegraphLong | NewLine)
+  ;
+
+/*
+StringElem
+  : StringChar '\\' NewLine Whitespace* StringElem
+  ;
+*/
+
+Char
+  : '\'' CharChar '\''
+  ;
+
+String
+  : '"' StringChar* '"'
+  ;
+
+VerbatimStringChar
+  : (SimpleCharChar | NonEscapeChars | NewLine | '\\' | '""')
+  ;
+
+VerbatimString
+  : '@"' VerbatimStringChar* '"'
+  ;
+
+Bytechar
+  : '\'' SimpleOrEscapeChar* '\'B'
+  ;
+
+Bytearray
+  : '"' SimpleOrEscapeChar* '"B'
+  ;
+
+VerbatimBytearray
+  : '@"' SimpleOrEscapeChar* '"B'
+  ;
+
+fragment
+SimpleOrEscapeChar
+  : (EscapeChar | SimpleChar)
+  ;
+
+fragment
+SimpleChar
+  : ~('\n' | '\t' | '\r' | '\b' | '\'' | '\\' | '"')
+  ;
+
+TripleQuotedString
+ : '"""' SimpleOrEscapeChar* '"""'
+ ;
+
+/*
  * A.1.6 Numeric Literals
  */
 
