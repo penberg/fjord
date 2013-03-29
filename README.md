@@ -35,16 +35,8 @@ java -jar target/fjord-0.1.0-master-SNAPSHOT-jar-with-dependencies.jar
 
 ## Want to help?
 
-Want to help? Fork the GitHub repository and send a pull request!
-
-There's plenty of things two work on:
-
-* ANTLR grammar
-* Abstract Syntax Tree (AST)
-* Type inference
-* JIT compilation
-* AOT compiler
-* Core F# APIs
+Want to help? Fork the GitHub repository and send a pull request! Things to
+work on can be found on Fjord's [Trello board].
 
 For questions and comments, drop me a line on [Twitter] or send me email
 at penberg@iki.fi.
@@ -70,3 +62,4 @@ limitations under the License.
 [Apache Maven]: http://maven.apache.org/
 [F#]: http://fsharp.org/
 [Twitter]: https://twitter.com/penberg
+[Trello board]: https://trello.com/board/fjord/5143b7e9185dfcc13200153a
