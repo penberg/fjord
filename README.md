@@ -26,7 +26,16 @@ mvn package
 Then, to launch the F# interactive REPL run:
 
 ```
-java -jar target/fjord-0.1.0-master-SNAPSHOT-jar-with-dependencies.jar
+./bin/fji
+```
+
+and you are greeted with the interactive REPL:
+
+```
+Fjord
+
+For help type #help
+> _
 ```
 
 ## Features

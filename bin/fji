@@ -1,0 +1,18 @@
+#!/bin/sh
+# -----------------------------------------------------------------------------
+# fji - Start script for the Fjord Interactive REPL
+# -----------------------------------------------------------------------------
+
+if [ -z "$JAVACMD" ] ; then
+  if [ -z "$JAVA_HOME" ] ; then
+    JAVACMD='java'
+  else
+    JAVACMD="$JAVA_HOME/bin/java"
+  fi
+fi
+
+java_class=fjord.Main
+
+JAVA_OPTS="-cp target/fjord-0.1.0-master-SNAPSHOT-jar-with-dependencies.jar"
+
+$JAVACMD $JAVA_OPTS $java_class $@
