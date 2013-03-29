@@ -1,5 +1,7 @@
 # Fjord, F&#35; programming language for the JVM.
 
+[![Build Status](https://secure.travis-ci.org/penberg/fjord.png)](http://travis-ci.org/penberg/fjord)
+
 Fjord is an implementation of the [F#][F#] programming language for the JVM.
 
 The implementation is at very early stages, so if you are looking to use F# on
