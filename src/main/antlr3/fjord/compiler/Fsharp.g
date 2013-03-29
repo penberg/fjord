@@ -1002,75 +1002,61 @@ Xint
   | '0' ('b' | 'B') Bitdigit+
   ;
 
-fragment
 Sbyte
   : (Int | Xint) 'y'
   ;
 
-fragment
 Byte
   : (Int | Xint) 'uy'
   ;
 
-fragment
 Int16
   : (Int | Xint) 's'
   ;
 
-fragment
 Uint16
   : (Int | Xint) 'us'
   ;
 
-fragment
 Int32
   : (Int | Xint) 'l'
   ;
 
-fragment
 Uint32
   : (Int | Xint) 'ul'
   ;
 
-fragment
 NativeInt
   : (Int | Xint) 'n'
   ;
 
-fragment
 NativeUint
   : (Int | Xint) 'un'
   ;
 
-fragment
 Int64
   : (Int | Xint) 'L'
   ;
 
-fragment
 Uint64
   : (Int | Xint) 'UL'
   | (Int | Xint) 'uL'
   ;
 
-fragment
 Ieee32
   : Float ('F' | 'f')
   | Xint 'lf'
   ;
 
-fragment
 Ieee64
   : Float
   | Xint 'LF'
   ;
 
-fragment
 Bignum
   : Int ('Q' | 'R' | 'Z' | 'I' | 'N' | 'G')
   ;
 
-fragment
 Decimal
   : ( Float | Int ) ('M' | 'm')
   ;
