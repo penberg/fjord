@@ -37,9 +37,28 @@ compilerDirectiveDecl returns [CompilerDirectiveDecl n]
  * A.1 Lexical Grammar
  */
 
+/*
+ * A.1.1 Whitespace
+ */
+
+fragment
 Whitespace
   : ' '+
   ;
+
+fragment
+NewLine
+  : '\n'
+  | '\r' '\n'
+  ;
+
+WhiteSpaceOrNewline
+  : Whitespace | NewLine { skip(); }
+  ;
+
+/*
+ * A.1.2 Comments
+ */
 
 BlockComment
   : '(*' (options { greedy = false; } : . )* '*)' { skip(); }
@@ -48,6 +67,10 @@ BlockComment
 EndOfLineComment
   : '//' ~('\n' | '\r')* { skip(); }
   ;
+
+/*
+ * A.1.3 Conditional Compilation
+ */
 
 IfDirective
   : '#if' Whitespace IdentText
