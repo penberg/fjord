@@ -457,6 +457,174 @@ Volatile
   ;
 
 /*
+ * A.1.4.3 Symbolic Keywords
+ */
+
+LetE
+  : 'let!'
+  ;
+
+UseE
+  : 'use!'
+  ;
+
+DoE
+  : 'do!'
+  ;
+
+YieldE
+  : 'yield!'
+  ;
+
+ReturnE
+  : 'return!'
+  ;
+
+Bar
+  : '|'
+  ;
+
+RArrow
+  : '->'
+  ;
+
+LArrow
+  : '<-'
+  ;
+
+Dot
+  : '.'
+  ;
+
+Colon
+  : ':'
+  ;
+
+LParen
+  : '('
+  ;
+
+RParen
+  : ')'
+  ;
+
+LBrack
+  : '['
+  ;
+
+RBrack
+  : ']'
+  ;
+
+LBrackLess
+  : '[<'
+  ;
+
+GreaterRBrack
+  : '>]'
+  ;
+
+LBrackBar
+  : '[|'
+  ;
+
+BarRBrack
+  : '|]'
+  ;
+
+LBrace
+  : '{'
+  ;
+
+RBrace
+  : '}'
+  ;
+
+Quote
+  : '\''
+  ;
+
+Hash
+  : '#'
+  ;
+
+ColonQMarkGreater
+  : ':?>'
+  ;
+
+ColonQMark
+  : ':?'
+  ;
+
+ColonGreater
+  : ':>'
+  ;
+
+DotDot
+  : '..'
+  ;
+
+ColonColon
+  : '::'
+  ;
+
+ColonEquals
+  : ':='
+  ;
+
+SemicolonSemicolon
+  : ';;'
+  ;
+
+Semicolon
+  : ';'
+  ;
+
+Equals
+  : '='
+  ;
+
+Underscore
+  : '_'
+  ;
+
+Qmark
+  : '?'
+  ;
+
+QmarkQmark
+  : '??'
+  ;
+
+LParenStarRParen
+  : '(*)'
+  ;
+
+LQuote
+  : '<@'
+  ;
+
+RQuote
+  : '@>'
+  ;
+
+LQuoteUntyped
+  : '<@@'
+  ;
+
+RQuoteUntyped
+  : '@@>'
+  ;
+
+Tilde
+  : '~'
+  ;
+
+Backtick
+  : '`'
+  ;
+
+/*
  * A.1.4.1 Identifiers
  */
 
