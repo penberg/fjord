@@ -52,7 +52,7 @@ NewLine
   | '\r' '\n'
   ;
 
-WhiteSpaceOrNewline
+WhitespaceOrNewline
   : Whitespace | NewLine { skip(); }
   ;
 
