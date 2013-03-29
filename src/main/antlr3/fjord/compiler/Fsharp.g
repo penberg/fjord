@@ -84,6 +84,382 @@ EndifDirective
   : '#endif'
   ;
 
+/*
+ * A.1.4 Identifiers and Keywords
+ */
+
+/*
+ * A.1.4.3 Keywords
+ */
+
+Abstract
+  : 'abstract'
+  ;
+
+And
+  : 'and'
+  ;
+
+As
+  : 'as'
+  ;
+
+Assert
+  : 'assert'
+  ;
+
+Base
+  : 'base'
+  ;
+
+Begin
+  : 'begin'
+  ;
+
+Class
+  : 'class'
+  ;
+
+Default
+  : 'default'
+  ;
+
+Delegate
+  : 'delegate'
+  ;
+
+Do
+  : 'do'
+  ;
+
+Done
+  : 'done'
+  ;
+
+Downcast
+  : 'downcast'
+  ;
+
+Downto
+  : 'downto'
+  ;
+
+Elif
+  : 'elif'
+  ;
+
+Else
+  : 'else'
+  ;
+
+End
+  : 'end'
+  ;
+
+Exception
+  : 'exception'
+  ;
+
+Extern
+  : 'extern'
+  ;
+
+False
+  : 'false'
+  ;
+
+Finally
+  : 'finally'
+  ;
+
+For
+  : 'for'
+  ;
+
+Fun
+  : 'fun'
+  ;
+
+Function
+  : 'function'
+  ;
+
+Global
+  : 'global'
+  ;
+
+If
+  : 'if'
+  ;
+
+In
+  : 'in'
+  ;
+
+Inherit
+  : 'inherit'
+  ;
+
+Inline
+  : 'inline'
+  ;
+
+Interface
+  : 'interface'
+  ;
+
+Internal
+  : 'internal'
+  ;
+
+Lazy
+  : 'lazy'
+  ;
+
+Let
+  : 'let'
+  ;
+
+Match
+  : 'match'
+  ;
+
+Member
+  : 'member'
+  ;
+
+Module
+  : 'module'
+  ;
+
+Mutable
+  : 'mutable'
+  ;
+
+Namespace
+  : 'namespace'
+  ;
+
+New
+  : 'new'
+  ;
+
+Null
+  : 'null'
+  ;
+
+Of
+  : 'of'
+  ;
+
+Open
+  : 'open'
+  ;
+
+Or
+  : 'or'
+  ;
+
+Override
+  : 'override'
+  ;
+
+Private
+  : 'private'
+  ;
+
+Public
+  : 'public'
+  ;
+
+Rec
+  : 'rec'
+  ;
+
+Return
+  : 'return'
+  ;
+
+Sig
+  : 'sig'
+  ;
+
+Static
+  : 'static'
+  ;
+
+Struct
+  : 'struct'
+  ;
+
+Then
+  : 'then'
+  ;
+
+To
+  : 'to'
+  ;
+
+True
+  : 'true'
+  ;
+
+Try
+  : 'try'
+  ;
+
+Type
+  : 'type'
+  ;
+
+Upcast
+  : 'upcast'
+  ;
+
+Use
+  : 'use'
+  ;
+
+Val
+  : 'val'
+  ;
+
+Void
+  : 'void'
+  ;
+
+When
+  : 'when'
+  ;
+
+While
+  : 'while'
+  ;
+
+With
+  : 'with'
+  ;
+
+Yield
+  : 'yield'
+  ;
+
+Atomic
+  : 'atomic'
+  ;
+
+Break
+  : 'break'
+  ;
+
+Checked
+  : 'checked'
+  ;
+
+Component
+  : 'component'
+  ;
+
+Const
+  : 'const'
+  ;
+
+Constraint
+  : 'constraint'
+  ;
+
+Constructor
+  : 'constructor'
+  ;
+
+Continue
+  : 'continue'
+  ;
+
+Eager
+  : 'eager'
+  ;
+
+Fixed
+  : 'fixed'
+  ;
+
+Fori
+  : 'fori'
+  ;
+
+Functor
+  : 'functor'
+  ;
+
+Include
+  : 'include'
+  ;
+
+Measure
+  : 'measure'
+  ;
+
+Method
+  : 'method'
+  ;
+
+Mixin
+  : 'mixin'
+  ;
+
+Object
+  : 'object'
+  ;
+
+Parallel
+  : 'parallel'
+  ;
+
+Params
+  : 'params'
+  ;
+
+Process
+  : 'process'
+  ;
+
+Protected
+  : 'protected'
+  ;
+
+Pure
+  : 'pure'
+  ;
+
+Recursive
+  : 'recursive'
+  ;
+
+Sealed
+  : 'sealed'
+  ;
+
+Tailcall
+  : 'tailcall'
+  ;
+
+Trait
+  : 'trait'
+  ;
+
+Virtual
+  : 'virtual'
+  ;
+
+Volatile
+  : 'volatile'
+  ;
+
+/*
+ * A.1.4.1 Identifiers
+ */
+
 fragment
 DigitChar
   : '0'..'9'
