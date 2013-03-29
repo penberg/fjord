@@ -1586,3 +1586,41 @@ Float
   : Digit+ '.' Digit+
   | Digit+ ( '.' Digit* )? ('e' | 'E') ('+' | '-')? Digit+
   ;
+
+/*
+ * A.1.9.4 Constants
+ */
+fragment
+Constant
+  : Sbyte
+  | Int16
+  | Int32
+  | Int64
+  | Byte
+  | Uint16
+  | Uint32
+  | Int
+  | Uint64
+  | Ieee32
+  | Ieee64
+  | Bignum
+  | Char
+  | String
+  | VerbatimString
+  | TripleQuotedString
+  | Bytearray
+  | VerbatimBytearray
+  | Bytechar
+  | 'false'
+  | 'true'
+  | '()'
+/*
+  | Sbyte '<' MeasureLiteral '>'
+  | Int16 '<' MeasureLiteral '>'
+  | Int32 '<' MeasureLiteral '>'
+  | Int64 '<' MeasureLiteral '>'
+  | Ieee32 '<' MeasureLiteral '>'
+  | Ieee64 '<' MeasureLiteral '>'
+  | Decimal '<' MeasureLiteral '>'
+*/
+  ;
