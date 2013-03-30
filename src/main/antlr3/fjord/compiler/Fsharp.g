@@ -89,6 +89,19 @@ EndifDirective
  */
 
 /*
+ * A.1.4.2 Long identifiers
+ */
+
+LongIdent
+  : Ident '.' .* '.' Ident
+  ;
+
+longIdentOrOp
+  : LongIdent '.' identOrOp
+  | identOrOp
+  ;
+
+/*
  * A.1.4.3 Keywords
  */
 
