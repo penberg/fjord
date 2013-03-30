@@ -38,7 +38,12 @@ scriptFragment returns [ScriptFragment f]
  */
 
 moduleElem returns [ModuleElem n]
-  : compilerDirectiveDecl { $n = $compilerDirectiveDecl.n; }
+  : importDecl { $n = $importDecl.n; }
+  | compilerDirectiveDecl { $n = $compilerDirectiveDecl.n; }
+  ;
+
+importDecl returns [ImportDecl n]
+  : Open LongIdent { $n = new ImportDecl($LongIdent.text); }
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
