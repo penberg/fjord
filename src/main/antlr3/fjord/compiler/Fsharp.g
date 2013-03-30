@@ -1633,8 +1633,8 @@ OpName
   : SymbolicOp
 /*
   | RangeOpName
-  | ActivePatternOpName
 */
+  | ActivePatternOpName
   ;
 
 fragment
@@ -1643,13 +1643,11 @@ RangeOpName
   | '..' '..'
   ;
 
-/*
 fragment
 ActivePatternOpName
-  : '|' Ident '|' ... '|' Ident '|'
-  | '|' Ident '|' ... '|' Ident '|' '_' '|'
+  : '|' Ident '|' (Ident '|')*
+  | '|' Ident '|' (Ident '|')* '|' '_' '|'
   ;
-*/
 
 /*
  * A.1.9.2 Symbolic Operators
