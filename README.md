@@ -4,8 +4,8 @@
 
 Fjord is an implementation of the [F#][F#] programming language for the JVM.
 
-The implementation is at very early stages, so if you are looking to use F# on
-the JVM, Fjord is probably not for you. However, if you are interested in
+*The implementation is at very early stages, so if you are looking to use F# on
+the JVM, Fjord is probably not for you.* However, if you are interested in
 hacking on F# implementation for the JVM, welcome on board!
 
 ## Building Fjord
