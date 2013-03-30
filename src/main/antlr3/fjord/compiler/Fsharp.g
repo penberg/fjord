@@ -93,7 +93,7 @@ EndifDirective
  */
 
 LongIdent
-  : Ident '.' .* '.' Ident
+  : Ident ('.' Ident)+
   ;
 
 longIdentOrOp
