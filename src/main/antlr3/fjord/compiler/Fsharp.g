@@ -29,20 +29,25 @@ options {
  * A.2.1 Program format
  */
 
-scriptFragment returns [Node n]
-  : c = moduleElem { $n = c; }
+scriptFragment returns [ScriptFragment f]
+  : c = moduleElems { $f = new ScriptFragment(c); }
   ;
 
 /*
  * A.2.1.1 Namespaces and modules
  */
 
-moduleElem returns [Node n]
+moduleElem returns [ModuleElem n]
   : compilerDirectiveDecl { $n = $compilerDirectiveDecl.n; }
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
   : '#' Ident { $n = new CompilerDirectiveDecl($Ident.text); }
+  ;
+
+moduleElems returns [ArrayList n]
+  : { $n = new ArrayList(); }
+    (moduleElem { $n.add($moduleElem.n); } )+
   ;
 
 /*****************************************************************************
