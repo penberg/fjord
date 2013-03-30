@@ -70,7 +70,7 @@ NewLine
   ;
 
 WhitespaceOrNewline
-  : Whitespace | NewLine { skip(); }
+  : (Whitespace | NewLine) { skip(); }
   ;
 
 /*
