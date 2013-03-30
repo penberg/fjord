@@ -12,7 +12,8 @@ public class ScriptFragment implements Node {
     visitor.visit(this);
 
     for (ModuleElem moduleElem : moduleElems) {
-      moduleElem.accept(visitor);
+      if (moduleElem != null)
+        moduleElem.accept(visitor);
     }
   }
 
