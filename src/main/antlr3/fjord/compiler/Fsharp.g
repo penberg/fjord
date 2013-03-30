@@ -21,9 +21,21 @@ options {
   import fjord.ast.*;
 }
 
+/*****************************************************************************
+ * A.2 Syntactic grammar
+ *****************************************************************************/
+
+/*
+ * A.2.1 Program format
+ */
+
 scriptFragment returns [Node n]
   : c = moduleElem { $n = c; }
   ;
+
+/*
+ * A.2.1.1 Namespaces and modules
+ */
 
 moduleElem returns [Node n]
   : compilerDirectiveDecl { $n = $compilerDirectiveDecl.n; }
@@ -33,9 +45,9 @@ compilerDirectiveDecl returns [CompilerDirectiveDecl n]
   : '#' Ident { $n = new CompilerDirectiveDecl($Ident.text); }
   ;
 
-/*
- * A.1 Lexical Grammar
- */
+/*****************************************************************************
+ * A.1 Lexical grammar
+ *****************************************************************************/
 
 /*
  * A.1.1 Whitespace
