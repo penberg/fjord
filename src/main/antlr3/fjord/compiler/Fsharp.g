@@ -43,7 +43,7 @@ moduleElem returns [ModuleElem n]
   ;
 
 importDecl returns [ImportDecl n]
-  : Open LongIdent { $n = new ImportDecl($LongIdent.text); }
+  : Open longIdent { $n = new ImportDecl($longIdent.text); }
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
@@ -114,12 +114,17 @@ EndifDirective
  * A.1.4.2 Long identifiers
  */
 
-LongIdent
+longIdent
+  : LongIdentWithDots
+  | Ident
+  ;
+
+LongIdentWithDots
   : Ident ('.' Ident)+
   ;
 
 longIdentOrOp
-  : LongIdent '.' identOrOp
+  : longIdent '.' identOrOp
   | identOrOp
   ;
 
