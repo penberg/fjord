@@ -1588,6 +1588,20 @@ Float
   ;
 
 /*
+ * A.1.7 Line Directives
+ */
+
+fragment
+LineDirective
+  : '#' Int
+  | '#' Int String
+  | '#' Int VerbatimString
+  | '#line' Int
+  | '#line' Int String
+  | '#line' Int VerbatimString
+  ;
+
+/*
  * A.1.9.4 Constants
  */
 fragment
