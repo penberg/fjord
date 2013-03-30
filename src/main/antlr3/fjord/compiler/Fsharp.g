@@ -1602,8 +1602,150 @@ LineDirective
   ;
 
 /*
+ * A.1.9 Operators
+ */
+
+/*
+ * A.1.9.1 Operator Names
+ */
+
+identOrOp
+  : Ident
+  | '(' OpName ')'
+  | '(*)'
+  ;
+
+fragment
+OpName
+  : SymbolicOp
+/*
+  | RangeOpName
+  | ActivePatternOpName
+*/
+  ;
+
+fragment
+RangeOpName
+  : '..'
+  | '..' '..'
+  ;
+
+/*
+fragment
+ActivePatternOpName
+  : '|' Ident '|' ... '|' Ident '|'
+  | '|' Ident '|' ... '|' Ident '|' '_' '|'
+  ;
+*/
+
+/*
+ * A.1.9.2 Symbolic Operators
+ */
+
+fragment
+FirstOpChar
+  : '!'
+  | '%'
+  | '&'
+  | '*'
+  | '+'
+  | '-'
+  | '.'
+  | '/'
+  | '<'
+  | '='
+  | '>'
+  | '@'
+  | '^'
+  | '|'
+  | '~'
+  ;
+
+fragment
+OpChar
+  : FirstOpChar
+  | '?'
+  ;
+
+/*
+fragment
+QuoteOpLeft
+  : '<@'
+  | '<@@'
+  ;
+
+fragment
+QuoteOpRight
+  : '@>'
+  | '@@>'
+  ;
+*/
+
+fragment
+SymbolicOp
+  : '?'
+  | '?<-'
+/*
+  | QuoteOpLeft
+  | QuoteOpRight
+*/
+  | FirstOpChar OpChar*
+  ;
+
+/*
+ * A.1.9.3 Infix and prefix operators
+ */
+
+fragment
+InfixOrPrefixOp
+  : '+'
+  | '-'
+  | '+.'
+  | '-.'
+  | '%'
+  | '&'
+  | '&&'
+  ;
+
+fragment
+OP
+  : SymbolicOp
+  ;
+
+prefixOp
+  : InfixOrPrefixOp
+  | '~'
+  | '~~'
+  | '~~~'
+  | (~('!='))=> '!' OP
+  ;
+
+infixOp
+  : InfixOrPrefixOp
+  | (~('-.'))=> '-' OP
+  | (~('+.'))=> '+' OP
+  | '||'
+  | '<' OP
+  | '>' OP
+  | '='
+  | (~('|='))=> '|' OP
+  | (~('&&'))=> '&' OP
+  | '^' OP
+  | '*' OP
+  | '/' OP
+  | '%' OP
+  | '!='
+  | ':='
+  | '::'
+  | '$'
+  | 'or'
+  | '?'
+  ;
+
+/*
  * A.1.9.4 Constants
  */
+
 fragment
 Constant
   : Sbyte
