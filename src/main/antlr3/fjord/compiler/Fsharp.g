@@ -1408,6 +1408,7 @@ IdentChar
   | IdentUnderscore
   ;
 
+fragment
 IdentText
   : IdentStartChar IdentChar*
   ;
