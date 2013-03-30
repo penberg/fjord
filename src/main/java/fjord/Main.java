@@ -3,9 +3,7 @@ package fjord;
 import java.io.Console;
 
 import fjord.compiler.Compiler;
-import fjord.ast.CompilerDirectiveDecl;
-import fjord.ast.NodeVisitor;
-import fjord.ast.Node;
+import fjord.ast.*;
 
 public class Main {
 
@@ -32,7 +30,7 @@ public class Main {
     if (node == null)
       return;
 
-    node.accept(new NodeVisitor() {
+    node.accept(new DefaultNodeVisitor() {
       @Override public void visit(CompilerDirectiveDecl decl) {
         if (decl.getIdent().equals("help"))
           help();
