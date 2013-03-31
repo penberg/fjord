@@ -55,6 +55,12 @@ moduleElems returns [ArrayList n]
     (moduleElem { $n.add($moduleElem.n); } )+
   ;
 
+access:
+  | 'private'
+  | 'internal'
+  | 'public'
+  ;
+
 /*****************************************************************************
  * A.1 Lexical grammar
  *****************************************************************************/
