@@ -22,9 +22,7 @@ problem either.)
 
 Turn them into classes. Not a perfect fit but not a huge problem either.
 
-### How are you planning to deal with inferior generics of the JVM (most F#
-libraries rely on the JIT specializing the generic code for efficient
-execution)
+### How are you planning to deal with inferior generics of the JVM (most F# libraries rely on the JIT specializing the generic code for efficient execution)
 
 To be honest, I haven't thought about this too much. AFAIK, JRuby uses
 annotations to carry similar information so it's I think it's a solvable
