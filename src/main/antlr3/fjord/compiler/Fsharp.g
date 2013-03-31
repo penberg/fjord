@@ -38,8 +38,16 @@ scriptFragment returns [ScriptFragment f]
  */
 
 moduleElem returns [Node n]
-  : importDecl { $n = $importDecl.n; }
+  : moduleFunctionOrValueDefn { $n = $moduleFunctionOrValueDefn.n; }
+  | importDecl { $n = $importDecl.n; }
   | compilerDirectiveDecl { $n = $compilerDirectiveDecl.n; }
+  ;
+
+moduleFunctionOrValueDefn returns [Node n]
+  : attributes? Let functionDefn
+  | attributes? Let valueDefn
+  | attributes? Let Rec? functionOrValueDefns
+  | attributes? Do expr
   ;
 
 importDecl returns [ImportDecl n]
@@ -55,10 +63,207 @@ moduleElems returns [ArrayList n]
     (moduleElem { $n.add($moduleElem.n); } )+
   ;
 
-access:
-  | 'private'
-  | 'internal'
-  | 'public'
+access
+  : Private
+  | Internal
+  | Public
+  ;
+
+/*
+ * A.2.2 Types and type constraints
+ */
+
+type
+/*
+  : '(' type ')'
+  | type '->' type
+  | type ('*' type)+
+  | typar
+*/
+  : longIdent
+/*
+  | longIdent '<' types '>'
+*/
+  | longIdent '<' '>'
+/*
+  | type longIdent
+  | type '[' type (',' type)* ']'
+  | type typarDefns
+  | typar ':>' type
+  | '#' type
+*/
+  ;
+
+types
+  : type (',' type)*
+  ;
+
+typar
+  : '_'
+  | '\'' Ident
+  | '^' Ident
+  ;
+
+constraint
+  : typar ':>' type
+  | typar ':' 'null'
+/*
+  | staticTypars ':' '(' membersig ')'
+  | typar ':' '(' 'new' ':' 'unit' '->' \''' T ')'
+*/
+  | typar ':' 'struct'
+  | typar ':' 'not' 'struct'
+  | typar ':' 'enum' '<' type '>'
+  | typar ':' 'unmanaged'
+  | typar ':' 'delegate' '<' type ',' type '>'
+  ;
+
+typarDefn
+  : attributes? typar
+  ;
+
+typarDefns
+  : '<' typarDefn (',' typarDefn)* typarConstraints? '>'
+  ;
+
+typarConstraints
+  : 'when' constraint (And constraint)*
+  ;
+
+/*
+ * A.2.3 Expressions
+ */
+
+expr
+  : constant
+/*
+  | '(' expr ')'
+  | 'begin' expr 'end'
+  | longIdentOrOp
+  | expr '.' longIdentOrOp
+  | expr expr
+  | expr '(' expr ')'
+  | expr '<' types '>'
+  | expr infixOp expr
+  | prefixOp expr
+  | expr '.' '[' expr ']'
+  | expr '.' '[' sliceRange ']'
+  | expr '.' '[' sliceRange ',' sliceRange ']'
+  | expr '<-' expr
+  | expr (',' expr)+
+  | 'new' type expr
+  | '{' 'new baseCall' objectMembers interfaceImpls '}'
+  | '{' fieldInitializers '}'
+  | '{' expr 'with' fieldInitializers '}'
+  | '[' expr (';' expr)* '|'
+  | '[|' expr (';' expr)* '|]'
+  | expr '{' compOrRangeExpr '}'
+  | '[' compOrRangeExpr ']'
+  | '[|' compOrRangeExpr '|]'
+  | 'lazy' expr
+  | 'null'
+  | expr ':' type
+  | expr ':>' type
+  | expr ':?' type
+  | expr ':?>' type
+  | 'upcast' expr
+  | 'downcast' expr
+*/
+  ;
+
+functionOrValueDefn
+  : functionDefn
+  | valueDefn
+  ;
+
+functionDefn
+  : Inline? access? identOrOp typarDefns? argumentPats returnType? Equals expr
+  ;
+
+valueDefn
+  : Mutable? access? pat typarDefns? returnType? Equals expr
+  ;
+
+returnType
+  : Colon type
+  ;
+
+functionOrValueDefns
+  : functionOrValueDefn (And functionOrValueDefn)+
+  ;
+
+argumentPats
+  : atomicPat+
+  ;
+
+objectConstruction
+  : type expr
+  | expr
+  ;
+
+/*
+ * A.2.4 Patterns
+ */
+
+pat
+  : constant
+  | longIdent /* patParam? pat? */
+  | Underscore
+/*
+  | pat 'as' Ident
+  | pat '|' pat
+  | pat '&' pat
+  | pat '::' pat
+  | pat ':' type
+  | pat (',' pat)+
+  | '(' pat ')'
+  | listPat
+  | arrayPat
+  | recordPat
+  | ':?' atomicType
+  | ':?' atomicType 'as' ident
+*/
+  | Null
+/*
+  | attributes pat
+*/
+  ;
+
+atomicPat
+  : constant
+  | longIdent
+/*
+  | listPat
+  | recordPat
+  | arrayPat '(' pat ')'
+*/
+  | ColonEquals
+/*
+  | atomicType
+*/
+  | Null
+  ;
+
+/*
+ * A.2.7 Custom attributes and reflection
+ */
+
+attribute
+  : (attributeTarget Colon)? objectConstruction
+  ;
+
+attributeSet
+  : LBrackLess attribute (Semicolon attribute)* GreaterRBrack
+  ;
+
+attributes
+  : attributeSet+
+  ;
+
+attributeTarget
+  : Module
+  | Type
+  | Ident
   ;
 
 /*****************************************************************************
@@ -1699,7 +1904,7 @@ FirstOpChar
   | '.'
   | '/'
   | '<'
-  | '='
+  | Equals
   | '>'
   | '@'
   | '^'
@@ -1773,7 +1978,7 @@ infixOp
   | '||'
   | '<' OP
   | '>' OP
-  | '='
+  | Equals
   | (~('|='))=> '|' OP
   | (~('&&'))=> '&' OP
   | '^' OP
@@ -1792,8 +1997,7 @@ infixOp
  * A.1.9.4 Constants
  */
 
-fragment
-Constant
+constant
   : Sbyte
   | Int16
   | Int32
@@ -1813,8 +2017,8 @@ Constant
   | Bytearray
   | VerbatimBytearray
   | Bytechar
-  | 'false'
-  | 'true'
+  | False
+  | True
   | '()'
 /*
   | Sbyte '<' MeasureLiteral '>'
