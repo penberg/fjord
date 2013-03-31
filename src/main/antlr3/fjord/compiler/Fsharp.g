@@ -37,7 +37,7 @@ scriptFragment returns [ScriptFragment f]
  * A.2.1.1 Namespaces and modules
  */
 
-moduleElem returns [ModuleElem n]
+moduleElem returns [Node n]
   : importDecl { $n = $importDecl.n; }
   | compilerDirectiveDecl { $n = $compilerDirectiveDecl.n; }
   ;

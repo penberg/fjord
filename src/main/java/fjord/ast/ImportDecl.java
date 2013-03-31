@@ -1,6 +1,6 @@
 package fjord.ast;
 
-public class ImportDecl implements ModuleElem {
+public class ImportDecl implements Node {
 
   public ImportDecl(String ident) {
     this.ident = ident;

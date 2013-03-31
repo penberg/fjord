@@ -1,6 +1,6 @@
 package fjord.ast;
 
-public class CompilerDirectiveDecl implements ModuleElem {
+public class CompilerDirectiveDecl implements Node {
 
   public CompilerDirectiveDecl(String ident) {
     this.ident = ident;
