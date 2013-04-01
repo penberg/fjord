@@ -130,40 +130,46 @@ typarConstraints
  */
 
 expr
-  : constant
+  : ( constant
+    | LParen expr RParen
+    | Begin expr End
+    | longIdentOrOp
+    | prefixOp expr
+    | New type expr
+    | Lazy expr
+    | Null
+    | Upcast expr
+    | Downcast expr
 /*
-  | '(' expr ')'
-  | 'begin' expr 'end'
-  | longIdentOrOp
-  | expr Dot longIdentOrOp
-  | expr expr
-  | expr '(' expr ')'
-  | expr '<' types '>'
-  | expr infixOp expr
-  | prefixOp expr
-  | expr Dot '[' expr ']'
-  | expr Dot '[' sliceRange ']'
-  | expr Dot '[' sliceRange ',' sliceRange ']'
-  | expr '<-' expr
-  | expr (',' expr)+
-  | 'new' type expr
-  | '{' 'new baseCall' objectMembers interfaceImpls '}'
-  | '{' fieldInitializers '}'
-  | '{' expr 'with' fieldInitializers '}'
-  | '[' expr (';' expr)* '|'
-  | '[|' expr (';' expr)* '|]'
-  | expr '{' compOrRangeExpr '}'
-  | '[' compOrRangeExpr ']'
-  | '[|' compOrRangeExpr '|]'
-  | 'lazy' expr
-  | 'null'
-  | expr ':' type
-  | expr ':>' type
-  | expr ':?' type
-  | expr ':?>' type
-  | 'upcast' expr
-  | 'downcast' expr
+    | '{' 'new baseCall' objectMembers interfaceImpls '}'
+    | '{' fieldInitializers '}'
+    | '{' expr 'with' fieldInitializers '}'
+    | '[' expr (';' expr)* '|'
+    | '[|' expr (';' expr)* '|]'
+    | '[' compOrRangeExpr ']'
+    | '[|' compOrRangeExpr '|]'
 */
+    )
+    ( Dot longIdentOrOp
+    | expr
+    | LParen expr RParen
+    | '<' types '>'
+    | infixOp expr
+    | Dot '[' expr ']'
+/*
+    | Dot '[' sliceRange ']'
+    | Dot '[' sliceRange ',' sliceRange ']'
+*/
+    | LArrow expr
+    | (',' expr)+
+/*
+    | '{' compOrRangeExpr '}'
+*/
+    | Colon type
+    | ColonGreater type
+    | ColonQMark type
+    | ColonQMarkGreater type
+    )?
   ;
 
 functionOrValueDefn
