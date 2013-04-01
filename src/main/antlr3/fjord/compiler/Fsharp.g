@@ -55,7 +55,7 @@ importDecl returns [ImportDecl n]
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
-  : '#' Ident { $n = new CompilerDirectiveDecl($Ident.text); }
+  : Hash Ident { $n = new CompilerDirectiveDecl($Ident.text); }
   ;
 
 moduleElems returns [ArrayList n]
@@ -90,7 +90,7 @@ type
   | type '[' type (',' type)* ']'
   | type typarDefns
   | typar ':>' type
-  | '#' type
+  | Hash type
 */
   ;
 
@@ -140,15 +140,15 @@ expr
   | '(' expr ')'
   | 'begin' expr 'end'
   | longIdentOrOp
-  | expr '.' longIdentOrOp
+  | expr Dot longIdentOrOp
   | expr expr
   | expr '(' expr ')'
   | expr '<' types '>'
   | expr infixOp expr
   | prefixOp expr
-  | expr '.' '[' expr ']'
-  | expr '.' '[' sliceRange ']'
-  | expr '.' '[' sliceRange ',' sliceRange ']'
+  | expr Dot '[' expr ']'
+  | expr Dot '[' sliceRange ']'
+  | expr Dot '[' sliceRange ',' sliceRange ']'
   | expr '<-' expr
   | expr (',' expr)+
   | 'new' type expr
@@ -331,11 +331,11 @@ longIdent
   ;
 
 LongIdentWithDots
-  : Ident ('.' Ident)+
+  : Ident (Dot Ident)+
   ;
 
 longIdentOrOp
-  : longIdent '.' identOrOp
+  : longIdent Dot identOrOp
   | identOrOp
   ;
 
@@ -1836,8 +1836,8 @@ Decimal
 
 fragment
 Float
-  : Digit+ '.' Digit+
-  | Digit+ ( '.' Digit* )? ('e' | 'E') ('+' | '-')? Digit+
+  : Digit+ Dot Digit+
+  | Digit+ ( Dot Digit* )? ('e' | 'E') ('+' | '-')? Digit+
   ;
 
 /*
@@ -1846,9 +1846,9 @@ Float
 
 fragment
 LineDirective
-  : '#' Int
-  | '#' Int String
-  | '#' Int VerbatimString
+  : Hash Int
+  | Hash Int String
+  | Hash Int VerbatimString
   | '#line' Int
   | '#line' Int String
   | '#line' Int VerbatimString
