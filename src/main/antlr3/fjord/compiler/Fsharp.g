@@ -1497,6 +1497,7 @@ String
   : '"' StringChar* '"'
   ;
 
+fragment
 VerbatimStringChar
   : (SimpleCharChar | NonEscapeChars | NewLine | '\\' | '""')
   ;
