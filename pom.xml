@@ -40,8 +40,8 @@
   <dependencies>
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <version>3.4</version>
+      <artifactId>antlr4</artifactId>
+      <version>4.0</version>
     </dependency>
   </dependencies>
 
@@ -58,12 +58,12 @@
       </plugin>
       <plugin>
         <groupId>org.antlr</groupId>
-        <artifactId>antlr3-maven-plugin</artifactId>
-        <version>3.4</version>
+        <artifactId>antlr4-maven-plugin</artifactId>
+        <version>4.0</version>
         <executions>
           <execution>
             <goals>
-              <goal>antlr</goal>
+              <goal>antlr4</goal>
             </goals>
           </execution>
         </executions>
