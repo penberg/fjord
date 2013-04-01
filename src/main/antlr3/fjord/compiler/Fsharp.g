@@ -76,9 +76,9 @@ access
  */
 
 type
-  : LParen?
-    Hash?
-    ( typar (ColonGreater type)?
+  : Hash type
+  | LParen type RParen
+  | ( typar (ColonGreater type)?
     | longIdent ('<' types? '>')?
     )
     ( RArrow type
@@ -87,7 +87,6 @@ type
     | LBrack type (',' type)* RBrack
     | typarDefns
     )?
-    RParen?
   ;
 
 types
