@@ -6,7 +6,9 @@
 grammar Fsharp;
 
 options {
-  language = Java;
+  language  = Java;
+  backtrack = true;
+  memoize   = true;
 }
 
 @header {
@@ -74,24 +76,18 @@ access
  */
 
 type
-/*
-  : '(' type ')'
-  | type '->' type
-  | type ('*' type)+
-  | typar
-*/
-  : longIdent
-/*
-  | longIdent '<' types '>'
-*/
-  | longIdent '<' '>'
-/*
-  | type longIdent
-  | type '[' type (',' type)* ']'
-  | type typarDefns
-  | typar ':>' type
-  | Hash type
-*/
+  : LParen?
+    Hash?
+    ( typar (ColonGreater type)?
+    | longIdent ('<' types? '>')?
+    )
+    ( RArrow type
+    | ('*' type)+
+    | longIdent
+    | LBrack type (',' type)* RBrack
+    | typarDefns
+    )?
+    RParen?
   ;
 
 types
@@ -111,11 +107,11 @@ constraint
   | staticTypars ':' '(' membersig ')'
   | typar ':' '(' 'new' ':' 'unit' '->' \''' T ')'
 */
-  | typar ':' 'struct'
-  | typar ':' 'not' 'struct'
-  | typar ':' 'enum' '<' type '>'
-  | typar ':' 'unmanaged'
-  | typar ':' 'delegate' '<' type ',' type '>'
+  | typar Colon Struct
+  | typar Colon 'not' Struct
+  | typar Colon 'enum' '<' type '>'
+  | typar Colon 'unmanaged'
+  | typar Colon Delegate '<' type ',' type '>'
   ;
 
 typarDefn
