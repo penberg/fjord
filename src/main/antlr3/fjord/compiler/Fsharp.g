@@ -1793,7 +1793,7 @@ Uint16
   ;
 
 Int32
-  : (Int | Xint) 'l'
+  : (Int | Xint) 'l'?
   ;
 
 Uint32
