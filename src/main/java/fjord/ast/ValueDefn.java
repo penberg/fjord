@@ -7,6 +7,14 @@ public class ValueDefn implements Node {
     this.expr    = expr;
   }
 
+  public String pattern() {
+    return pattern.toString();
+  }
+
+  public String expr() {
+    return expr.toString();
+  }
+
   @Override public void accept(NodeVisitor visitor) {
     visitor.visit(this);
 

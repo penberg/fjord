@@ -43,6 +43,11 @@
       <artifactId>antlr</artifactId>
       <version>3.4</version>
     </dependency>
+    <dependency>
+      <groupId>me.qmx.jitescript</groupId>
+      <artifactId>jitescript</artifactId>
+      <version>0.3.0</version>
+    </dependency>
   </dependencies>
 
   <build>
