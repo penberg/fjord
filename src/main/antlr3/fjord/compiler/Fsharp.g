@@ -47,7 +47,7 @@ moduleElem returns [Node n]
 
 moduleFunctionOrValueDefn returns [Node n]
   : attributes? Let functionDefn
-  | attributes? Let valueDefn
+  | attributes? Let valueDefn { $n = $valueDefn.n; }
   | attributes? Let Rec? functionOrValueDefns
   | attributes? Do expr
   ;
@@ -129,8 +129,8 @@ typarConstraints
  * A.2.3 Expressions
  */
 
-expr
-  : ( constant
+expr returns [Node n]
+  : ( c = constant
     | LParen expr RParen
     | Begin expr End
     | longIdentOrOp
@@ -169,7 +169,7 @@ expr
     | ColonGreater type
     | ColonQMark type
     | ColonQMarkGreater type
-    )?
+    )? { $n = c; }
   ;
 
 functionOrValueDefn
@@ -181,8 +181,8 @@ functionDefn
   : Inline? access? identOrOp typarDefns? argumentPats returnType? Equals expr
   ;
 
-valueDefn
-  : Mutable? access? pat typarDefns? returnType? Equals expr
+valueDefn returns [Node n]
+  : Mutable? access? pat typarDefns? returnType? Equals expr { $n = new ValueDefn($pat.n, $expr.n); }
   ;
 
 returnType
@@ -206,9 +206,9 @@ objectConstruction
  * A.2.4 Patterns
  */
 
-pat
+pat returns [Node n]
   : constant
-  | longIdent /* patParam? pat? */
+  | longIdent /* patParam? pat? */ { $n = $longIdent.n; }
   | Underscore
 /*
   | pat 'as' Ident
@@ -326,9 +326,9 @@ EndifDirective
  * A.1.4.2 Long identifiers
  */
 
-longIdent
-  : LongIdentWithDots
-  | Ident
+longIdent returns [Node n]
+  : LongIdentWithDots { $n = new Ident($LongIdentWithDots.text); }
+  | Ident             { $n = new Ident($Ident.text);             }
   ;
 
 LongIdentWithDots
@@ -2006,7 +2006,6 @@ constant returns [Node n]
   | Byte               { $n = new Const($Byte.text);               }
   | Uint16             { $n = new Const($Uint16.text);             }
   | Uint32             { $n = new Const($Uint32.text);             }
-  | Int                { $n = new Const($Int.text);                }
   | Uint64             { $n = new Const($Uint64.text);             }
   | Ieee32             { $n = new Const($Ieee32.text);             }
   | Ieee64             { $n = new Const($Ieee64.text);             }

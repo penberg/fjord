@@ -39,6 +39,9 @@ public class Main {
         else
           con.printf("Invalid directive '%s'\n", decl);
       }
+      @Override public void visit(ValueDefn defn) {
+        con.printf("%s\n", defn);
+      }
     });
   }
 
