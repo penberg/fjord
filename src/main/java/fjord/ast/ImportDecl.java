@@ -2,12 +2,8 @@ package fjord.ast;
 
 public class ImportDecl implements Node {
 
-  public ImportDecl(String ident) {
+  public ImportDecl(Ident ident) {
     this.ident = ident;
-  }
-
-  public String getIdent() {
-    return ident;
   }
 
   @Override public void accept(NodeVisitor visitor) {
@@ -15,8 +11,8 @@ public class ImportDecl implements Node {
   }
 
   @Override public String toString() {
-    return "open " + ident;
+    return String.format("open %s", ident);
   }
 
-  private String ident;
+  private Ident ident;
 }

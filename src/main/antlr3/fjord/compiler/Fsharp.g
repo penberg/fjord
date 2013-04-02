@@ -31,8 +31,8 @@ options {
  * A.2.1 Program format
  */
 
-scriptFragment returns [ScriptFragment f]
-  : c = moduleElems { $f = new ScriptFragment(c); }
+scriptFragment returns [ScriptFragment n]
+  :  moduleElems { $n = new ScriptFragment($moduleElems.n); }
   ;
 
 /*
@@ -41,8 +41,8 @@ scriptFragment returns [ScriptFragment f]
 
 moduleElem returns [Node n]
   : moduleFunctionOrValueDefn { $n = $moduleFunctionOrValueDefn.n; }
-  | importDecl { $n = $importDecl.n; }
-  | compilerDirectiveDecl { $n = $compilerDirectiveDecl.n; }
+  | importDecl                { $n = $importDecl.n; }
+  | compilerDirectiveDecl     { $n = $compilerDirectiveDecl.n; }
   ;
 
 moduleFunctionOrValueDefn returns [Node n]
@@ -53,7 +53,7 @@ moduleFunctionOrValueDefn returns [Node n]
   ;
 
 importDecl returns [ImportDecl n]
-  : Open longIdent { $n = new ImportDecl($longIdent.text); }
+  : Open longIdent { $n = new ImportDecl($longIdent.n); }
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
@@ -130,7 +130,7 @@ typarConstraints
  */
 
 expr returns [Node n]
-  : ( c = constant
+  : ( constant { $n = $constant.n; }
     | LParen expr RParen
     | Begin expr End
     | longIdentOrOp
@@ -169,7 +169,7 @@ expr returns [Node n]
     | ColonGreater type
     | ColonQMark type
     | ColonQMarkGreater type
-    )? { $n = c; }
+    )?
   ;
 
 functionOrValueDefn
@@ -326,7 +326,7 @@ EndifDirective
  * A.1.4.2 Long identifiers
  */
 
-longIdent returns [Node n]
+longIdent returns [Ident n]
   : LongIdentWithDots { $n = new Ident($LongIdentWithDots.text); }
   | Ident             { $n = new Ident($Ident.text);             }
   ;
