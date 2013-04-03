@@ -72,8 +72,14 @@ public class Main {
   }
 
   private static void banner() {
-    con.printf("Fjord\n");
-    con.printf("\n");
+    String version = String.format(
+        "Fjord (%s %s) [%s-%s]",
+        System.getProperty("java.vm.name"),
+        System.getProperty("java.runtime.version"),
+        System.getProperty("os.name"),
+        System.getProperty("os.arch")
+      );
+    con.printf("%s\n\n", version);
     con.printf("For help type #help\n");
   }
 
