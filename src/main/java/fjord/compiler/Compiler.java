@@ -8,7 +8,7 @@ import org.antlr.runtime.CommonTokenStream;
 
 public class Compiler {
 
-  public ScriptFragment compile(String input) throws Exception {
+  public ScriptFragment parse(String input) throws Exception {
     CharStream stream = new ANTLRStringStream(input);
 
     FsharpLexer lexer = new FsharpLexer(stream);

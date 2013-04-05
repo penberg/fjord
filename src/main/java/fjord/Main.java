@@ -33,7 +33,7 @@ public class Main {
   private static void eval(final Environment env, String input) throws Exception {
     Compiler compiler = new Compiler();
 
-    Node node = compiler.compile(input);
+    Node node = compiler.parse(input);
     if (node == null)
       return;
 
@@ -46,28 +46,32 @@ public class Main {
         else
           con.printf("Invalid directive '%s'\n", decl);
       }
+    });
+
+    node.accept(new DefaultNodeVisitor() {
       @Override public void visit(ValueDefn defn) {
-        con.printf("val %s = %s\n", defn.pattern(), eval(defn));
+        Value val = codegen(defn);
+
+        con.printf("val %s = %s\n", defn.pattern(), val.eval());
       }
     });
   }
 
-  private static Object eval(final ValueDefn defn) {
+  private static Value codegen(final ValueDefn defn) {
     try {
-      JiteClass jiteClass = new JiteClass(defn.pattern()) {{
-        defineMethod("apply", ACC_PUBLIC | ACC_STATIC, sig(Object.class),
+      JiteClass jiteClass = new JiteClass(defn.pattern(), new String[] { p(Value.class) }) {{
+        defineDefaultConstructor();
+
+        defineMethod("eval", ACC_PUBLIC, sig(Object.class),
           newCodeBlock()
             .ldc(defn.expr())
             .areturn()
         );
       }};
-
       Class<?> klass = new JiteClassLoader().define(jiteClass);
-      Method applyMethod = klass.getMethod("apply");
-
-      return applyMethod.invoke(null);
+      return (Value) klass.newInstance();
     } catch (Exception e) {
-      return null;
+      return new Value() { public Object eval() { return null; } };
     }
   }
 
