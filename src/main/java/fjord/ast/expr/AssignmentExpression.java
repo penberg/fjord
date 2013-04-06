@@ -1,5 +1,12 @@
 package fjord.ast.expr;
 
-public class AssignmentExpression {
+import fjord.ast.NodeVisitor;
+
+public class AssignmentExpression implements Expression {
+
+	@Override
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

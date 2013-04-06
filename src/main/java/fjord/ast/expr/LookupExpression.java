@@ -1,5 +1,12 @@
 package fjord.ast.expr;
 
-public class LookupExpression {
+import fjord.ast.NodeVisitor;
+
+public class LookupExpression implements Expression{
+
+	@Override
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

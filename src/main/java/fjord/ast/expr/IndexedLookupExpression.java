@@ -1,5 +1,12 @@
 package fjord.ast.expr;
 
-public class IndexedLookupExpression {
+import fjord.ast.NodeVisitor;
+
+public class IndexedLookupExpression implements Expression {
+
+	@Override
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

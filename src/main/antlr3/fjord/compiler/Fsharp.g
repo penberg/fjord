@@ -294,9 +294,9 @@ staticTypars
  */
 
 expr returns [Expression n]
-  : ( constant
-    | LParen expr RParen 
-    | Begin expr End 
+  : ( constant { $n = new ConstantExpression($constant.n); }
+    | LParen expr RParen
+    | Begin expr End    
     | longIdentOrOp 
     | prefixOp expr 
     | New type expr 
@@ -331,7 +331,7 @@ expr returns [Expression n]
     | '%%' expr
     LParen staticTypars Colon LParen memberSig RParen expr RParen
     )
-    ( Dot longIdentOrOp
+    ( Dot longIdentOrOp 
     | expr
     | LParen expr RParen
     | '<' types '>'
@@ -965,7 +965,7 @@ LongIdentWithDots
   : Ident (Dot Ident)+
   ;
 
-longIdentOrOp
+longIdentOrOp returns [Node n]
   : longIdent Dot identOrOp
   | identOrOp
   ;

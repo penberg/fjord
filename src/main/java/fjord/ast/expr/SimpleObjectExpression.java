@@ -1,5 +1,12 @@
 package fjord.ast.expr;
 
-public class SimpleObjectExpression {
+import fjord.ast.NodeVisitor;
+
+public class SimpleObjectExpression implements Expression {
+
+	@Override
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

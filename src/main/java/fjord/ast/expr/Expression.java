@@ -4,4 +4,5 @@ import fjord.ast.Node;
 
 public interface Expression extends Node {
 
+	
 }

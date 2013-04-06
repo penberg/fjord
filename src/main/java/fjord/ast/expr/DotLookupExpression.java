@@ -1,5 +1,12 @@
 package fjord.ast.expr;
 
-public class DotLookupExpression {
+import fjord.ast.NodeVisitor;
+
+public class DotLookupExpression implements Expression {
+
+	@Override
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

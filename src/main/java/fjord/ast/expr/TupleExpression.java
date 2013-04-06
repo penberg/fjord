@@ -1,5 +1,12 @@
 package fjord.ast.expr;
 
-public class TupleExpression {
+import fjord.ast.NodeVisitor;
+
+public class TupleExpression implements Expression {
+
+	@Override
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }
