@@ -424,7 +424,7 @@ compOrRangeExpr
   ;
 
 compExpr
-  : LetE pat Equals expr In compExpr
+  :( LetE pat Equals expr In compExpr
   | Let pat Equals expr In compExpr
   | DoE expr In compExpr
   | Do expr In compExpr
@@ -442,8 +442,11 @@ compExpr
   | While expr Do expr Done? 
   | For Ident Equals expr To expr Do compExpr Done? 
   | For pat In exprOrRangeExpr Do compExpr Done? 
-  | compExpr Semicolon compExpr
   | expr
+  )
+  (
+    | Semicolon compExpr
+  )?
   ;
 
 compRule
@@ -483,24 +486,37 @@ patternGuard
   ;
   
 pat returns [Node n]
-  : constant
+  : (constant
   | longIdent patParam? pat? { $n = $longIdent.n; }
   | Underscore
-  | pat 'as' Ident
+/*  | pat 'as' Ident
   | pat '|' pat
   | pat '&' pat
   | pat '::' pat
   | pat ':' type
-  | pat (',' pat)+
-  | '(' pat ')'
+  | pat (',' pat)+ 
+*/
+  | LParen pat RParen
   | listPat
   | arrayPat
   | recordPat
-/*  | ':?' atomicType
+/* 
+  | ':?' atomicType
   | ':?' atomicType 'as' ident
 */
   | Null
   | attributes pat
+  )
+  
+  (
+    | As Ident
+    | Bar pat
+    | '&' pat
+    | ColonColon pat
+    | Colon pat
+    | (',' pat)+ 
+  )?
+  
   ;
 
 listPat
@@ -538,18 +554,20 @@ fieldPat
   ;
   
 patParam
-  : constant
+  :( constant
   | longIdent
   | LBrack patParam (Semicolon patParam) RBrack
   | LParen patParam (',' patParam) RParen
   | longIdent patParam
-  | patParam Colon type
-
 /*
   | '<@' expr '@>'
   | '<@@' expr '@@>'
 */
   | Null
+  )
+  (
+  | patParam Colon type  
+  )?
   ;
   
 pats
@@ -723,11 +741,14 @@ additionalConstrDefn
   ;
   
 additionalConstrExpr
-  : /*FIXME: stmt Semicolon additionalConstrExpr */
-  | additionalConstrExpr Then expr
+  : (/*FIXME: stmt Semicolon additionalConstrExpr */
   | If expr Then additionalConstrExpr Else additionalConstrExpr
   | /*FIXME: Let valDecls In additionalConstrExpr */
   | additionalConstrInitExpr
+  )
+  (
+    Then expr
+  )?
   ;
   
 additionalConstrInitExpr
