@@ -812,6 +812,68 @@ interfaceSpec
   : Interface type
   ;
   
+/*
+ * A.2.6 Units Of Measure 
+ */   
+
+measureLiteralAtom
+  : longIdent
+  | LParen measureLiteralSimp RParen
+  ;
+  
+measureLiteralPower
+  : measureLiteralAtom ('^' Int32)?
+  ;
+  
+measureLiteralSeq
+  : measureLiteralPower+
+  ;
+  
+measureLiteralSimp
+  : (measureLiteralSeq
+  | '/' measureLiteralSimp
+  | '1'
+  )
+  (
+  | '*' measureLiteralSimp
+  | '/' measureLiteralSimp  
+  )?
+  ;
+  
+measureLiteral
+  : Underscore
+  | measureLiteralSimp
+  ;
+
+measureAtom
+  : typar
+  | longIdent
+  | LParen measureSimp RParen
+  ;
+  
+measurePower
+  : measureAtom ('^' Int32)?
+  ;
+  
+measureSeq
+  : measurePower+
+  ;
+
+measureSimp
+  : (measureSeq
+  | '/' measureSimp
+  | '1'
+  )
+  (
+  | '*' measureSimp
+  | '/' measureSimp
+  )?
+  ;
+  
+measure
+  : Underscore
+  | measureSimp
+  ;
 
 /*
  * A.2.7 Custom attributes and reflection
@@ -2600,13 +2662,11 @@ constant returns [Node n]
   | False              { $n = new Const($False.text);              }
   | True               { $n = new Const($True.text);               }
   | '()'               { $n = new Const("()");                     }
-/*
-  | Sbyte '<' MeasureLiteral '>'
-  | Int16 '<' MeasureLiteral '>'
-  | Int32 '<' MeasureLiteral '>'
-  | Int64 '<' MeasureLiteral '>'
-  | Ieee32 '<' MeasureLiteral '>'
-  | Ieee64 '<' MeasureLiteral '>'
-  | Decimal '<' MeasureLiteral '>'
-*/
+  | Sbyte '<' measureLiteral '>'
+  | Int16 '<' measureLiteral '>'
+  | Int32 '<' measureLiteral '>'
+  | Int64 '<' measureLiteral '>'
+  | Ieee32 '<' measureLiteral '>'
+  | Ieee64 '<' measureLiteral '>'
+  | Decimal '<' measureLiteral '>'
   ;
