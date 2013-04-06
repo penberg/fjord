@@ -31,6 +31,38 @@ options {
  * A.2.1 Program format
  */
 
+implementationFile
+  : namespaceDeclGroup+
+  | namedModule
+  | anonymousModule
+  ;
+
+scriptFile
+  : implementationFile
+  ;
+  
+signatureFile
+  : namespaceDeclGroupSignature+
+  | anonymousModuleSignature
+  | namedModuleSignature
+  ;
+  
+namedModule
+  : Module longIdent moduleElems
+  ;
+  
+anonymousModule
+  : moduleElems
+  ;
+  
+namedModuleSignature
+  : Module longIdent moduleSignatureElements
+  ;
+  
+anonymousModuleSignature
+  : moduleSignatureElements
+  ;
+
 scriptFragment returns [ScriptFragment n]
   :  moduleElems { $n = new ScriptFragment($moduleElems.n); }
   ;
@@ -39,8 +71,26 @@ scriptFragment returns [ScriptFragment n]
  * A.2.1.1 Namespaces and modules
  */
 
+namespaceDeclGroup
+  : Namespace longIdent moduleElems
+  | Namespace Global moduleElems
+  ;
+  
+moduleDefn
+  : attributes? Module access? Ident Equals Begin? moduleDefnBody End?
+  ;
+  
+moduleDefnBody
+  : Begin moduleElems? End
+  ;
+  
+
 moduleElem returns [Node n]
   : moduleFunctionOrValueDefn { $n = $moduleFunctionOrValueDefn.n; }
+  | /*FIXME: typeDefns*/
+  | exceptionDefn
+  | moduleDefn
+  | moduleAbbrev
   | importDecl                { $n = $importDecl.n; }
   | compilerDirectiveDecl     { $n = $compilerDirectiveDecl.n; }
   ;
@@ -54,6 +104,10 @@ moduleFunctionOrValueDefn returns [Node n]
 
 importDecl returns [ImportDecl n]
   : Open longIdent { $n = new ImportDecl($longIdent.n); }
+  ;
+
+moduleAbbrev
+  : Module Ident Equals longIdent
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
@@ -71,6 +125,108 @@ access
   | Public
   ;
 
+/*
+ * A.2.1.2 NamespaceandModuleSignatures
+ */
+
+namespaceDeclGroupSignature
+  : Namespace longIdent moduleSignatureElements
+  ;
+
+moduleSignature
+  : Module Ident Equals Begin? moduleSignatureBody End?
+  ;
+
+moduleSignatureElement
+  : Val Mutable? curriedSig
+  | Val valueDefn
+  | Type typeSignatures
+  | /*FIXME: Exception exceptionSignature */
+  | moduleSignature
+  | moduleAbbrev
+  | importDecl
+  ;
+  
+moduleSignatureElements
+  : Begin? moduleSignatureElement+ End?
+  ;
+
+/* HUH? */
+moduleSignatureBody
+  : Begin moduleSignatureElements End
+  ;
+  
+typeSignature
+  : abbrevTypeSignature
+  | recordTypeSignature
+  | unionTypeSignature
+  | anonTypeSignature
+  | classTypeSignature
+  | structTypeSignature
+  | interfaceTypeSignature
+  | enumTypeSignature
+  | delegateTypeSignature
+  | typeExtensionSignature
+  ;
+  
+typeSignatures
+  : typeSignature (And typeSignature)*
+  ;
+
+typeSignatureElement
+  : attributes? access? New Colon uncurriedSig
+  | attributes? Member access? memberSig
+  | attributes? Abstract access? memberSig
+  | attributes? Override memberSig
+  | attributes? Default memberSig
+  | attributes? Static Member access? memberSig
+  | Interface type
+  ;
+  
+abbrevTypeSignature
+  : typeName Equals type
+  ;
+  
+unionTypeSignature
+  : typeName Equals unionTypeCases typeExtensionElementsSignature? 
+  ;
+  
+recordTypeSignature
+  : typeName Equals LBrace recordFields RBrace typeExtensionElementsSignature?
+  ;
+  
+anonTypeSignature
+  : /*FIXME: typeName Equals Begin typeElementsSignature End */
+  ;
+  
+classTypeSignature
+  : /*FIXME: typeName Equals Class typeElementsSignature End */
+  ;
+  
+structTypeSignature
+  : /*FIXME:  typeName Equals Struct typeElementsSignature End */
+  ;
+  
+interfaceTypeSignature
+  : /*FIXME: typeName Equals Interface typeElementsSignature End */
+  ;
+  
+enumTypeSignature
+  : typeName Equals enumTypeCases
+  ;
+  
+delegateTypeSignature
+  : typeName Equals delegateSig 
+  ;
+  
+typeExtensionSignature
+  : typeName typeExtensionElementsSignature
+  ;
+  
+typeExtensionElementsSignature
+  :  /*FIXME  With typeElementsSignature End */
+  ;
+  
 /*
  * A.2.2 Types and type constraints
  */
@@ -93,6 +249,8 @@ types
   : type (',' type)*
   ;
 
+/* TODO: atomic-type */
+
 typar
   : '_'
   | '\'' Ident
@@ -100,12 +258,10 @@ typar
   ;
 
 constraint
-  : typar ':>' type
-  | typar ':' 'null'
-/*
-  | staticTypars ':' '(' membersig ')'
-  | typar ':' '(' 'new' ':' 'unit' '->' \''' T ')'
-*/
+  : typar ColonGreater type
+  | typar Colon 'null'
+  | staticTypars Colon LParen memberSig RParen
+  | typar Colon LParen New Colon Unit RArrow '\'T' RParen
   | typar Colon Struct
   | typar Colon 'not' Struct
   | typar Colon 'enum' '<' type '>'
@@ -123,6 +279,11 @@ typarDefns
 
 typarConstraints
   : 'when' constraint (And constraint)*
+  ;
+
+staticTypars
+  : '^' Ident
+  | LParen '^'Ident (Or '^'Ident)* RParen
   ;
 
 /*
@@ -171,7 +332,28 @@ expr returns [Node n]
     | ColonQMarkGreater type
     )?
   ;
+  
+exprs 
+  : expr (',' expr)*
+  ; 
+  
+exprOrRangeExpr
+  : expr
+  | rangeExpr
+  ;
 
+elifBranches
+  : elifBranch+
+  ;
+  
+elifBranch
+  : Elif expr Then expr
+  ;
+
+elseBranch
+  : Else expr
+  ;
+    
 functionOrValueDefn
   : functionDefn
   | valueDefn
@@ -197,20 +379,113 @@ argumentPats
   : atomicPat+
   ;
 
+fieldInitializer
+  : longIdent Equals expr
+  ;
+
+fieldInitializers 
+  : fieldInitializer (Semicolon fieldInitializer)*
+  ;
+  
 objectConstruction
   : type expr
+  | type
+  ;
+
+baseCall
+  : objectConstruction
+  | objectConstruction As Ident
+  ;
+
+interfaceImpls
+  : interfaceImpl+
+  ;
+  
+interfaceImpl
+  : Interface type objectMembers? 
+  ;
+  
+objectMembers
+  : With memberDefns End
+  ;
+  
+memberDefns
+  : memberDefn+
+  ;
+
+/*
+ * A.2.3.1 Computation and Range Expressions
+ */
+
+compOrRangeExpr
+  : compExpr
+  | shortCompExpr
+  | rangeExpr
+  ;
+
+compExpr
+  : LetE pat Equals expr In compExpr
+  | Let pat Equals expr In compExpr
+  | DoE expr In compExpr
+  | Do expr In compExpr
+  | UseE pat Equals expr In compExpr
+  | Use pat Equals expr In compExpr
+  | YieldE expr
+  | Yield expr
+  | ReturnE expr
+  | Return expr
+  | If expr Then compExpr
+  | If expr Then compExpr Else compExpr
+  | Match expr With compRules
+  | Try compExpr With compRules
+  | Try compExpr Finally expr
+  | While expr Do expr Done? 
+  | For Ident Equals expr To expr Do compExpr Done? 
+  | For pat In exprOrRangeExpr Do compExpr Done? 
+  | compExpr Semicolon compExpr
   | expr
+  ;
+
+compRule
+  : pat patternGuard? RArrow compExpr
+  ;
+  
+compRules
+  : Bar? compRule (Bar compRule)*
+  ;
+  
+shortCompExpr 
+  : For pat In exprOrRangeExpr RArrow expr
+  ;
+  
+rangeExpr
+  : expr DotDot expr
+  | expr DotDot expr DotDot expr
+  ;
+  
+sliceRange
+  : expr DotDot
+  | DotDot expr
+  | expr DotDot expr
+  | '*'
   ;
 
 /*
  * A.2.4 Patterns
  */
-
+  
+rule
+  : pat patternGuard? RArrow expr
+  ;
+  
+patternGuard 
+  : When expr
+  ;
+  
 pat returns [Node n]
   : constant
-  | longIdent /* patParam? pat? */ { $n = $longIdent.n; }
+  | longIdent patParam? pat? { $n = $longIdent.n; }
   | Underscore
-/*
   | pat 'as' Ident
   | pat '|' pat
   | pat '&' pat
@@ -221,29 +496,298 @@ pat returns [Node n]
   | listPat
   | arrayPat
   | recordPat
-  | ':?' atomicType
+/*  | ':?' atomicType
   | ':?' atomicType 'as' ident
 */
   | Null
-/*
   | attributes pat
-*/
   ;
+
+listPat
+  : LBrack RBrack
+  | LBrack pat (Semicolon pat)* RBrack
+  ;
+  
+arrayPat
+  : LBrackBar BarRBrack
+  | LBrackBar pat (Semicolon pat)* BarRBrack
+  ;
+
+recordPat 
+  : LBrace fieldPat (Semicolon fieldPat)* RBrace
+  ;
+
 
 atomicPat
   : constant
   | longIdent
-/*
-  | listPat
+
+  | listPat
   | recordPat
   | arrayPat '(' pat ')'
-*/
+
   | ColonEquals
 /*
   | atomicType
 */
   | Null
   ;
+
+fieldPat
+  : longIdent Equals pat
+  ;
+  
+patParam
+  : constant
+  | longIdent
+  | LBrack patParam (Semicolon patParam) RBrack
+  | LParen patParam (',' patParam) RParen
+  | longIdent patParam
+  | patParam Colon type
+
+/*
+  | '<@' expr '@>'
+  | '<@@' expr '@@>'
+*/
+  | Null
+  ;
+  
+pats
+  : pat (',' pat)*
+  ;
+
+fieldPats
+  : fieldPat (Semicolon fieldPat)*
+  ;
+  
+rules
+  : Bar? rule (Bar rule)*
+  ;
+
+
+/*
+ * A.2.5 Type Definitions
+ */
+
+typeDefn
+  : abbrevTypeDefn
+  | recordTypeDefn
+  | unionTypeDefn
+  | anonTypeDefn
+  | classTypeDefn
+  | structTypeDefn
+  | interfaceTypeDefn
+  | enumTypeDefn
+  | delegateTypeDefn
+  | typeExtension
+  ;
+  
+typeName 
+  : attributes? access? Ident typarDefns?
+  ;
+  
+abbrevTypeDefn
+  : typeName Equals type
+  ;
+  
+unionTypeDefn
+  : typeName Equals unionTypeCases typeExtensionElements?
+  ;
+  
+unionTypeCases
+  : Bar? unionTypeCase (Bar unionTypeCase)*
+  ;
+  
+unionTypeCase
+  : attributes? unionTypeCaseData
+  ;
+
+unionTypeCaseData
+  : Ident
+  | Ident Of type ('*' type)*
+  | Ident Colon uncurriedSig
+  ;
+  
+anonTypeDefn
+  : /*FIXME: typeName primaryConstrArgs? objectVal? Equals Begin classTypeBody End */
+  ;
+  
+recordTypeDefn
+  : typeName Equals LBrace recordFields RBrace typeExtensionElements? 
+  ;
+  
+recordFields
+  : recordField (Semicolon recordField)* Semicolon? 
+  ;
+
+recordField
+  : attributes? Mutable? access? Ident Colon type
+  ;
+  
+classTypeDefn
+  : /*FIXME: typeName primaryConstrArgs? objectVal? Equals Class classTypeBody End */
+  ;
+  
+asDefn
+  : As Ident
+  ;
+
+classTypeBody
+  : Begin? classInheritsDecl? classFunctionOrValueDefns? typeDefnElements? End? 
+  ;
+  
+classInheritsDecl
+  : Inherit type expr?
+  ;
+  
+/* This rule is mentioned in spec but it's not declared anywhere :S */
+classFunctionOrValueDefns
+  : classFunctionOrValueDefn+
+  ;
+  
+classFunctionOrValueDefn
+  : attributes? Static? Let Rec? functionOrValueDefns
+  | attributes? Static? Do expr
+  ;
+  
+structTypeDefn
+  : typeName primaryConstrArgs? asDefn? Equals Struct structTypeBody End
+  ;
+  
+structTypeBody
+  : typeDefnElements
+  ;
+
+interfaceTypeDefn
+  : typeName Equals Interface interfaceTypeBody End
+  ;
+  
+interfaceTypeBody
+  : typeDefnElements
+  ;
+  
+exceptionDefn
+  : attributes? Exception unionTypeCaseData
+  | attributes? Exception Ident Equals longIdent
+  ;
+  
+enumTypeDefn
+  : typeName Equals enumTypeCases
+  ;
+  
+enumTypeCases
+  : Bar? enumTypeCase (Bar enumTypeCase)* 
+  ;
+  
+enumTypeCase
+  : Ident Equals constant
+  ;
+  
+delegateTypeDefn
+  : typeName Equals delegateSig
+  ;
+  
+delegateSig
+  : /*FIXME: delegate Of uncurriedSig */
+  ;
+  
+typeExtension
+  : typeName typeExtensionElements
+  ;
+  
+typeExtensionElements
+  : With typeDefnElements End
+  ;
+
+typeDefnElement
+  : memberDefn
+  | interfaceImpl
+  | /*FIXME: interfaceSignature */
+  ;
+  
+typeDefnElements
+  : typeDefnElement+
+  ;
+
+primaryConstrArgs
+  : attributes? access? LParen simplePat (',' simplePat)* RParen
+  ;
+  
+simplePat
+  : Ident
+  | simplePat Colon Type
+  ;
+  
+additionalConstrDefn
+  : attributes? access? New pat asDefn Equals additionalConstrExpr
+  ;
+  
+additionalConstrExpr
+  : /*FIXME: stmt Semicolon additionalConstrExpr */
+  | additionalConstrExpr Then expr
+  | If expr Then additionalConstrExpr Else additionalConstrExpr
+  | /*FIXME: Let valDecls In additionalConstrExpr */
+  | additionalConstrInitExpr
+  ;
+  
+additionalConstrInitExpr
+  : LBrace classInheritsDecl fieldInitializers RBrace
+  | New type expr
+  ;
+
+memberDefn
+  : attributes? Static? Member access? methodOrPropDefn
+  | attributes? Abstract Member? access? memberSig
+  | attributes? Override access? methodOrPropDefn
+  | attributes? Default access? methodOrPropDefn
+  | attributes? Static? Val Mutable? access? Ident Colon type
+  | additionalConstrDefn
+  ;
+  
+/* Spec says 'exp' - possibly ment expression */
+methodOrPropDefn
+  : Ident? functionDefn
+  | Ident? valueDefn
+  | Ident? Ident With functionOrValueDefns
+  | Member Ident Equals expr
+  | Member Ident Equals expr With Get
+  | Member Ident Equals expr With Set
+  | Member Ident Equals expr With Get ',' Set
+  | Member Ident Equals expr With Set ',' Get
+  ;
+  
+memberSig
+  : Ident typarDefns? Colon curriedSig
+  | Ident typarDefns? Colon curriedSig With Get
+  | Ident typarDefns? Colon curriedSig With Set
+  | Ident typarDefns? Colon curriedSig With Get ',' Set
+  | Ident typarDefns? Colon curriedSig With Set ',' Get
+  ;
+  
+curriedSig
+  : argsSpec RArrow (argsSpec RArrow)* type
+  ;
+  
+uncurriedSig  
+  : argsSpec RArrow type
+  ;
+  
+argsSpec
+  : argSpec ('*' argSpec)*
+  ;
+  
+argSpec
+  : attributes? argNameSpec? type
+  ;
+  
+argNameSpec
+  : Qmark? Ident Colon
+  ;
+  
+interfaceSpec
+  : Interface type
+  ;
+  
 
 /*
  * A.2.7 Custom attributes and reflection
@@ -643,6 +1187,10 @@ Fori
 Functor
   : 'functor'
   ;
+  
+Get
+  : 'get'
+  ;
 
 Include
   : 'include'
@@ -692,12 +1240,20 @@ Sealed
   : 'sealed'
   ;
 
+Set
+  : 'set'
+  ;
+
 Tailcall
   : 'tailcall'
   ;
 
 Trait
   : 'trait'
+  ;
+
+Unit
+  : 'unit'
   ;
 
 Virtual
