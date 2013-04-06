@@ -15,6 +15,7 @@ options {
   package fjord.compiler;
 
   import fjord.ast.*;
+  import fjord.ast.expr.*;
 }
 
 @lexer::header {
@@ -249,7 +250,9 @@ types
   : type (',' type)*
   ;
 
-/* TODO: atomic-type */
+atomicType
+  : type Colon (Hash type | LParen type RParen | longIdent | longIdent '<' types '>')
+  ;
 
 typar
   : '_'
@@ -278,7 +281,7 @@ typarDefns
   ;
 
 typarConstraints
-  : 'when' constraint (And constraint)*
+  : When constraint (And constraint)*
   ;
 
 staticTypars
@@ -291,12 +294,12 @@ staticTypars
  */
 
 expr returns [Expression n]
-  : ( constant { $n = $constant.n; }
-    | LParen expr RParen { $n = $expr.n; }
-    | Begin expr End { $n = $expr.n; }
-    | longIdentOrOp { $n = new LookupExpression($longIdentOrOp.n); }
-    | prefixOp expr { $n = new PrefixExpression($prefixOp.n, $expr.n);}
-    | New type expr { $n = new SimpleObjectExpression($type.n, $expr.n); }
+  : ( constant
+    | LParen expr RParen 
+    | Begin expr End 
+    | longIdentOrOp 
+    | prefixOp expr 
+    | New type expr 
     | LBrace New baseCall objectMembers interfaceImpl RBrace
     | LBrace fieldInitializers RBrace
     | LBrace expr With fieldInitializers RBrace
@@ -312,22 +315,20 @@ expr returns [Expression n]
     | Let valueDefn In expr
     | Let Rec functionOrValueDefns In expr
     | Use Ident Equals expr In expr
-    | Fun argumentParts RArrow expr
+    | Fun argumentPats RArrow expr
     | Function rules
     | Match expr With rules
     | Try expr With rules
     | Try expr Finally expr
-    | if expr Then expr elifBranches?
+    | If expr Then expr elifBranches?
     | While expr Do expr Done
-    | For Ident Equals expr To expr do expr Done
+    | For Ident Equals expr To expr Do expr Done
     | For pat In exprOrRangeExpr Do expr Done
-    | Assert expr
-/*  
-    | '<@' expr '@>'
-    | '<@@' expr '@@>'
+    | Assert expr  
+    | LQuote expr RQuote
+    | LQuoteUntyped expr RQuoteUntyped
     | '%' expr
     | '%%' expr
-*/
     LParen staticTypars Colon LParen memberSig RParen expr RParen
     )
     ( Dot longIdentOrOp
@@ -509,14 +510,11 @@ pat returns [Node n]
   | listPat
   | arrayPat
   | recordPat
-/* 
-  | ':?' atomicType
-  | ':?' atomicType 'as' ident
-*/
+  | ColonQMark atomicType
+  | ColonQMark atomicType As Ident
   | Null
   | attributes pat
   )
-  
   (
     | As Ident
     | Bar pat
@@ -546,15 +544,11 @@ recordPat
 atomicPat
   : constant
   | longIdent
-
   | listPat
   | recordPat
-  | arrayPat '(' pat ')'
-
+  | arrayPat LParen pat RParen
   | ColonEquals
-/*
   | atomicType
-*/
   | Null
   ;
 
