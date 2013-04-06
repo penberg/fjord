@@ -290,46 +290,62 @@ staticTypars
  * A.2.3 Expressions
  */
 
-expr returns [Node n]
+expr returns [Expression n]
   : ( constant { $n = $constant.n; }
-    | LParen expr RParen
-    | Begin expr End
-    | longIdentOrOp
-    | prefixOp expr
-    | New type expr
+    | LParen expr RParen { $n = $expr.n; }
+    | Begin expr End { $n = $expr.n; }
+    | longIdentOrOp { $n = new LookupExpression($longIdentOrOp.n); }
+    | prefixOp expr { $n = new PrefixExpression($prefixOp.n, $expr.n);}
+    | New type expr { $n = new SimpleObjectExpression($type.n, $expr.n); }
+    | LBrace New baseCall objectMembers interfaceImpl RBrace
+    | LBrace fieldInitializers RBrace
+    | LBrace expr With fieldInitializers RBrace
+    | LBrack expr (Semicolon expr)* RBrack
+    | LBrackBar expr (Semicolon expr)* BarRBrack
+    | LBrack compOrRangeExpr RBrack
+    | LBrackBar compOrRangeExpr BarRBrack
     | Lazy expr
     | Null
     | Upcast expr
     | Downcast expr
-/*
-    | '{' 'new baseCall' objectMembers interfaceImpls '}'
-    | '{' fieldInitializers '}'
-    | '{' expr 'with' fieldInitializers '}'
-    | '[' expr (';' expr)* '|'
-    | '[|' expr (';' expr)* '|]'
-    | '[' compOrRangeExpr ']'
-    | '[|' compOrRangeExpr '|]'
+    | Let functionDefn In expr
+    | Let valueDefn In expr
+    | Let Rec functionOrValueDefns In expr
+    | Use Ident Equals expr In expr
+    | Fun argumentParts RArrow expr
+    | Function rules
+    | Match expr With rules
+    | Try expr With rules
+    | Try expr Finally expr
+    | if expr Then expr elifBranches?
+    | While expr Do expr Done
+    | For Ident Equals expr To expr do expr Done
+    | For pat In exprOrRangeExpr Do expr Done
+    | Assert expr
+/*  
+    | '<@' expr '@>'
+    | '<@@' expr '@@>'
+    | '%' expr
+    | '%%' expr
 */
+    LParen staticTypars Colon LParen memberSig RParen expr RParen
     )
     ( Dot longIdentOrOp
     | expr
     | LParen expr RParen
     | '<' types '>'
     | infixOp expr
-    | Dot '[' expr ']'
-/*
-    | Dot '[' sliceRange ']'
-    | Dot '[' sliceRange ',' sliceRange ']'
-*/
+    | Dot LBrack expr RBrack
+    | Dot LBrack sliceRange RBrack
+    | Dot LBrack sliceRange ',' sliceRange RBrack
     | LArrow expr
     | (',' expr)+
-/*
-    | '{' compOrRangeExpr '}'
-*/
+    | LBrace compOrRangeExpr RBrace
     | Colon type
     | ColonGreater type
     | ColonQMark type
     | ColonQMarkGreater type
+    | Semicolon expr
     )?
   ;
   
@@ -489,13 +505,6 @@ pat returns [Node n]
   : (constant
   | longIdent patParam? pat? { $n = $longIdent.n; }
   | Underscore
-/*  | pat 'as' Ident
-  | pat '|' pat
-  | pat '&' pat
-  | pat '::' pat
-  | pat ':' type
-  | pat (',' pat)+ 
-*/
   | LParen pat RParen
   | listPat
   | arrayPat
