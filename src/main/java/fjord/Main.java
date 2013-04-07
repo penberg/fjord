@@ -30,7 +30,7 @@ public class Main {
     }
   }
 
-  private static void eval(final Environment env, String input) throws Exception {
+  public static void eval(final Environment env, String input) throws Exception {
     Compiler compiler = new Compiler();
 
     Node node = compiler.parse(input);
@@ -98,7 +98,7 @@ public class Main {
 
   private static Console con = System.console();
 
-  private static class Environment {
+  public static class Environment {
     private boolean halted;
 
     public void halt() {
