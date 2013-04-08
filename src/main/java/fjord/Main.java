@@ -15,7 +15,9 @@ import fjord.ast.*;
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    banner();
+    Console con = System.console();
+
+    con.printf(banner());
 
     Environment env = new Environment();
 
@@ -26,25 +28,29 @@ public class Main {
       if (input == null)
         break;
 
-      eval(env, input);
+      String output = eval(env, input);
+
+      con.printf(output);
     }
   }
 
-  public static void eval(final Environment env, String input) throws Exception {
+  public static String eval(final Environment env, String input) throws Exception {
     Compiler compiler = new Compiler();
 
     Node node = compiler.parse(input);
     if (node == null)
-      return;
+      return "";
+
+    final StringBuilder output = new StringBuilder();
 
     node.accept(new DefaultNodeVisitor() {
       @Override public void visit(CompilerDirectiveDecl decl) {
         if (decl.getIdent().equals("help"))
-          help();
+          output.append(help());
         else if (decl.getIdent().equals("quit"))
           env.halt();
         else
-          con.printf("Invalid directive '%s'\n", decl);
+          output.append(String.format("Invalid directive '%s'\n", decl));
       }
     });
 
@@ -52,9 +58,11 @@ public class Main {
       @Override public void visit(ValueDefn defn) {
         Value val = codegen(defn);
 
-        con.printf("val %s = %s\n", defn.pattern(), val.eval());
+        output.append(String.format("val %s = %s\n", defn.pattern(), val.eval()));
       }
     });
+
+    return output.toString();
   }
 
   private static Value codegen(final ValueDefn defn) {
@@ -75,7 +83,8 @@ public class Main {
     }
   }
 
-  private static void banner() {
+  private static String banner() {
+    StringBuilder output = new StringBuilder();
     String version = String.format(
         "Fjord (%s %s) [%s-%s]",
         System.getProperty("java.vm.name"),
@@ -83,20 +92,21 @@ public class Main {
         System.getProperty("os.name"),
         System.getProperty("os.arch")
       );
-    con.printf("%s\n\n", version);
-    con.printf("For help type #help\n");
+    output.append(String.format("%s\n\n", version));
+    output.append(String.format("For help type #help\n"));
+    return output.toString();
   }
 
-  private static void help() {
-    con.printf("\n");
-    con.printf("  Directives:\n");
-    con.printf("\n");
-    con.printf("    #help                Display help\n");
-    con.printf("    #quit                Exit\n");
-    con.printf("\n");
+  private static String help() {
+    StringBuilder output = new StringBuilder();
+    output.append(String.format("\n"));
+    output.append(String.format("  Directives:\n"));
+    output.append(String.format("\n"));
+    output.append(String.format("    #help                Display help\n"));
+    output.append(String.format("    #quit                Exit\n"));
+    output.append(String.format("\n"));
+    return output.toString();
   }
-
-  private static Console con = System.console();
 
   public static class Environment {
     private boolean halted;
