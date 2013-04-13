@@ -50,8 +50,8 @@ Want to help? Grab the [F# specification][F# specification], fork the GitHub
 repository, and send a pull request! Things to work on can be found on Fjord's
 [Trello board].
 
-For questions and comments, drop me a line on [Twitter] or send me email
-at penberg@iki.fi.
+For questions and comments, drop me a line on [Twitter] or [IRC], or send me
+email at penberg@iki.fi.
 
 ## License
 
@@ -74,5 +74,6 @@ limitations under the License.
 [Apache Maven]: http://maven.apache.org/
 [F# specification]: http://fsharp.org/about/files/spec.pdf
 [F#]: http://fsharp.org/
+[IRC]: irc://irc.freenode.net/fjord
 [Twitter]: https://twitter.com/penberg
 [Trello board]: https://trello.com/board/fjord/5143b7e9185dfcc13200153a
