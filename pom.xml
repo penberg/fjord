@@ -54,6 +54,11 @@
       <artifactId>jitescript</artifactId>
       <version>0.3.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>14.0.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -70,7 +75,7 @@
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr3-maven-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.5</version>
         <executions>
           <execution>
             <goals>
