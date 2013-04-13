@@ -71,6 +71,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
+## Credits
+
+*(in order of appearance)*
+
+* Alex Biehl
+
 [Apache Maven]: http://maven.apache.org/
 [F# specification]: http://fsharp.org/about/files/spec.pdf
 [F#]: http://fsharp.org/
