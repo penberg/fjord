@@ -508,17 +508,17 @@ pat returns [Pat n]
   : (constant { $n = new ConstantPattern($constant.n); }
   | longIdent patParam? pat? { $n = new NamedPattern($longIdent.n); }
   | Underscore { $n = new WildcardPattern(); }
-  | LParen pat RParen
-  | listPat
-  | arrayPat
-  | recordPat
+  | LParen p1=pat RParen { $n = $p1.n; }
+  | listPat { $n = $listPat.n; }
+  | arrayPat { $n = $arrayPat.n; }
+  | recordPat { $n = $recordPat.n; }
   | ColonQMark atomicType
   | ColonQMark atomicType As Ident
   | Null
   | attributes pat
   )
   (
-    | As Ident
+    | As i1=Ident { $n = new AsPattern($n, $i1.text); }
     | Bar pat
     | '&' pat
     | ColonColon pat
