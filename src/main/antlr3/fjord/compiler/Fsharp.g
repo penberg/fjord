@@ -321,7 +321,7 @@ expr returns [Expr n]
     | Function rules
     | Match expr With rules
     | Try expr With rules
-    | Try expr Finally expr
+    | Try e1=expr Finally e2=expr { $n = new TryFinallyExpression($e1.n, $e2.n); }
     | If e1=expr Then e2=expr e3=elifBranches? e4=elseBranch? { $n = new IfExpression($e1.n, $e2.n, $e3.n, $e4.n); }
     | While e1=expr Do e2=expr Done { $n = new WhileExpression($e1.n, $e2.n); } 
     | For Ident Equals expr To expr Do expr Done
