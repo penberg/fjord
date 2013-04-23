@@ -16,11 +16,9 @@ public class ElifBranch implements Expr {
   @Override
   public void accept(NodeVisitor visitor) {  }
 
-
   public Expr getCondition() {
     return condition;
   }
-
 
   public Expr getThenExpr() {
     return thenExpr;

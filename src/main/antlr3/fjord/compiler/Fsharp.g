@@ -297,7 +297,7 @@ staticTypars returns [List n]
 
 expr returns [Expr n]
   : ( constant { $n = new ConstantExpression($constant.n); }
-    | LParen e1=expr RParen  
+    | LParen e1=expr RParen
     | Begin expr End
     | longIdentOrOp
     | prefixOp expr
@@ -305,7 +305,7 @@ expr returns [Expr n]
     | LBrace New baseCall objectMembers interfaceImpl RBrace
     | LBrace fieldInitializers RBrace
     | LBrace expr With fieldInitializers RBrace
-    | LBrack expr (Semicolon expr)* RBrack
+    | { $n = new ListExpression(); } LBrack (e1=expr { ((ListExpression)$n).addExpr($e1.n); }) (Semicolon (e2=expr { ((ListExpression)$n).addExpr($e2.n); }))* RBrack
     | LBrackBar expr (Semicolon expr)* BarRBrack
     | LBrack compOrRangeExpr RBrack
     | LBrackBar compOrRangeExpr BarRBrack
