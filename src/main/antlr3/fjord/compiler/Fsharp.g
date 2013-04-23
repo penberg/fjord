@@ -19,6 +19,7 @@ options {
   import fjord.ast.*;
   import fjord.ast.typar.*;
   import fjord.ast.pat.*;
+  import fjord.ast.expr.*;
 }
 
 @lexer::header {
@@ -294,8 +295,8 @@ staticTypars returns [List n]
  * A.2.3 Expressions
  */
 
-expr returns [Node n]
-  : ( constant { $n = $constant.n; }
+expr returns [Expr n]
+  : ( constant { $n = new ConstantExpression($constant.n); }
     | LParen expr RParen
     | Begin expr End
     | longIdentOrOp
@@ -397,12 +398,12 @@ argumentPats returns [List n]
   : { $n = new ArrayList(); } (atomicPat { $n.add($atomicPat.n); })+
   ;
 
-fieldInitializer
-  : longIdent Equals expr
+fieldInitializer returns [FieldInitializer n]
+  : longIdent Equals expr { $n = new FieldInitializer($longIdent.n, $expr.n); }
   ;
 
-fieldInitializers
-  : fieldInitializer (Semicolon fieldInitializer)*
+fieldInitializers returns [List n]
+  : { $n = new ArrayList(); } (f1=fieldInitializer { $n.add($f1.n); }) (Semicolon (f2=fieldInitializer { $n.add($f2.n); }))*
   ;
 
 objectConstruction
@@ -504,7 +505,7 @@ patternGuard
   ;
 
 pat returns [Pat n]
-  : (constant
+  : (constant { $n = new ConstantPattern($constant.n); }
   | longIdent patParam? pat? { $n = new NamedPattern($longIdent.n); }
   | Underscore
   | LParen pat RParen
@@ -527,18 +528,18 @@ pat returns [Pat n]
 
   ;
 
-listPat
-  : LBrack RBrack
-  | LBrack pat (Semicolon pat)* RBrack
+listPat returns [ListPattern n]
+  : LBrack RBrack { $n = new ListPattern(); }
+  | {$n = new ListPattern(); } LBrack (p1=pat { $n.addChild($p1.n); }) (Semicolon (p2=pat { $n.addChild($p2.n); }))* RBrack 
   ;
 
-arrayPat
-  : LBrackBar BarRBrack
-  | LBrackBar pat (Semicolon pat)* BarRBrack
+arrayPat returns [ArrayPattern n]
+  : LBrackBar BarRBrack { $n = new ArrayPattern(); }
+  | { $n = new ArrayPattern(); } LBrackBar (p1=pat { $n.addChild($p1.n); }) (Semicolon (p2=pat { $n.addChild($p2.n); }))* BarRBrack
   ;
 
-recordPat
-  : LBrace fieldPat (Semicolon fieldPat)* RBrace
+recordPat returns [RecordPattern n]
+  : { $n = new RecordPattern(); } LBrace (f1=fieldPat { $n.addChild($f1.n); }) (Semicolon (f2=fieldPat { $n.addChild($f2.n); }))* RBrace
   ;
 
 atomicPat returns [Node n]
@@ -2641,7 +2642,7 @@ infixOp
  * A.1.9.4 Constants
  */
 
-constant returns [Node n]
+constant returns [Const n]
   : Sbyte              { $n = new Const($Sbyte.text);              }
   | Int16              { $n = new Const($Int16.text);              }
   | Int32              { $n = new Const($Int32.text);              }
