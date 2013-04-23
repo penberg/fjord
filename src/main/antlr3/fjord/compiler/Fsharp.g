@@ -310,7 +310,7 @@ expr returns [Expr n]
     | LBrack compOrRangeExpr RBrack
     | LBrackBar compOrRangeExpr BarRBrack
     | Lazy e1=expr { $n = new LazyExpression($e1.n); }
-    | Null
+    | Null { $n = new NullExpression(); }
     | Upcast e1=expr { $n = new UpcastExpression($e1.n); } 
     | Downcast e1=expr { $n = new DowncastExpression($e1.n); } 
     | Let functionDefn In expr
