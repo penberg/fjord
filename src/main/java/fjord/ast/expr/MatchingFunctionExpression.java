@@ -4,12 +4,13 @@ import java.util.List;
 
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
+import fjord.ast.pat.Rule;
 
 public class MatchingFunctionExpression implements Expr {
 
-  private final List<Node> rules;
+  private final List<Rule> rules;
   
-  public MatchingFunctionExpression(List<Node> rules) {
+  public MatchingFunctionExpression(List<Rule> rules) {
     this.rules = rules;
   }
 
@@ -18,7 +19,7 @@ public class MatchingFunctionExpression implements Expr {
 
   }
 
-  public List<Node> getRules() {
+  public List<Rule> getRules() {
     return rules;
   }
 

@@ -5,13 +5,15 @@ import java.util.List;
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 
+import fjord.ast.pat.Rule;
+
 public class TryWithExpression implements Expr {
 
   private final Expr tryExpr;
   
-  private final List<Node> rules;
+  private final List<Rule> rules;
   
-  public TryWithExpression(Expr tryExpr, List<Node> rules) {
+  public TryWithExpression(Expr tryExpr, List<Rule> rules) {
     this.tryExpr = tryExpr;
     this.rules = rules;
   }
@@ -25,7 +27,7 @@ public class TryWithExpression implements Expr {
     return tryExpr;
   }
 
-  public List<Node> getRules() {
+  public List<Rule> getRules() {
     return rules;
   }
 

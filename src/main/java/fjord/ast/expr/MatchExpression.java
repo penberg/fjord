@@ -4,14 +4,15 @@ import java.util.List;
 
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
+import fjord.ast.pat.Rule;
 
 public class MatchExpression implements Expr {
 
   private final Expr matchExpr;
   
-  private final List<Node> rules;
+  private final List<Rule> rules;
   
-  public MatchExpression(Expr matchExpr, List<Node> rules) {
+  public MatchExpression(Expr matchExpr, List<Rule> rules) {
     this.matchExpr = matchExpr; 
     this.rules = rules;
   }
@@ -25,7 +26,7 @@ public class MatchExpression implements Expr {
     return matchExpr;
   }
 
-  public List<Node> getRules() {
+  public List<Rule> getRules() {
     return rules;
   }
 

@@ -498,8 +498,8 @@ sliceRange
  * A.2.4 Patterns
  */
 
-rule returns [Node n]
-  : pat patternGuard? RArrow expr
+rule returns [Rule n]
+  : pat patternGuard? RArrow expr { $n = new Rule($pat.n, $patternGuard.n, $expr.n); }
   ;
 
 patternGuard returns [Expr n]
