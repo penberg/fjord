@@ -20,6 +20,7 @@ options {
   import fjord.ast.typar.*;
   import fjord.ast.pat.*;
   import fjord.ast.expr.*;
+  import fjord.ast.type.*;
 }
 
 @lexer::header {
@@ -234,8 +235,8 @@ typeExtensionElementsSignature
  * A.2.2 Types and type constraints
  */
 
-type returns [Node n]
-  : Hash type
+type returns [Type n]
+  : Hash t1=type { $n = new AnonymousTypeWithSubtypeConstraint($t1.n); }
   | LParen type RParen
   | ( typar (ColonGreater type)?
     | longIdent ('<' types? '>')?
