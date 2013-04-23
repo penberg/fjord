@@ -304,7 +304,7 @@ expr returns [Expr n]
     | New type expr
     | LBrace New baseCall objectMembers interfaceImpl RBrace
     | LBrace fieldInitializers RBrace
-    | LBrace expr With fieldInitializers RBrace
+    | LBrace e1=expr With fis=fieldInitializers RBrace { $n = new RecordCloningExpression($e1.n, $fis.n); }
     | { $n = new ListExpression(); } LBrack (e1=expr { ((ListExpression)$n).addExpr($e1.n); }) (Semicolon (e2=expr { ((ListExpression)$n).addExpr($e2.n); }))* RBrack
     | { $n = new ArrayExpression(); } LBrackBar (e1=expr { ((ArrayExpression)$n).addExpr($e1.n); }) (Semicolon (e2=expr { ((ArrayExpression)$n).addExpr($e2.n); }))* BarRBrack
     | LBrack compOrRangeExpr RBrack
