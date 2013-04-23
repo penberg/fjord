@@ -309,10 +309,10 @@ expr returns [Expr n]
     | LBrackBar expr (Semicolon expr)* BarRBrack
     | LBrack compOrRangeExpr RBrack
     | LBrackBar compOrRangeExpr BarRBrack
-    | Lazy expr
+    | Lazy e1=expr { $n = new LazyExpression($e1.n); }
     | Null
-    | Upcast expr
-    | Downcast expr
+    | Upcast e1=expr { $n = new UpcastExpression($e1.n); } 
+    | Downcast e1=expr { $n = new DowncastExpression($e1.n); } 
     | Let functionDefn In expr
     | Let valueDefn In expr
     | Let Rec functionOrValueDefns In expr
