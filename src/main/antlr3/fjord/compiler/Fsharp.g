@@ -520,7 +520,7 @@ pat returns [Pat n]
   (
     | As i1=Ident { $n = new AsPattern($n, $i1.text); }
     | Bar p1=pat { $n = new DisjunctivePattern($n, $p1.n); }
-    | '&' pat 
+    | '&' p1=pat { $n = new ConjunctivePattern($n, $p1.n); }
     | ColonColon pat
     | Colon type
     | { $n = new TuplePattern(); } (',' (p2=pat { ((TuplePattern)$n).addChild($p2.n); }))+
