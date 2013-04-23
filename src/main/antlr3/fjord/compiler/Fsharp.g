@@ -326,7 +326,7 @@ expr returns [Expr n]
     | While e1=expr Do e2=expr Done { $n = new WhileExpression($e1.n, $e2.n); } 
     | For i1=Ident Equals e1=expr To e2=expr Do e3=expr Done { $n = new SimpleForLoop($i1.text, $e1.n, $e2.n, $e3.n); }
     | For pat In exprOrRangeExpr Do expr Done
-    | Assert expr
+    | Assert e1=expr { $n = new AssertExpression($e1.n); }
     | LQuote expr RQuote
     | LQuoteUntyped expr RQuoteUntyped
     | '%' expr
