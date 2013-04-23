@@ -322,9 +322,9 @@ expr returns [Expr n]
     | Match expr With rules
     | Try expr With rules
     | Try e1=expr Finally e2=expr { $n = new TryFinallyExpression($e1.n, $e2.n); }
-    | If e1=expr Then e2=expr e3=elifBranches? e4=elseBranch? { $n = new IfExpression($e1.n, $e2.n, $e3.n, $e4.n); }
+    | If e1=expr Then e2=expr elifBranches? e4=elseBranch? { $n = new IfExpression($e1.n, $e2.n, $elifBranches.n, $e4.n); }
     | While e1=expr Do e2=expr Done { $n = new WhileExpression($e1.n, $e2.n); } 
-    | For Ident Equals expr To expr Do expr Done
+    | For i1=Ident Equals e1=expr To e2=expr Do e3=expr Done { $n = new SimpleForLoop($i1.text, $e1.n, $e2.n, $e3.n); }
     | For pat In exprOrRangeExpr Do expr Done
     | Assert expr
     | LQuote expr RQuote
