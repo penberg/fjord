@@ -320,7 +320,7 @@ expr returns [Expr n]
     | Fun argumentPats RArrow expr
     | Function rules
     | Match expr With rules
-    | Try expr With rules
+    | Try e1=expr With r1=rules { $n = new TryWithExpression($e1.n, $r1.n); } 
     | Try e1=expr Finally e2=expr { $n = new TryFinallyExpression($e1.n, $e2.n); }
     | If e1=expr Then e2=expr elifBranches? e4=elseBranch? { $n = new IfExpression($e1.n, $e2.n, $elifBranches.n, $e4.n); }
     | While e1=expr Do e2=expr Done { $n = new WhileExpression($e1.n, $e2.n); } 
