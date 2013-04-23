@@ -319,7 +319,7 @@ expr returns [Expr n]
     | Use i1=Ident Equals e1=expr In e2=expr { $n = new DeterministicDisposalExpression($i1.text, $e1.n, $e2.n); }
     | Fun argumentPats RArrow expr
     | Function rules
-    | Match expr With rules
+    | Match e1=expr With r1=rules { $n = new MatchExpression($e1.n, $r1.n); }
     | Try e1=expr With r1=rules { $n = new TryWithExpression($e1.n, $r1.n); } 
     | Try e1=expr Finally e2=expr { $n = new TryFinallyExpression($e1.n, $e2.n); }
     | If e1=expr Then e2=expr elifBranches? e4=elseBranch? { $n = new IfExpression($e1.n, $e2.n, $elifBranches.n, $e4.n); }
