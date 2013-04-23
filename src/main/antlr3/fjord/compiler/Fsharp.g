@@ -316,7 +316,7 @@ expr returns [Expr n]
     | Let functionDefn In expr
     | Let valueDefn In expr
     | Let Rec functionOrValueDefns In expr
-    | Use Ident Equals expr In expr
+    | Use i1=Ident Equals e1=expr In e2=expr { $n = new DeterministicDisposalExpression($i1.text, $e1.n, $e2.n); }
     | Fun argumentPats RArrow expr
     | Function rules
     | Match expr With rules
