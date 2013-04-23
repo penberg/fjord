@@ -523,7 +523,7 @@ pat returns [Pat n]
     | '&' pat
     | ColonColon pat
     | Colon pat
-    | (',' pat)+
+    | { $n = new TuplePattern(); } (',' (p2=pat { ((TuplePattern)$n).addChild($p2.n); }))+
   )?
 
   ;
