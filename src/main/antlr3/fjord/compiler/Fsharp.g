@@ -297,7 +297,7 @@ staticTypars returns [List n]
 
 expr returns [Expr n]
   : ( constant { $n = new ConstantExpression($constant.n); }
-    | LParen expr RParen
+    | LParen e1=expr RParen  
     | Begin expr End
     | longIdentOrOp
     | prefixOp expr
@@ -361,16 +361,16 @@ exprOrRangeExpr
   | rangeExpr
   ;
 
-elifBranches
-  : elifBranch+
+elifBranches returns [List n]
+  : { $n = new ArrayList(); } (elifBranch {$n.add($elifBranch.n); })+
   ;
 
-elifBranch
-  : Elif expr Then expr
+elifBranch returns [ElifBranch n]
+  : Elif e1=expr Then e2=expr { $n = new ElifBranch($e1.n, $e2.n); }
   ;
 
-elseBranch
-  : Else expr
+elseBranch returns [Expr n]
+  : Else expr { $n = $expr.n; }
   ;
 
 functionOrValueDefn
