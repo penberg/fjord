@@ -2,8 +2,9 @@ package fjord.ast.typar;
 
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
+import fjord.ast.type.Type;
 
-public abstract class Typar implements Node {
+public abstract class Typar implements Type {
 
   private final String ident;
   

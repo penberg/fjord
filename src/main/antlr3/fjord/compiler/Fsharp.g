@@ -237,16 +237,17 @@ typeExtensionElementsSignature
 
 type returns [Type n]
   : Hash t1=type { $n = new AnonymousTypeWithSubtypeConstraint($t1.n); }
-  | LParen type RParen
-  | ( typar (ColonGreater type)?
-    | longIdent ('<' types? '>')?
-    )
-    ( RArrow type
-    | ('*' type)+
-    | longIdent
-    | LBrack type (',' type)* RBrack
-    | typarDefns
-    )?
+  | LParen t1=type RParen { $n = $t1.n; }
+  | ty1=typar { $n = $ty1.n; }
+  | l1=longIdent { $n = new NamedType($l1.n); }
+  | l1=longIdent '<' ty=types '>' { $n = new NamedType($l1.n, $ty.n); }
+  | l1=longIdent '<' '>' { $n = new NamedType($l1.n); }
+  ( RArrow type
+  | ('*' type)+
+  | longIdent
+  | LBrack type (',' type)* RBrack
+  | typarDefns
+  )?
   ;
 
 types returns [List n]
