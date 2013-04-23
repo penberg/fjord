@@ -507,7 +507,7 @@ patternGuard
 pat returns [Pat n]
   : (constant { $n = new ConstantPattern($constant.n); }
   | longIdent patParam? pat? { $n = new NamedPattern($longIdent.n); }
-  | Underscore
+  | Underscore { $n = new WildcardPattern(); }
   | LParen pat RParen
   | listPat
   | arrayPat
