@@ -502,8 +502,8 @@ rule returns [Node n]
   : pat patternGuard? RArrow expr
   ;
 
-patternGuard
-  : When expr
+patternGuard returns [Expr n]
+  : When expr { $n = $expr.n; }
   ;
 
 pat returns [Pat n]
