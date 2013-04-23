@@ -524,7 +524,7 @@ pat returns [Pat n]
     | Bar p1=pat { $n = new DisjunctivePattern($n, $p1.n); }
     | '&' p1=pat { $n = new ConjunctivePattern($n, $p1.n); }
     | ColonColon p1=pat { $n = new ConsPattern($n, $p1.n); }
-    | Colon type
+    | Colon ty=type { $n = new TypeConstrainedPattern($n, $ty.n); }
     | { $n = new TuplePattern($n); } (',' (p2=pat { ((TuplePattern)$n).addChild($p2.n); }))+
   )?
 
