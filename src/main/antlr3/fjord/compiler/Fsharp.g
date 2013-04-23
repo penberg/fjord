@@ -244,8 +244,8 @@ type returns [Type n]
   | l1=longIdent '<' '>' { $n = new NamedType($l1.n); }
   ( RArrow t2=type { $n = new FunctionType($n, $t2.n); }
   | { $n = new TupleType($n); } ('*' (t2=type { ((TupleType)$n).addChild($t2.n); }))+
-  | longIdent
-  | LBrack type (',' type)* RBrack
+  | l1=longIdent { $n = new NamedType($l1.n, Arrays.asList($n)); }
+  | LBrack dims=(','*) RBrack { $n = new ArrayType($n, ($dims.text != null ? $dims.text : "").length() + 1); }
   | typarDefns
   )?
   ;
