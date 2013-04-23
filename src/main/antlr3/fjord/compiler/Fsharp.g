@@ -322,7 +322,7 @@ expr returns [Expr n]
     | Match expr With rules
     | Try expr With rules
     | Try expr Finally expr
-    | If expr Then expr elifBranches?
+    | If e1=expr Then e2=expr e3=elifBranches? e4=elseBranch? { $n = new IfExpression($e1.n, $e2.n, $e3.n, $e4.n); }
     | While expr Do expr Done
     | For Ident Equals expr To expr Do expr Done
     | For pat In exprOrRangeExpr Do expr Done
