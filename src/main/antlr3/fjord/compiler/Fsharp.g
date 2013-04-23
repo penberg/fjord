@@ -519,10 +519,10 @@ pat returns [Pat n]
   )
   (
     | As i1=Ident { $n = new AsPattern($n, $i1.text); }
-    | Bar pat
-    | '&' pat
+    | Bar p1=pat { $n = new DisjunctivePattern($n, $p1.n); }
+    | '&' pat 
     | ColonColon pat
-    | Colon pat
+    | Colon type
     | { $n = new TuplePattern(); } (',' (p2=pat { ((TuplePattern)$n).addChild($p2.n); }))+
   )?
 
