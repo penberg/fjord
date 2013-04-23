@@ -17,6 +17,8 @@ options {
   import java.util.Arrays;
 
   import fjord.ast.*;
+  import fjord.ast.typar.*;
+  import fjord.ast.pat.*;
 }
 
 @lexer::header {
@@ -85,7 +87,6 @@ moduleDefn
 moduleDefnBody
   : Begin moduleElems? End
   ;
-
 
 moduleElem returns [Node n]
   : moduleFunctionOrValueDefn { $n = $moduleFunctionOrValueDefn.n; }
@@ -254,10 +255,10 @@ atomicType
   : type Colon (Hash type | LParen type RParen | longIdent | longIdent '<' types '>')
   ;
 
-typar
-  : '_'
-  | '\'' Ident
-  | '^' Ident
+typar returns [Typar n]
+  : '_' { $n = Typar.anonymousTypeVariable(); }
+  | '\'' Ident { $n = Typar.typeVariable($Ident.text); }
+  | '^' Ident { $n = Typar.staticHeadTypeVariable($Ident.text); }
   ;
 
 constraint returns [Node n]
@@ -544,8 +545,8 @@ atomicPat returns [Node n]
   : pat Colon (constant | longIdent | listPat | recordPat | arrayPat | LParen pat RParen | ColonQMark atomicType | Null | Underscore)
   ;
 
-fieldPat returns [Node n]
-  : longIdent Equals pat
+fieldPat returns [FieldPattern n]
+  : longIdent Equals pat { $n = new FieldPattern($longIdent.n, $pat.n); }
   ;
 
 patParam
@@ -951,9 +952,9 @@ EndifDirective
  * A.1.4.2 Long identifiers
  */
 
-longIdent returns [Ident n]
-  : LongIdentWithDots { $n = new Ident($LongIdentWithDots.text); }
-  | Ident             { $n = new Ident($Ident.text);             }
+longIdent returns [String n]
+  : LongIdentWithDots { $n = $LongIdentWithDots.text; }
+  | Ident             { $n = $Ident.text;             }
   ;
 
 LongIdentWithDots
