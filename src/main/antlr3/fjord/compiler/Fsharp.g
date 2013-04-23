@@ -318,7 +318,7 @@ expr returns [Expr n]
     | Let Rec functionOrValueDefns In expr
     | Use i1=Ident Equals e1=expr In e2=expr { $n = new DeterministicDisposalExpression($i1.text, $e1.n, $e2.n); }
     | Fun argumentPats RArrow expr
-    | Function rules
+    | Function r1=rules { $n = new MatchingFunctionExpression($r1.n); }
     | Match e1=expr With r1=rules { $n = new MatchExpression($e1.n, $r1.n); }
     | Try e1=expr With r1=rules { $n = new TryWithExpression($e1.n, $r1.n); } 
     | Try e1=expr Finally e2=expr { $n = new TryFinallyExpression($e1.n, $e2.n); }
