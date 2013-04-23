@@ -503,9 +503,9 @@ patternGuard
   : When expr
   ;
 
-pat returns [Node n]
+pat returns [Pat n]
   : (constant
-  | longIdent patParam? pat? { $n = $longIdent.n; }
+  | longIdent patParam? pat? { $n = new NamedPattern($longIdent.n); }
   | Underscore
   | LParen pat RParen
   | listPat

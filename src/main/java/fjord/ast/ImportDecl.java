@@ -2,7 +2,7 @@ package fjord.ast;
 
 public class ImportDecl implements Node {
 
-  public ImportDecl(Ident ident) {
+  public ImportDecl(String ident) {
     this.ident = ident;
   }
 
@@ -14,5 +14,5 @@ public class ImportDecl implements Node {
     return String.format("open %s", ident);
   }
 
-  private Ident ident;
+  private String ident;
 }
