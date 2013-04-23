@@ -306,7 +306,7 @@ expr returns [Expr n]
     | LBrace fieldInitializers RBrace
     | LBrace expr With fieldInitializers RBrace
     | { $n = new ListExpression(); } LBrack (e1=expr { ((ListExpression)$n).addExpr($e1.n); }) (Semicolon (e2=expr { ((ListExpression)$n).addExpr($e2.n); }))* RBrack
-    | LBrackBar expr (Semicolon expr)* BarRBrack
+    | { $n = new ArrayExpression(); } LBrackBar (e1=expr { ((ArrayExpression)$n).addExpr($e1.n); }) (Semicolon (e2=expr { ((ArrayExpression)$n).addExpr($e2.n); }))* BarRBrack
     | LBrack compOrRangeExpr RBrack
     | LBrackBar compOrRangeExpr BarRBrack
     | Lazy e1=expr { $n = new LazyExpression($e1.n); }
