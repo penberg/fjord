@@ -14,6 +14,8 @@ options {
 @header {
   package fjord.compiler;
 
+  import java.util.Arrays;
+
   import fjord.ast.*;
 }
 
@@ -114,7 +116,7 @@ compilerDirectiveDecl returns [CompilerDirectiveDecl n]
   : Hash Ident { $n = new CompilerDirectiveDecl($Ident.text); }
   ;
 
-moduleElems returns [ArrayList n]
+moduleElems returns [List n]
   : { $n = new ArrayList(); }
     (moduleElem { $n.add($moduleElem.n); } )+
   ;
@@ -230,7 +232,7 @@ typeExtensionElementsSignature
  * A.2.2 Types and type constraints
  */
 
-type
+type returns [Node n]
   : Hash type
   | LParen type RParen
   | ( typar (ColonGreater type)?
@@ -244,8 +246,8 @@ type
     )?
   ;
 
-types
-  : type (',' type)*
+types returns [List n]
+  : { $n = new ArrayList(); } (t1=type { $n.add($t1.n); }) (',' (t2=type { $n.add($t2.n); }))*
   ;
 
 atomicType
@@ -258,7 +260,7 @@ typar
   | '^' Ident
   ;
 
-constraint
+constraint returns [Node n]
   : typar ColonGreater type
   | typar Colon 'null'
   | staticTypars Colon LParen memberSig RParen
@@ -278,13 +280,13 @@ typarDefns
   : '<' typarDefn (',' typarDefn)* typarConstraints? '>'
   ;
 
-typarConstraints
-  : When constraint (And constraint)*
+typarConstraints returns [List n]
+  : { $n = new ArrayList(); } When (c1=constraint { $n.add($c1.n); }) (And (c2=constraint { $n.add($c2.n); }))*
   ;
 
-staticTypars
-  : '^' Ident
-  | LParen '^'Ident (Or '^'Ident)* RParen
+staticTypars returns [List n]
+  : '^' Ident { $n = Arrays.asList($Ident.text); }
+  | { $n = new ArrayList(); } LParen '^'(id1=Ident { $n.add($id1.text); }) (Or '^'(id2=Ident { $n.add($id2.text); }))* RParen
   ;
 
 /*
@@ -390,8 +392,8 @@ functionOrValueDefns
   : functionOrValueDefn (And functionOrValueDefn)+
   ;
 
-argumentPats
-  : atomicPat+
+argumentPats returns [List n]
+  : { $n = new ArrayList(); } (atomicPat { $n.add($atomicPat.n); })+
   ;
 
 fieldInitializer
@@ -464,12 +466,12 @@ compExpr
   )?
   ;
 
-compRule
+compRule returns [Node n]
   : pat patternGuard? RArrow compExpr
   ;
 
-compRules
-  : Bar? compRule (Bar compRule)*
+compRules returns [List n]
+  : { $n = new ArrayList(); } Bar? (c1=compRule { $n.add($c1.n); }) (Bar c2=compRule { $n.add($c2.n); })*
   ;
 
 shortCompExpr
@@ -492,7 +494,7 @@ sliceRange
  * A.2.4 Patterns
  */
 
-rule
+rule returns [Node n]
   : pat patternGuard? RArrow expr
   ;
 
@@ -538,11 +540,11 @@ recordPat
   : LBrace fieldPat (Semicolon fieldPat)* RBrace
   ;
 
-atomicPat
+atomicPat returns [Node n]
   : pat Colon (constant | longIdent | listPat | recordPat | arrayPat | LParen pat RParen | ColonQMark atomicType | Null | Underscore)
   ;
 
-fieldPat
+fieldPat returns [Node n]
   : longIdent Equals pat
   ;
 
@@ -567,12 +569,12 @@ pats
   : pat (',' pat)*
   ;
 
-fieldPats
-  : fieldPat (Semicolon fieldPat)*
+fieldPats returns [List n]
+  : { $n = new ArrayList(); } (f1=fieldPat { $n.add($f1.n); }) (Semicolon (f2=fieldPat { $n.add($f2.n); }))*
   ;
 
-rules
-  : Bar? rule (Bar rule)*
+rules returns [List n]
+  : { $n = new ArrayList(); }Bar? (r1=rule { $n.add($r1.n); }) (Bar (r2=rule { $n.add($r2.n); }))*
   ;
 
 
@@ -631,11 +633,11 @@ recordTypeDefn
   : typeName Equals LBrace recordFields RBrace typeExtensionElements?
   ;
 
-recordFields
-  : recordField (Semicolon recordField)* Semicolon?
+recordFields returns [List n]
+  : { $n = new ArrayList(); } (r1=recordField { $n.add($r1.n); }) (Semicolon (r2=recordField { $n.add($r2.n); }))* Semicolon?
   ;
 
-recordField
+recordField returns [Node n]
   : attributes? Mutable? access? Ident Colon type
   ;
 
@@ -762,7 +764,6 @@ memberDefn
   | additionalConstrDefn
   ;
 
-/* Spec says 'exp' - possibly ment expression */
 methodOrPropDefn
   : Ident? functionDefn
   | Ident? valueDefn
@@ -790,11 +791,11 @@ uncurriedSig
   : argsSpec RArrow type
   ;
 
-argsSpec
-  : argSpec ('*' argSpec)*
+argsSpec returns [List n]
+  : { $n = new ArrayList(); } (a1=argSpec { $n.add($a1.n); }) ('*' (a2=argSpec { $n.add($a2.n); }))*
   ;
 
-argSpec
+argSpec returns [Node n]
   : attributes? argNameSpec? type
   ;
 
