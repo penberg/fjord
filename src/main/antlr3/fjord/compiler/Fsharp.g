@@ -478,7 +478,7 @@ compExpr
   | expr
   )
   (
-    | Semicolon compExpr
+    Semicolon compExpr
   )?
   ;
 
@@ -532,14 +532,13 @@ pat returns [Pat n]
   | attributes p1=pat { $n = new AttributedPattern($p1.n); }
   )
   (
-    | As i1=Ident { $n = new AsPattern($n, $i1.text); }
+      As i1=Ident { $n = new AsPattern($n, $i1.text); }
     | Bar p1=pat { $n = new DisjunctivePattern($n, $p1.n); }
     | '&' p1=pat { $n = new ConjunctivePattern($n, $p1.n); }
     | ColonColon p1=pat { $n = new ConsPattern($n, $p1.n); }
     | Colon ty=type { $n = new TypeConstrainedPattern($n, $ty.n); }
     | { $n = new TuplePattern($n); } (',' (p2=pat { ((TuplePattern)$n).addChild($p2.n); }))+
   )?
-
   ;
 
 listPat returns [ListPattern n]
@@ -557,7 +556,15 @@ recordPat returns [RecordPattern n]
   ;
 
 atomicPat returns [Node n]
-  : pat Colon (constant | longIdent | listPat | recordPat | arrayPat | LParen pat RParen | ColonQMark atomicType | Null | Underscore)
+  : constant { $n = new ConstantPattern($constant.n); }
+  | longIdent { $n = new NamedPattern($longIdent.n); }
+  | listPat { $n = $listPat.n; }
+  | arrayPat { $n = $arrayPat.n; }
+  | recordPat { $n = $recordPat.n; }
+  | LParen pat RParen { $n = $pat.n; }
+  | ColonQMark at1=atomicType { $n = new DynamicTypeTestPattern($at1.n); }
+  | Null { $n = new NullTestPattern(); }
+  | Underscore { $n = new WildcardPattern(); }
   ;
 
 fieldPat returns [FieldPattern n]

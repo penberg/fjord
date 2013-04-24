@@ -6,6 +6,8 @@ import fjord.ast.NodeWithChildren;
 public class ListPattern extends NodeWithChildren<Pat> implements Pat {
 
   @Override
-  public void accept(NodeVisitor visitor) { }
+  public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
+  }
 
 }

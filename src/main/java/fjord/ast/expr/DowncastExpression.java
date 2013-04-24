@@ -12,7 +12,7 @@ public class DowncastExpression implements Expr {
   
   @Override
   public void accept(NodeVisitor visitor) {
- 
+    visitor.visit(this);
   }
 
   public Expr getCastExpr() {

@@ -12,7 +12,9 @@ public class ConstantPattern implements Pat {
   }
   
   @Override
-  public void accept(NodeVisitor visitor) {  }
+  public void accept(NodeVisitor visitor) { 
+    visitor.visit(this);
+  }
 
   public Const getConstant() {
     return constant;

@@ -6,8 +6,7 @@ public class NullPatParam implements PatParam {
 
   @Override
   public void accept(NodeVisitor visitor) {
-    // TODO Auto-generated method stub
-    
+    visitor.visit(this);
   }
 
 }

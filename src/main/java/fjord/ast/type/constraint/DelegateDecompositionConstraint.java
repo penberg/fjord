@@ -1,5 +1,6 @@
 package fjord.ast.type.constraint;
 
+import fjord.ast.NodeVisitor;
 import fjord.ast.typar.Typar;
 import fjord.ast.type.Type;
 
@@ -27,6 +28,11 @@ public class DelegateDecompositionConstraint implements Constraint {
 
   public Type getType2() {
     return type2;
+  }
+
+  @Override
+  public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
   
 }

@@ -27,36 +27,42 @@ public abstract class Typar implements Type {
     return new AnonymousTypeVariable();
   }
   
-  private static class TypeVariable extends Typar {
+  public static class TypeVariable extends Typar {
 
     public TypeVariable(String ident) {
       super(ident);
     }
     
     @Override
-    public void accept(NodeVisitor visitor) {}
+    public void accept(NodeVisitor visitor) {
+      visitor.visit(this);
+    }
     
   }
   
-  private static class StaticHeadTypeVariable extends Typar {
+  public static class StaticHeadTypeVariable extends Typar {
     
     public StaticHeadTypeVariable(String ident) {
       super(ident);
     }
 
     @Override
-    public void accept(NodeVisitor visitor) {}
+    public void accept(NodeVisitor visitor) {
+      visitor.visit(this);
+    }
     
   }
 
-  private static class AnonymousTypeVariable extends Typar {
+  public static class AnonymousTypeVariable extends Typar {
 
     public AnonymousTypeVariable() {
       super("_");
     }
     
     @Override
-    public void accept(NodeVisitor visitor) { }
+    public void accept(NodeVisitor visitor) {
+      visitor.visit(this);
+    }
     
   }
   

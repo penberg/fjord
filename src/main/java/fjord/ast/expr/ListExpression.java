@@ -10,6 +10,8 @@ public class ListExpression extends NodeWithChildren<Expr> implements Expr {
   }
   
   @Override
-  public void accept(NodeVisitor visitor) {  }
+  public void accept(NodeVisitor visitor) { 
+    visitor.visit(this);
+  }
   
 }

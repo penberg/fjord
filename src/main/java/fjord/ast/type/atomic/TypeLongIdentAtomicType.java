@@ -26,7 +26,7 @@ public class TypeLongIdentAtomicType implements AtomicType {
   
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
 
   public Type getType() {

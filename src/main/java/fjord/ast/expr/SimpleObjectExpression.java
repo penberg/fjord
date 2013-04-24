@@ -16,6 +16,7 @@ public class SimpleObjectExpression implements Expr {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public Type getType() {

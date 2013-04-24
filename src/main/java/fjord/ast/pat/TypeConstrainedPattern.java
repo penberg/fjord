@@ -15,7 +15,9 @@ public class TypeConstrainedPattern implements Pat {
   }
   
   @Override
-  public void accept(NodeVisitor visitor) {}
+  public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
+  }
 
   public Type getType() {
     return type;

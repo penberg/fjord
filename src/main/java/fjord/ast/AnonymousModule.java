@@ -12,7 +12,7 @@ public class AnonymousModule implements Node {
   
   @Override
   public void accept(NodeVisitor visitor) {
-   
+    visitor.visit(this);
   }
 
   public List<ModuleElem> getModuleElems() {

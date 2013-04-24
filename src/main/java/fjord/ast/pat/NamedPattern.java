@@ -11,8 +11,9 @@ public class NamedPattern implements Pat {
   }
   
   @Override
-  public void accept(NodeVisitor visitor) {}
-
+  public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
+  }
 
   public String getIdent() {
     return ident;

@@ -12,7 +12,7 @@ public class CurriedSig extends NodeWithChildren<List<ArgSpec>> {
   
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
 
   public void setType(Type type) {

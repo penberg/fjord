@@ -1,5 +1,6 @@
 package fjord.ast.type.constraint;
 
+import fjord.ast.NodeVisitor;
 import fjord.ast.typar.Typar;
 
 public class StructConstraint implements Constraint {
@@ -12,6 +13,11 @@ public class StructConstraint implements Constraint {
 
   public Typar getTypar() {
     return typar;
+  }
+
+  @Override
+  public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
   
 }

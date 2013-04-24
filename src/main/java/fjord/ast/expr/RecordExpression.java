@@ -13,7 +13,9 @@ public class RecordExpression implements Expr {
   }
 
   @Override
-  public void accept(NodeVisitor visitor) {  }
+  public void accept(NodeVisitor visitor) { 
+    visitor.visit(this);
+  }
 
   public List<FieldInitializer> getFieldInitializers() {
     return fieldInitializers;

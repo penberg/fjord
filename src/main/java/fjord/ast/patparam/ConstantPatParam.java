@@ -13,6 +13,7 @@ public class ConstantPatParam implements PatParam {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public Const getConstant() {

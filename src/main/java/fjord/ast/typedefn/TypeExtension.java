@@ -18,6 +18,7 @@ public class TypeExtension implements ModuleElem {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public List<TypeDefnElement> getTypeDefnElements() {

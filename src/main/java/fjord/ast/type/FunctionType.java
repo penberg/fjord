@@ -23,6 +23,7 @@ public class FunctionType implements Type {
 
   @Override 
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

@@ -13,6 +13,7 @@ public class TyparDefn implements Type {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public Typar getTypar() {

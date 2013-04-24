@@ -6,6 +6,8 @@ import fjord.ast.NodeWithChildren;
 public class RecordPattern extends NodeWithChildren<FieldPattern> implements Pat {
 
   @Override
-  public void accept(NodeVisitor visitor) { }
+  public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
+  }
 
 }

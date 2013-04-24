@@ -12,6 +12,7 @@ public class AssertExpression implements Expr {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public Expr getAssertExpr() {

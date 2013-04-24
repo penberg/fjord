@@ -11,7 +11,7 @@ public class TupleExpression extends NodeWithChildren<Expr> implements Expr {
   
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
 
 }

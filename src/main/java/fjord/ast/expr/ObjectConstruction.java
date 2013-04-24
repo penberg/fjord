@@ -23,6 +23,7 @@ public class ObjectConstruction implements Node {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public Type getType() {

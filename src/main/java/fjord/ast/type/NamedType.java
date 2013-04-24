@@ -30,6 +30,7 @@ public class NamedType implements Type {
   
   @Override 
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
 }

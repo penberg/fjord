@@ -18,6 +18,7 @@ public class InterfaceTypeDefn implements ModuleElem {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public TypeName getTypeName() {

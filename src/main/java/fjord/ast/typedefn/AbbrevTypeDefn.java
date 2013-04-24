@@ -17,6 +17,7 @@ public class AbbrevTypeDefn implements ModuleElem {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public TypeName getTypeName() {

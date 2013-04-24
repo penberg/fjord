@@ -24,7 +24,7 @@ public class ConstrainedType implements Type {
 
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
   
 }

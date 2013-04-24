@@ -1,5 +1,7 @@
 package fjord.ast.type.constraint;
 
-public interface Constraint {
+import fjord.ast.Node;
+
+public interface Constraint extends Node {
 
 }

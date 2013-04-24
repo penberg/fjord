@@ -15,6 +15,7 @@ public class TryFinallyExpression implements Expr {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public Expr getTryExpr() {

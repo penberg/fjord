@@ -6,6 +6,7 @@ public class NullTestPattern implements Pat {
 
   @Override
   public void accept(NodeVisitor visitor) {    
+    visitor.visit(this);
   }
 
 }

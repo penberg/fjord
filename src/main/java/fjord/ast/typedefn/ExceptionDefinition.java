@@ -20,7 +20,7 @@ public class ExceptionDefinition implements Node {
   
   @Override
   public void accept(NodeVisitor visitor) {
-  
+    visitor.visit(this);
   }
 
   public List<Attribute> getAttributes() {

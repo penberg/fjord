@@ -15,7 +15,7 @@ public class ApplicationExpression implements Expr {
   
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
 
   public Expr getRight() {

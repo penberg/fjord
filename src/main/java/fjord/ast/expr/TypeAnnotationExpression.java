@@ -16,6 +16,7 @@ public class TypeAnnotationExpression implements Expr {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
 

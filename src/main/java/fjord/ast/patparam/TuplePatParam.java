@@ -7,7 +7,7 @@ public class TuplePatParam extends NodeWithChildren<PatParam> implements PatPara
 
   @Override
   public void accept(NodeVisitor visitor) {
- 
+    visitor.visit(this);
   }
 
 }

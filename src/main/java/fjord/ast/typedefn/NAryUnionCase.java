@@ -14,6 +14,7 @@ public class NAryUnionCase extends NodeWithChildren<Type> implements UnionTypeCa
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public String getIdent() {

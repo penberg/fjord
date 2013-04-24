@@ -20,6 +20,7 @@ public class ClassInheritsDecl implements Node {
   
   @Override
   public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
 
   public Optional<Expr> getExpr() {

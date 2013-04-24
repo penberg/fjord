@@ -15,7 +15,7 @@ public class IdentParamPatParam implements PatParam {
   
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
 
   public String getIdent() {

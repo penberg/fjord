@@ -15,7 +15,7 @@ public class MatchingFunctionExpression implements Expr {
 
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
 
   public List<Rule> getRules() {

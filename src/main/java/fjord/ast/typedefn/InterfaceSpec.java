@@ -14,7 +14,7 @@ public class InterfaceSpec implements Node {
   
   @Override
   public void accept(NodeVisitor visitor) {
-
+    visitor.visit(this);
   }
 
   public Type getType() {

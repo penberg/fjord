@@ -15,7 +15,7 @@ public class UncurriedSigUnionCase implements UnionTypeCaseData {
 
   @Override
   public void accept(NodeVisitor visitor) {
-    
+    visitor.visit(this);
   }
 
   public String getIdent() {
