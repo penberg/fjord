@@ -523,8 +523,8 @@ pat returns [Pat n]
   | listPat { $n = $listPat.n; }
   | arrayPat { $n = $arrayPat.n; }
   | recordPat { $n = $recordPat.n; }
-  | ColonQMark atomicType
-  | ColonQMark atomicType As Ident
+  | ColonQMark at1=atomicType { $n = new DynamicTypeTestPattern($at1.n); }
+  | ColonQMark atomicType As i1=Ident { $n = new AsPattern(new DynamicTypeTestPattern($at1.n), $i1.text);}
   | Null
   | attributes pat
   )
