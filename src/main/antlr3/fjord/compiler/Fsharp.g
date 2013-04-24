@@ -661,8 +661,8 @@ classTypeDefn
   :  typeName primaryConstrArgs? valueDefn? Equals Class classTypeBody End
   ;
 
-asDefn
-  : As Ident
+asDefn returns [String n]
+  : As Ident { $n = $Ident.text; }
   ;
 
 classTypeBody
