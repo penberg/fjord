@@ -803,7 +803,7 @@ curriedSig returns [CurriedSig n]
   ;
 
 uncurriedSig returns [UncurriedSig n]
-  : argsSpec RArrow type
+  : argsSpec RArrow type { $n = new UncurriedSig($argsSpec.n, $type.n); }
   ;
 
 argsSpec returns [List n]

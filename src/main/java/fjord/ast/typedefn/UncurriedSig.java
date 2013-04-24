@@ -1,17 +1,19 @@
 package fjord.ast.typedefn;
 
+import java.util.List;
+
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 import fjord.ast.type.Type;
 
 public class UncurriedSig implements Node {
 
-  private final ArgSpec argSpec;
+  private final List<ArgSpec> argsSpec;
   
   private final Type type;
   
-  public UncurriedSig(ArgSpec argSpec, Type type) {
-    this.argSpec = argSpec; 
+  public UncurriedSig(List<ArgSpec> argsSpec, Type type) {
+    this.argsSpec = argsSpec; 
     this.type = type;
   }
   
@@ -24,8 +26,8 @@ public class UncurriedSig implements Node {
     return type;
   }
 
-  public ArgSpec getArgSpec() {
-    return argSpec;
+  public List<ArgSpec> getArgsSpec() {
+    return argsSpec;
   }
 
 }
