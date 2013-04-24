@@ -58,8 +58,8 @@ signatureFile
   | namedModuleSignature
   ;
 
-namedModule
-  : Module longIdent moduleElems
+namedModule returns [NamedModule n]
+  : Module longIdent moduleElems { $n = new NamedModule($longIdent.n, $moduleElems.n); }
   ;
 
 anonymousModule
