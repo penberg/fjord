@@ -802,7 +802,7 @@ curriedSig
   : argsSpec RArrow (argsSpec RArrow)* type
   ;
 
-uncurriedSig
+uncurriedSig returns [UncurriedSig n]
   : argsSpec RArrow type
   ;
 
