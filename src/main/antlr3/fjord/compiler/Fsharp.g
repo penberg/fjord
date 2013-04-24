@@ -704,8 +704,8 @@ exceptionDefn
   | attributes? Exception Ident Equals longIdent
   ;
 
-enumTypeDefn
-  : typeName Equals enumTypeCases
+enumTypeDefn returns [EnumTypeDefn n]
+  : typeName Equals enumTypeCases { $n = new EnumTypeDefn($typeName.n, $enumTypeCases.n); }
   ;
 
 enumTypeCases returns [List n]
