@@ -572,10 +572,10 @@ patParam returns [PatParam n]
   | '<@' expr '@>'
   | '<@@' expr '@@>'
 */
-  | Null
+  | Null { $n = new NullPatParam(); }
   )
   (
-  | Colon type
+  | Colon type { $n = new TypedPatParam($n, $type.n); }
   )?
   ;
 
