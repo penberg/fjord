@@ -18,7 +18,11 @@ public class TyparDefns extends NodeWithChildren<TyparDefn> implements Type {
   }
   
   public void setTyparConstraints(List<Constraint> constraints) {
-    this.typarConstraints = constraints;
+    this.typarConstraints = constraints != null ? constraints : Collections.<Constraint>emptyList();
   }
 
+  public List<Constraint> getTyparConstraints() {
+    return typarConstraints;
+  }
+  
 }
