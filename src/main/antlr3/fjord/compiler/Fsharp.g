@@ -645,8 +645,8 @@ anonTypeDefn
   :  typeName primaryConstrArgs? valueDefn? Equals Begin classTypeBody End
   ;
 
-recordTypeDefn
-  : typeName Equals LBrace recordFields RBrace typeExtensionElements?
+recordTypeDefn returns [RecordTypeDefn n]
+  : typeName Equals LBrace recordFields RBrace typeExtensionElements? { $n = new RecordTypeDefn($typeName.n, $recordFields.n, $typeExtensionElements.n); }
   ;
 
 recordFields returns [List n]
@@ -728,8 +728,8 @@ typeExtension
   : typeName typeExtensionElements
   ;
 
-typeExtensionElements
-  : With typeDefnElements End
+typeExtensionElements returns [List n]
+  : With typeDefnElements End { $n = $typeDefnElements.n; }
   ;
 
 typeDefnElement returns [TypeDefnElement n]
