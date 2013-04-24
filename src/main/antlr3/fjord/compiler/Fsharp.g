@@ -584,7 +584,7 @@ patParam returns [PatParam n]
   | Null { $n = new NullPatParam(); }
   )
   (
-  | Colon type { $n = new TypedPatParam($n, $type.n); }
+   Colon type { $n = new TypedPatParam($n, $type.n); }
   )?
   ;
 
