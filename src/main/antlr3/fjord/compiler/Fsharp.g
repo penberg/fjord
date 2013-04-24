@@ -565,7 +565,7 @@ fieldPat returns [FieldPattern n]
 patParam returns [PatParam n]
   :( constant { $n = new ConstantPatParam($constant.n); }
   | l1=longIdent { $n = new IdentPatParam($l1.n); } 
-  | LBrack patParam (Semicolon patParam) RBrack
+  | { $n = new ListPatParam(); } LBrack (p1=patParam { $n.addChild($p1.n); }) (Semicolon (p2=patParam { $n.addChild($p2.n); }))* RBrack
   | LParen patParam (',' patParam) RParen
   | longIdent patParam
 /*
