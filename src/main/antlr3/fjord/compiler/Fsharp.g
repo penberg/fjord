@@ -246,7 +246,7 @@ type returns [Type n]
   | { $n = new TupleType($n); } ('*' (t2=type { ((TupleType)$n).addChild($t2.n); }))+
   | l1=longIdent { $n = new NamedType($l1.n, Arrays.asList($n)); }
   | LBrack dims=(','*) RBrack { $n = new ArrayType($n, ($dims.text != null ? $dims.text : "").length() + 1); }
-  | typarDefns
+  | typarDefns { $n = new ConstrainedType($n, $typarDefns.n); }
   )?
   ;
 
@@ -276,12 +276,12 @@ constraint returns [Node n]
   | typar Colon Delegate '<' type ',' type '>'
   ;
 
-typarDefn
-  : attributes? typar
+typarDefn returns [TyparDefn n]
+  : attributes? typar { $n = new TyparDefn($typar.n); }
   ;
 
-typarDefns
-  : '<' typarDefn (',' typarDefn)* typarConstraints? '>'
+typarDefns returns [TyparDefns n]
+  : { $n = new TyparDefns(); } '<' (t1=typarDefn { $n.addChild($t1.n); }) (',' (t2=typarDefn { $n.addChild($t2.n); }))* typarConstraints? '>'
   ;
 
 typarConstraints returns [List n]
