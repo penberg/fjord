@@ -1,9 +1,5 @@
 package fjord.ast.type;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 
 public class FunctionType implements Type {

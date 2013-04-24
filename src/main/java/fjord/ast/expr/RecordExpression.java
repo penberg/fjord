@@ -1,9 +1,8 @@
 package fjord.ast.expr;
 
-import fjord.ast.NodeVisitor;
-import fjord.ast.NodeWithChildren;
-
 import java.util.List;
+
+import fjord.ast.NodeVisitor;
 
 public class RecordExpression implements Expr {
   

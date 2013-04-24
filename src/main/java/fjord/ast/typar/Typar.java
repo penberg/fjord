@@ -1,6 +1,5 @@
 package fjord.ast.typar;
 
-import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 import fjord.ast.type.Type;
 

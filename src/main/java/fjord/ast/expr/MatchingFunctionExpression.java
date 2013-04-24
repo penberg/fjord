@@ -2,7 +2,6 @@ package fjord.ast.expr;
 
 import java.util.List;
 
-import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 import fjord.ast.pat.Rule;
 

@@ -1,6 +1,5 @@
 package fjord.ast.type;
 
-import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 
 public class ArrayType implements Type {

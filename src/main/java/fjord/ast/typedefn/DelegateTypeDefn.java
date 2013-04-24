@@ -1,7 +1,6 @@
 package fjord.ast.typedefn;
 
 import fjord.ast.ModuleElem;
-import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 
 public class DelegateTypeDefn implements ModuleElem {
