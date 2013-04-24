@@ -525,8 +525,8 @@ pat returns [Pat n]
   | recordPat { $n = $recordPat.n; }
   | ColonQMark at1=atomicType { $n = new DynamicTypeTestPattern($at1.n); }
   | ColonQMark atomicType As i1=Ident { $n = new AsPattern(new DynamicTypeTestPattern($at1.n), $i1.text);}
-  | Null
-  | attributes pat
+  | Null { $n = new NullTestPattern(); }
+  | attributes p1=pat { $n = new AttributedPattern($p1.n); }
   )
   (
     | As i1=Ident { $n = new AsPattern($n, $i1.text); }
