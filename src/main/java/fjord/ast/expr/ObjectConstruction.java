@@ -21,7 +21,6 @@ public class ObjectConstruction implements Node {
     this.expr = Optional.fromNullable(expr);
   }
   
-  
   @Override
   public void accept(NodeVisitor visitor) {
   }
