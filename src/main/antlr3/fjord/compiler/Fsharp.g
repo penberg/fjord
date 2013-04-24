@@ -609,7 +609,7 @@ typeDefn returns [Node n]
   | anonTypeDefn 
   | classTypeDefn
   | structTypeDefn
-  | interfaceTypeDefn
+  | interfaceTypeDefn { $n = $interfaceTypeDefn.n; }
   | enumTypeDefn { $n = $enumTypeDefn.n; }
   | delegateTypeDefn
   | typeExtension
@@ -687,16 +687,16 @@ structTypeDefn
   : typeName primaryConstrArgs? asDefn? Equals Struct structTypeBody End
   ;
 
-structTypeBody
-  : typeDefnElements
+structTypeBody returns [List n]
+  : typeDefnElements { $n = $typeDefnElements.n; }
   ;
 
-interfaceTypeDefn
-  : typeName Equals Interface interfaceTypeBody End
+interfaceTypeDefn returns [InterfaceTypeDefn n]
+  : typeName Equals Interface interfaceTypeBody End { $n = new InterfaceTypeDefn($typeName.n, $interfaceTypeBody.n); }
   ;
 
-interfaceTypeBody
-  : typeDefnElements
+interfaceTypeBody returns [List n]
+  : typeDefnElements { $n = $typeDefnElements.n; }
   ;
 
 exceptionDefn
