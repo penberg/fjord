@@ -358,7 +358,7 @@ expr returns [Expr n]
     | LArrow en=expr { $n = new AssignmentExpression($n, $en.n); }
     | { $n = new TupleExpression($n); } (',' (en=expr { ((TupleExpression)$n).addChild($en.n); }))+
     | LBrace compOrRangeExpr RBrace
-    | Colon type
+    | Colon ty=type { $n = new TypeAnnotationExpression($n, $ty.n); }
     | ColonGreater type
     | ColonQMark type
     | ColonQMarkGreater type
