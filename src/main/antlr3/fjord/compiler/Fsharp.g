@@ -111,8 +111,8 @@ importDecl returns [ImportDecl n]
   : Open longIdent { $n = new ImportDecl($longIdent.n); }
   ;
 
-moduleAbbrev
-  : Module Ident Equals longIdent
+moduleAbbrev returns [ModuleAbbrev n]
+  : Module Ident Equals longIdent { $n = new ModuleAbbrev($Ident.text, $longIdent.n); }
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
@@ -389,7 +389,7 @@ valueDefn returns [Node n]
   ;
 
 returnType returns [Type n]
-  : Colon type { $n = $type; }
+  : Colon type { $n = $type.n; }
   ;
 
 functionOrValueDefns
