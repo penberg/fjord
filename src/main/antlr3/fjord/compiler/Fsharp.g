@@ -699,8 +699,8 @@ interfaceTypeBody returns [List n]
   : typeDefnElements { $n = $typeDefnElements.n; }
   ;
 
-exceptionDefn
-  : attributes? Exception unionTypeCaseData
+exceptionDefn returns [Node n]
+  : attributes? Exception unionTypeCaseData { $n = new ExceptionDefinition($attributes.n, $unionTypeCaseData.n); }
   | attributes? Exception Ident Equals longIdent
   ;
 
