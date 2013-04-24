@@ -124,10 +124,10 @@ moduleElems returns [List n]
     (moduleElem { $n.add($moduleElem.n); } )+
   ;
 
-access
-  : Private
-  | Internal
-  | Public
+access returns [Access n]
+  : Private { $n = Access.Private;}
+  | Internal { $n = Access.Internal; }
+  | Public { $n = Access.Public; }
   ;
 
 /*
