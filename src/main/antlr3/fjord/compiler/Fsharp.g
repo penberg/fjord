@@ -976,9 +976,9 @@ LongIdentWithDots
   : Ident (Dot Ident)+
   ;
 
-longIdentOrOp returns [Node n]
-  : longIdent Dot identOrOp
-  | identOrOp
+longIdentOrOp returns [String n]
+  : longIdent Dot identOrOp { $n = $longIdent.n + "." + $identOrOp.n; }
+  | identOrOp { $n = $identOrOp.n; }
   ;
 
 /*
