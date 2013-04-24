@@ -724,8 +724,8 @@ delegateSig returns [UncurriedSig n]
   : Delegate Of uncurriedSig { $n = $uncurriedSig.n; }
   ;
 
-typeExtension
-  : typeName typeExtensionElements
+typeExtension returns [TypeExtension n]
+  : typeName typeExtensionElements { $n = new TypeExtension($typeName.n, $typeExtensionElements.n); }
   ;
 
 typeExtensionElements returns [List n]
