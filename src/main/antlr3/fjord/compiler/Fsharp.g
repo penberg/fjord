@@ -275,7 +275,9 @@ constraint returns [Constraint n]
   | ty1=typar Colon 'enum' '<' t1=type '>' { $n = new EnumDecompositionConstraint($ty1.n, $t1.n); } 
   | ty1=typar Colon 'unmanaged' { $n = new UnmanagedConstraint($ty1.n); }
   | ty1=typar Colon Delegate '<' t1=type ',' t2=type '>' { $n = new DelegateDecompositionConstraint($ty1.n, $t1.n, $t2.n); }
+  | ty1=typar Colon 'equality' { $n = new EqualityConstraint($ty1.n); }
   ;
+  
 
 typarDefn returns [TyparDefn n]
   : attributes? typar { $n = new TyparDefn($typar.n); }
