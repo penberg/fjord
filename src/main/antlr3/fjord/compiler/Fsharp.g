@@ -627,12 +627,12 @@ unionTypeDefn
   : typeName Equals unionTypeCases typeExtensionElements?
   ;
 
-unionTypeCases
-  : Bar? unionTypeCase (Bar unionTypeCase)*
+unionTypeCases returns [List n]
+  : {$n = new ArrayList(); } Bar? (u1=unionTypeCase { $n.add($u1.n); }) (Bar (u2=unionTypeCase { $n.add($u2.n); }))*
   ;
 
-unionTypeCase
-  : attributes? unionTypeCaseData
+unionTypeCase returns [UnionTypeCase n]
+  : attributes? unionTypeCaseData { $n = new UnionTypeCase($attributes.n, $unionTypeCaseData.n);}
   ;
 
 unionTypeCaseData returns [UnionTypeCaseData n]
