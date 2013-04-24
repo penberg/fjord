@@ -614,8 +614,8 @@ typeDefn
   | typeExtension
   ;
 
-typeName
-  : attributes? access? Ident typarDefns?
+typeName returns [TypeName n]
+  : attributes? access? Ident typarDefns? { $n = new TypeName($attributes.n, $access.n, $Ident.text, $typarDefns.n); }
   ;
 
 abbrevTypeDefn
