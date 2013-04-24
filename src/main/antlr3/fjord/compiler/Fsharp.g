@@ -669,8 +669,8 @@ classTypeBody
   : Begin? classInheritsDecl? classFunctionOrValueDefns? typeDefnElements? End?
   ;
 
-classInheritsDecl
-  : Inherit type expr?
+classInheritsDecl returns [ClassInheritsDecl n]
+  : Inherit type expr? { $n = new ClassInheritsDecl($type.n, $expr.n); }
   ;
 
 /* This rule is mentioned in spec but it's not declared anywhere :S */
