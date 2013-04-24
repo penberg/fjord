@@ -220,6 +220,8 @@ public interface NodeVisitor {
   void visit(AnonymousModule anonymousModule);
   void visit(ModuleAbbrev moduleAbbrev);
   
+  void visit(ModuleFunctionDefinition moduleFunctionDefinition);
+  
   
   
   

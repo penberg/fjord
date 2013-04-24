@@ -749,5 +749,11 @@ public class DefaultNodeVisitor implements NodeVisitor {
     
   }
 
+  @Override
+  public void visit(ModuleFunctionDefinition moduleFunctionDefinition) {
+    // TODO Auto-generated method stub
+    
+  }
+
 
 }

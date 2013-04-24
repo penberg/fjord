@@ -106,7 +106,7 @@ moduleElem returns [Node n]
   ;
 
 moduleFunctionOrValueDefn returns [Node n]
-  : attributes? Let functionDefn
+  : attributes? Let functionDefn { $n = new ModuleFunctionDefinition($attributes.n, $functionDefn.n); }
   | attributes? Let valueDefn { $n = $valueDefn.n; }
   | attributes? Let Rec? functionOrValueDefns
   | attributes? Do expr
