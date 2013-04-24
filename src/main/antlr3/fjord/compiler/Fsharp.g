@@ -270,7 +270,7 @@ constraint returns [Constraint n]
   | ty1=typar Colon 'null' { $n = new NullnessConstraint($ty1.n); }
   | staticTypars Colon LParen memberSig RParen
   | ty1=typar Colon LParen New Colon Unit RArrow '\'T' RParen { $n = new DefaultConstructorConstraint($ty1.n); }
-  | typar Colon Struct
+  | ty1=typar Colon Struct { $n = new StructConstraint($ty1.n); }
   | typar Colon 'not' Struct
   | typar Colon 'enum' '<' type '>'
   | typar Colon 'unmanaged'
