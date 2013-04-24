@@ -737,7 +737,7 @@ typeDefnElement returns [TypeDefnElement n]
   /*FIXME: |  interfaceSignature */
   ;
 
-typeDefnElements [List n]
+typeDefnElements returns [List n]
   : { $n = new ArrayList(); } (t=typeDefnElement { $n.add($t.n); })+
   ;
 
@@ -814,8 +814,8 @@ argSpec returns [Node n]
   : attributes? argNameSpec? type
   ;
 
-argNameSpec
-  : Qmark? Ident Colon
+argNameSpec returns [ArgNameSpec n]
+  : Qmark? Ident Colon { $n = new ArgNameSpec($Ident.text); }
   ;
 
 interfaceSpec
