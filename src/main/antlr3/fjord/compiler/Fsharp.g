@@ -355,7 +355,7 @@ expr returns [Expr n]
     | Dot LBrack expr RBrack
     | Dot LBrack sliceRange RBrack
     | Dot LBrack sliceRange ',' sliceRange RBrack
-    | LArrow expr
+    | LArrow en=expr { $n = new AssignmentExpression($n, $en.n); }
     | (',' expr)+
     | LBrace compOrRangeExpr RBrace
     | Colon type
