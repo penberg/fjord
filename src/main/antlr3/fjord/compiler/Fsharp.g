@@ -19,6 +19,7 @@ options {
   import fjord.ast.*;
   import fjord.ast.typar.*;
   import fjord.ast.pat.*;
+  import fjord.ast.patparam.*;
   import fjord.ast.expr.*;
   import fjord.ast.type.*;
   import fjord.ast.type.constraint.*;
@@ -561,9 +562,9 @@ fieldPat returns [FieldPattern n]
   : longIdent Equals pat { $n = new FieldPattern($longIdent.n, $pat.n); }
   ;
 
-patParam
-  :( constant
-  | longIdent
+patParam returns [PatParam n]
+  :( constant { $n = new ConstantPatParam($constant.n); }
+  | l1=longIdent { $n = new IdentPatParam($l1.n); } 
   | LBrack patParam (Semicolon patParam) RBrack
   | LParen patParam (',' patParam) RParen
   | longIdent patParam
@@ -574,7 +575,7 @@ patParam
   | Null
   )
   (
-  | patParam Colon type
+  | Colon type
   )?
   ;
 
