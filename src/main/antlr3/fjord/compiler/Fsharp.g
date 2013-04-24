@@ -327,7 +327,7 @@ expr returns [Expr n]
     | Null { $n = new NullExpression(); }
     | Upcast e1=expr { $n = new UpcastExpression($e1.n); } 
     | Downcast e1=expr { $n = new DowncastExpression($e1.n); } 
-    | Let functionDefn In expr
+    | Let functionDefn In e1=expr { $n = new FunctionDefinitionExpression($functionDefn.n, $e1.n); }
     | Let valueDefn In expr
     | Let Rec functionOrValueDefns In expr
     | Use i1=Ident Equals e1=expr In e2=expr { $n = new DeterministicDisposalExpression($i1.text, $e1.n, $e2.n); }
@@ -389,7 +389,7 @@ elseBranch returns [Expr n]
 
 functionOrValueDefn returns [Node n]
   : functionDefn { $n = $functionDefn.n; }
-  | valueDefn
+  | valueDefn { $n = $valueDefn.n; }
   ;
 
 functionDefn returns [FunctionDefn n]
