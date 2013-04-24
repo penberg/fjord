@@ -623,8 +623,8 @@ abbrevTypeDefn returns [AbbrevTypeDefn n]
   : typeName Equals type { $n = new AbbrevTypeDefn($typeName.n, $type.n); }
   ;
 
-unionTypeDefn
-  : typeName Equals unionTypeCases typeExtensionElements?
+unionTypeDefn returns [UnionTypeDefn n]
+  : typeName Equals unionTypeCases typeExtensionElements? { $n = new UnionTypeDefn($typeName.n, $unionTypeCases.n, $typeExtensionElements.n); }
   ;
 
 unionTypeCases returns [List n]
