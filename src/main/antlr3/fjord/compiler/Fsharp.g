@@ -619,8 +619,8 @@ typeName returns [TypeName n]
   : attributes? access? Ident typarDefns? { $n = new TypeName($attributes.n, $access.n, $Ident.text, $typarDefns.n); }
   ;
 
-abbrevTypeDefn
-  : typeName Equals type
+abbrevTypeDefn returns [AbbrevTypeDefn n]
+  : typeName Equals type { $n = new AbbrevTypeDefn($typeName.n, $type.n); }
   ;
 
 unionTypeDefn
