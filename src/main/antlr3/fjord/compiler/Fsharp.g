@@ -328,7 +328,7 @@ expr returns [Expr n]
     | Upcast e1=expr { $n = new UpcastExpression($e1.n); } 
     | Downcast e1=expr { $n = new DowncastExpression($e1.n); } 
     | Let functionDefn In e1=expr { $n = new FunctionDefinitionExpression($functionDefn.n, $e1.n); }
-    | Let valueDefn In expr
+    | Let valueDefn In e1=expr { $n = new ValueDefinitionExpression($valueDefn.n, $e1.n); }
     | Let Rec functionOrValueDefns In expr
     | Use i1=Ident Equals e1=expr In e2=expr { $n = new DeterministicDisposalExpression($i1.text, $e1.n, $e2.n); }
     | Fun argumentPats RArrow expr
