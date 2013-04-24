@@ -2,10 +2,11 @@ package fjord.ast.typedefn;
 
 import java.util.List;
 
+import fjord.ast.ModuleElem;
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 
-public class TypeExtension implements Node {
+public class TypeExtension implements ModuleElem {
 
   private final TypeName typeName;
   

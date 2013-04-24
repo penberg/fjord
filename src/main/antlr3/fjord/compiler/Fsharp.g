@@ -97,9 +97,9 @@ moduleDefnBody
 
 moduleElem returns [Node n]
   : moduleFunctionOrValueDefn { $n = $moduleFunctionOrValueDefn.n; }
-  | typeDefns
-  | exceptionDefn
-  | moduleDefn
+  | typeDefns                 { $n = $typeDefns.n; }
+  | exceptionDefn             { $n = $exceptionDefn.n; }
+  | moduleDefn       
   | moduleAbbrev              { $n = $moduleAbbrev.n; }
   | importDecl                { $n = $importDecl.n; }
   | compilerDirectiveDecl     { $n = $compilerDirectiveDecl.n; }
@@ -598,11 +598,11 @@ rules returns [List n]
  * A.2.5 Type Definitions
  */
 
-typeDefns
-  : typeDefn+
+typeDefns returns [ModuleElem n]
+  : Type typeDefn { $n = $typeDefn.n; }
   ;
 
-typeDefn returns [Node n]
+typeDefn returns [ModuleElem n]
   : abbrevTypeDefn { $n = $abbrevTypeDefn.n; } 
   | recordTypeDefn { $n = $recordTypeDefn.n; }
   | unionTypeDefn { $n = $unionTypeDefn.n; }

@@ -2,10 +2,11 @@ package fjord.ast.typedefn;
 
 import java.util.List;
 
+import fjord.ast.ModuleElem;
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 
-public class EnumTypeDefn implements Node {
+public class EnumTypeDefn implements ModuleElem {
 
   private final TypeName typeName;
   

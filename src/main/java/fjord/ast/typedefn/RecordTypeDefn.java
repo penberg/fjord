@@ -3,10 +3,11 @@ package fjord.ast.typedefn;
 import java.util.Collections;
 import java.util.List;
 
+import fjord.ast.ModuleElem;
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 
-public class RecordTypeDefn implements Node {
+public class RecordTypeDefn implements ModuleElem {
 
   private final TypeName typeName;
   

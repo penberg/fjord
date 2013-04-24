@@ -1,10 +1,10 @@
 package fjord.ast.typedefn;
 
-import fjord.ast.Node;
+import fjord.ast.ModuleElem;
 import fjord.ast.NodeVisitor;
 import fjord.ast.type.Type;
 
-public class AbbrevTypeDefn implements Node {
+public class AbbrevTypeDefn implements ModuleElem {
 
   private final TypeName typeName;
   
