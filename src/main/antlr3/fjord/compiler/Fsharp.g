@@ -348,7 +348,7 @@ expr returns [Expr n]
     | LParen staticTypars Colon LParen memberSig RParen expr RParen
     )
     ( Dot liop=longIdentOrOp { $n = new DotLookupExpression($n, $liop.n); }
-    | expr
+    | en=expr { $n = new ApplicationExpression($n, $en.n); }
     | LParen expr RParen
     | '<' types '>'
     | infixOp expr
