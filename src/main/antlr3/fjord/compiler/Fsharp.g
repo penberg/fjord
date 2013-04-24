@@ -21,6 +21,7 @@ options {
   import fjord.ast.pat.*;
   import fjord.ast.expr.*;
   import fjord.ast.type.*;
+  import fjord.ast.type.constraint.*;
 }
 
 @lexer::header {
@@ -264,8 +265,8 @@ typar returns [Typar n]
   | '^' Ident { $n = Typar.staticHeadTypeVariable($Ident.text); }
   ;
 
-constraint returns [Node n]
-  : typar ColonGreater type
+constraint returns [Constraint n]
+  : ty1=typar ColonGreater t1=type { $n = new CoercionConstraint($ty1.n, $t1.n); }
   | typar Colon 'null'
   | staticTypars Colon LParen memberSig RParen
   | typar Colon LParen New Colon Unit RArrow '\'T' RParen
