@@ -1,5 +1,6 @@
 package fjord.ast;
 
+
 public class DefaultNodeVisitor implements NodeVisitor {
 
   @Override public void visit(CompilerDirectiveDecl node) { }

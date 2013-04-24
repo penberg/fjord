@@ -388,7 +388,7 @@ elseBranch returns [Expr n]
   ;
 
 functionOrValueDefn returns [Node n]
-  : functionDefn
+  : functionDefn { $n = $functionDefn.n; }
   | valueDefn
   ;
 
@@ -396,8 +396,8 @@ functionDefn returns [FunctionDefn n]
   : Inline? access? identOrOp typarDefns? argumentPats returnType? Equals expr { $n = new FunctionDefn($Inline.text != null, $access.n, $identOrOp.n, $typarDefns.n, $argumentPats.n, $returnType.n, $expr.n); }
   ;
 
-valueDefn returns [Node n]
-  : Mutable? access? pat typarDefns? returnType? Equals expr { $n = new ValueDefn($pat.n, $expr.n); }
+valueDefn returns [ValueDefn n]
+  : Mutable? access? pat typarDefns? returnType? Equals expr { $n = new ValueDefn($Mutable.text != null, $access.n, $pat.n, $typarDefns.n, $returnType.n, $expr.n); }
   ;
 
 returnType returns [Type n]
