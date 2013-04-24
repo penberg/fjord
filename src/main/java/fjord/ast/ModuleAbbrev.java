@@ -1,6 +1,6 @@
 package fjord.ast;
 
-public class ModuleAbbrev implements Node {
+public class ModuleAbbrev implements ModuleElem {
   
   private final String moduleAlias;
   

@@ -1,6 +1,6 @@
 package fjord.ast;
 
-public class ValueDefn implements Node {
+public class ValueDefn implements ModuleElem {
 
   public ValueDefn(Node pattern, Node expr) {
     this.pattern = pattern;
