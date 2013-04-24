@@ -276,6 +276,7 @@ constraint returns [Constraint n]
   | ty1=typar Colon 'unmanaged' { $n = new UnmanagedConstraint($ty1.n); }
   | ty1=typar Colon Delegate '<' t1=type ',' t2=type '>' { $n = new DelegateDecompositionConstraint($ty1.n, $t1.n, $t2.n); }
   | ty1=typar Colon 'equality' { $n = new EqualityConstraint($ty1.n); }
+  | ty1=typar Colon 'comparison' { $n = new ComparisonConstraint($ty1.n); }
   ;
   
 
