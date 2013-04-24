@@ -567,7 +567,7 @@ patParam returns [PatParam n]
   | l1=longIdent { $n = new IdentPatParam($l1.n); } 
   | { $n = new ListPatParam(); } LBrack (p1=patParam { ((ListPatParam)$n).addChild($p1.n); }) (Semicolon (p2=patParam { ((ListPatParam)$n).addChild($p2.n); }))* RBrack
   | { $n = new TuplePatParam(); } LParen (p1=patParam { ((TuplePatParam)$n).addChild($p1.n); }) (',' (p2=patParam { ((TuplePatParam)$n).addChild($p2.n); })) RParen
-  | longIdent patParam
+  | li1=longIdent p1=patParam { $n = new IdentParamPatParam($li1.n, $p1.n); }
 /*
   | '<@' expr '@>'
   | '<@@' expr '@@>'
