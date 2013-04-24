@@ -701,7 +701,7 @@ interfaceTypeBody returns [List n]
 
 exceptionDefn returns [Node n]
   : attributes? Exception unionTypeCaseData { $n = new ExceptionDefinition($attributes.n, $unionTypeCaseData.n); }
-  | attributes? Exception Ident Equals longIdent
+  | attributes? Exception Ident Equals longIdent { $n = new ExceptionAbbreviation($attributes.n, $Ident.text, $longIdent.n); }
   ;
 
 enumTypeDefn returns [EnumTypeDefn n]

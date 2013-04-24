@@ -1,5 +1,6 @@
 package fjord.ast.typedefn;
 
+import java.util.Collections;
 import java.util.List;
 
 import fjord.ast.Node;
@@ -13,7 +14,7 @@ public class ExceptionDefinition implements Node {
   private final UnionTypeCaseData unionTypeCaseData;
   
   public ExceptionDefinition(List<Attribute> attributes, UnionTypeCaseData unionTypeCaseData) {
-    this.attributes = attributes;
+    this.attributes = attributes != null ? attributes : Collections.<Attribute>emptyList();
     this.unionTypeCaseData = unionTypeCaseData;
   }
   
