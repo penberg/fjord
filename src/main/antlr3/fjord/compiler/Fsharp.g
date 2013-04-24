@@ -708,12 +708,12 @@ enumTypeDefn
   : typeName Equals enumTypeCases
   ;
 
-enumTypeCases [List n]
+enumTypeCases returns [List n]
   : { $n = new ArrayList(); } Bar? (e1=enumTypeCase { $n.add($e1.n); }) (Bar (e2=enumTypeCase { $n.add($e2.n); }))*
   ;
 
-enumTypeCase
-  : Ident Equals constant
+enumTypeCase returns [EnumTypeCase n]
+  : Ident Equals constant { $n = new EnumTypeCase($Ident.text, $constant.n); }
   ;
 
 delegateTypeDefn
