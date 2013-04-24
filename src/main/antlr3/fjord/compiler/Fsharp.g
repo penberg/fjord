@@ -810,8 +810,8 @@ argsSpec returns [List n]
   : { $n = new ArrayList(); } (a1=argSpec { $n.add($a1.n); }) ('*' (a2=argSpec { $n.add($a2.n); }))*
   ;
 
-argSpec returns [Node n]
-  : attributes? argNameSpec? type
+argSpec returns [ArgSpec n]
+  : attributes? argNameSpec? type { $n = new ArgSpec($attributes.n, $argNameSpec.n, $type.n); }
   ;
 
 argNameSpec returns [ArgNameSpec n]
