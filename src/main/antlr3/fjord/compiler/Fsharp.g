@@ -349,7 +349,7 @@ expr returns [Expr n]
     )
     ( Dot liop=longIdentOrOp { $n = new DotLookupExpression($n, $liop.n); }
     | en=expr { $n = new ApplicationExpression($n, $en.n); }
-    | LParen expr RParen
+    | LParen en=expr RParen { $n = new ApplicationExpression($n, $en.n); }
     | '<' types '>'
     | infixOp expr
     | Dot LBrack expr RBrack

@@ -13,17 +13,14 @@ public class ApplicationExpression implements Expr {
     this.right = right;
   }
   
-  
   @Override
   public void accept(NodeVisitor visitor) {
 
   }
 
-
   public Expr getRight() {
     return right;
   }
-
 
   public Expr getLeft() {
     return left;
