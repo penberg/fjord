@@ -267,7 +267,7 @@ typar returns [Typar n]
 
 constraint returns [Constraint n]
   : ty1=typar ColonGreater t1=type { $n = new CoercionConstraint($ty1.n, $t1.n); }
-  | typar Colon 'null'
+  | ty1=typar Colon 'null' { $n = new NullnessConstraint($ty1.n); }
   | staticTypars Colon LParen memberSig RParen
   | typar Colon LParen New Colon Unit RArrow '\'T' RParen
   | typar Colon Struct
