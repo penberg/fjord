@@ -269,7 +269,7 @@ constraint returns [Constraint n]
   : ty1=typar ColonGreater t1=type { $n = new CoercionConstraint($ty1.n, $t1.n); }
   | ty1=typar Colon 'null' { $n = new NullnessConstraint($ty1.n); }
   | staticTypars Colon LParen memberSig RParen
-  | typar Colon LParen New Colon Unit RArrow '\'T' RParen
+  | ty1=typar Colon LParen New Colon Unit RArrow '\'T' RParen { $n = new DefaultConstructorConstraint($ty1.n); }
   | typar Colon Struct
   | typar Colon 'not' Struct
   | typar Colon 'enum' '<' type '>'
