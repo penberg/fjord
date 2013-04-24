@@ -14,6 +14,7 @@ options {
 @header {
   package fjord.compiler;
 
+  import java.util.Collections;
   import java.util.Arrays;
 
   import fjord.ast.*;
@@ -790,12 +791,12 @@ methodOrPropDefn
   | Member Ident Equals expr With Set ',' Get
   ;
 
-memberSig
-  : Ident typarDefns? Colon curriedSig
-  | Ident typarDefns? Colon curriedSig With Get
-  | Ident typarDefns? Colon curriedSig With Set
-  | Ident typarDefns? Colon curriedSig With Get ',' Set
-  | Ident typarDefns? Colon curriedSig With Set ',' Get
+memberSig returns [MemberSig n]
+  : Ident typarDefns? Colon curriedSig { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n); }
+  | Ident typarDefns? Colon curriedSig With Get { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Get); }
+  | Ident typarDefns? Colon curriedSig With Set { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Set); }
+  | Ident typarDefns? Colon curriedSig With Get ',' Set { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Get, MemberSig.Property.Set); }
+  | Ident typarDefns? Colon curriedSig With Set ',' Get { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Get, MemberSig.Property.Set); }
   ;
 
 curriedSig returns [CurriedSig n]
