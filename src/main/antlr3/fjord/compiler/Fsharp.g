@@ -387,7 +387,7 @@ elseBranch returns [Expr n]
   : Else expr { $n = $expr.n; }
   ;
 
-functionOrValueDefn
+functionOrValueDefn returns [Node n]
   : functionDefn
   | valueDefn
   ;
@@ -404,8 +404,8 @@ returnType returns [Type n]
   : Colon type { $n = $type.n; }
   ;
 
-functionOrValueDefns
-  : functionOrValueDefn (And functionOrValueDefn)+
+functionOrValueDefns returns [List n]
+  : { $n = new ArrayList(); } (f1=functionOrValueDefn { $n.add($f1.n); }) (And (f2=functionOrValueDefn { $n.add($f2.n); }))+
   ;
 
 argumentPats returns [List n]
@@ -602,15 +602,15 @@ typeDefns
   : typeDefn+
   ;
 
-typeDefn
-  : abbrevTypeDefn
-  | recordTypeDefn
-  | unionTypeDefn
-  | anonTypeDefn
+typeDefn returns [Node n]
+  : abbrevTypeDefn { $n = $abbrevTypeDefn.n; } 
+  | recordTypeDefn { $n = $recordTypeDefn.n; }
+  | unionTypeDefn { $n = $unionTypeDefn.n; }
+  | anonTypeDefn 
   | classTypeDefn
   | structTypeDefn
   | interfaceTypeDefn
-  | enumTypeDefn
+  | enumTypeDefn { $n = $enumTypeDefn.n; }
   | delegateTypeDefn
   | typeExtension
   ;
