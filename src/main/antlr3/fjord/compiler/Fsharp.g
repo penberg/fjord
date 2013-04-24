@@ -716,12 +716,12 @@ enumTypeCase returns [EnumTypeCase n]
   : Ident Equals constant { $n = new EnumTypeCase($Ident.text, $constant.n); }
   ;
 
-delegateTypeDefn
-  : typeName Equals delegateSig
+delegateTypeDefn returns [DelegateTypeDefn n]
+  : typeName Equals delegateSig { $n = new DelegateTypeDefn($typeName.n, $delegateSig.n); }
   ;
 
-delegateSig
-  : Delegate Of uncurriedSig
+delegateSig returns [UncurriedSig n]
+  : Delegate Of uncurriedSig { $n = $uncurriedSig.n; }
   ;
 
 typeExtension
