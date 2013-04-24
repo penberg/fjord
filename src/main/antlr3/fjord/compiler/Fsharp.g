@@ -818,8 +818,8 @@ argNameSpec returns [ArgNameSpec n]
   : Qmark? Ident Colon { $n = new ArgNameSpec($Ident.text); }
   ;
 
-interfaceSpec
-  : Interface type
+interfaceSpec returns [InterfaceSpec n]
+  : Interface type { $n = new InterfaceSpec($type.n); }
   ;
 
 /*
