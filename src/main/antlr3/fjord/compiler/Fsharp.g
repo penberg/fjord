@@ -273,7 +273,7 @@ constraint returns [Constraint n]
   | ty1=typar Colon Struct { $n = new StructConstraint($ty1.n); }
   | ty1=typar Colon 'not' Struct { $n = new ReferenceTypeConstraint($ty1.n); }
   | ty1=typar Colon 'enum' '<' t1=type '>' { $n = new EnumDecompositionConstraint($ty1.n, $t1.n); } 
-  | typar Colon 'unmanaged'
+  | ty1=typar Colon 'unmanaged' { $n = new UnmanagedConstraint($ty1.n); }
   | typar Colon Delegate '<' type ',' type '>'
   ;
 
