@@ -731,14 +731,14 @@ typeExtensionElements
   : With typeDefnElements End
   ;
 
-typeDefnElement
+typeDefnElement returns [TypeDefnElement n]
   : memberDefn
   | interfaceImpl
   /*FIXME: |  interfaceSignature */
   ;
 
-typeDefnElements
-  : typeDefnElement+
+typeDefnElements [List n]
+  : { $n = new ArrayList(); } (t=typeDefnElement { $n.add($t.n); })+
   ;
 
 primaryConstrArgs
