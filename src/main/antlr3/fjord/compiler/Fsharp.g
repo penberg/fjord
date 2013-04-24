@@ -22,6 +22,7 @@ options {
   import fjord.ast.expr.*;
   import fjord.ast.type.*;
   import fjord.ast.type.constraint.*;
+  import fjord.ast.type.atomic.*;
 }
 
 @lexer::header {
@@ -255,8 +256,13 @@ types returns [List n]
   : { $n = new ArrayList(); } (t1=type { $n.add($t1.n); }) (',' (t2=type { $n.add($t2.n); }))*
   ;
 
-atomicType
-  : type Colon (Hash type | LParen type RParen | longIdent | longIdent '<' types '>')
+atomicType returns [AtomicType n]
+  : ty1=type Colon 
+    (Hash ty2=type { $n = new AnoymousWithSubtypeConstraintAtomicType($ty1.n, $ty2.n); } 
+    | LParen ty2=type RParen { $n = new TypeTypeAtomicType($ty1.n, $ty2.n); }
+    | l1=longIdent { $n = new TypeLongIdentAtomicType($ty1.n, $l1.n); } 
+    | l1=longIdent '<' types '>'{ $n = new TypeLongIdentAtomicType($ty1.n, $l1.n, $types.n); }
+    )
   ;
 
 typar returns [Typar n]
