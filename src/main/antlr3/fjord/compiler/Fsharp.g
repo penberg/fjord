@@ -87,19 +87,19 @@ namespaceDeclGroup
   | Namespace Global moduleElems
   ;
 
-moduleDefn
-  : attributes? Module access? Ident Equals Begin? moduleDefnBody End?
+moduleDefn returns [ModuleElem n]
+  : attributes? Module access? Ident Equals Begin? moduleDefnBody End? { $n = new ModuleDefn($attributes.n, $access.n, $Ident.text, $moduleDefnBody.n); }
   ;
 
-moduleDefnBody
-  : Begin moduleElems? End
+moduleDefnBody returns [List n]
+  : Begin moduleElems? End { $n = $moduleElems.n != null ? $moduleElems.n : Collections.<ModuleElem>emptyList(); }
   ;
 
 moduleElem returns [Node n]
   : moduleFunctionOrValueDefn { $n = $moduleFunctionOrValueDefn.n; }
   | typeDefns                 { $n = $typeDefns.n; }
   | exceptionDefn             { $n = $exceptionDefn.n; }
-  | moduleDefn       
+  | moduleDefn                { $n = $moduleDefn.n; }
   | moduleAbbrev              { $n = $moduleAbbrev.n; }
   | importDecl                { $n = $importDecl.n; }
   | compilerDirectiveDecl     { $n = $compilerDirectiveDecl.n; }
