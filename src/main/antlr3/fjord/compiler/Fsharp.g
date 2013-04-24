@@ -635,10 +635,10 @@ unionTypeCase
   : attributes? unionTypeCaseData
   ;
 
-unionTypeCaseData
-  : Ident
-  | Ident Of type ('*' type)*
-  | Ident Colon uncurriedSig
+unionTypeCaseData returns [UnionTypeCaseData n]
+  : Ident { $n = new NullaryUnionCase($Ident.text); }
+  | Ident { $n = new NAryUnionCase($Ident.text); } Of (t1=type { ((NAryUnionCase)$n).addChild($t1.n); }) ('*' (t2=type { ((NAryUnionCase)$n).addChild($t2.n); }))* 
+  | Ident Colon uncurriedSig { $n = new UncurriedSigUnionCase($Ident.text, $uncurriedSig.n); }
   ;
 
 anonTypeDefn
