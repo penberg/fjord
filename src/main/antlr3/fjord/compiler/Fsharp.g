@@ -95,7 +95,7 @@ moduleElem returns [Node n]
   | typeDefns
   | exceptionDefn
   | moduleDefn
-  | moduleAbbrev
+  | moduleAbbrev              { $n = $moduleAbbrev.n; }
   | importDecl                { $n = $importDecl.n; }
   | compilerDirectiveDecl     { $n = $compilerDirectiveDecl.n; }
   ;
