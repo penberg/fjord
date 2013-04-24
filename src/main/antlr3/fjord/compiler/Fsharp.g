@@ -748,7 +748,7 @@ primaryConstrArgs
 
 simplePat
   : Ident
-  (| simplePat Colon Type)?
+  (| Colon Type)?
   ;
 
 additionalConstrDefn
