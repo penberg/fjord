@@ -82,9 +82,9 @@ scriptFragment returns [ScriptFragment n]
  * A.2.1.1 Namespaces and modules
  */
 
-namespaceDeclGroup
-  : Namespace longIdent moduleElems
-  | Namespace Global moduleElems
+namespaceDeclGroup returns [Node n]
+  : Namespace longIdent moduleElems { $n = new NamespaceDeclGroup($longIdent.n, $moduleElems.n); }
+  | Namespace Global moduleElems { $n = new NamespaceDeclGroup("global", $moduleElems.n); }
   ;
 
 moduleDefn returns [ModuleElem n]
