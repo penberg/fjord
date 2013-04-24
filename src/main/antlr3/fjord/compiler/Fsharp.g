@@ -272,7 +272,7 @@ constraint returns [Constraint n]
   | ty1=typar Colon LParen New Colon Unit RArrow '\'T' RParen { $n = new DefaultConstructorConstraint($ty1.n); }
   | ty1=typar Colon Struct { $n = new StructConstraint($ty1.n); }
   | ty1=typar Colon 'not' Struct { $n = new ReferenceTypeConstraint($ty1.n); }
-  | typar Colon 'enum' '<' type '>'
+  | ty1=typar Colon 'enum' '<' t1=type '>' { $n = new EnumDecompositionConstraint($ty1.n, $t1.n); } 
   | typar Colon 'unmanaged'
   | typar Colon Delegate '<' type ',' type '>'
   ;
