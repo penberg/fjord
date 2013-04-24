@@ -708,8 +708,8 @@ enumTypeDefn
   : typeName Equals enumTypeCases
   ;
 
-enumTypeCases
-  : Bar? enumTypeCase (Bar enumTypeCase)*
+enumTypeCases [List n]
+  : { $n = new ArrayList(); } Bar? (e1=enumTypeCase { $n.add($e1.n); }) (Bar (e2=enumTypeCase { $n.add($e2.n); }))*
   ;
 
 enumTypeCase
