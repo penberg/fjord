@@ -425,9 +425,9 @@ objectConstruction returns [ObjectConstruction n]
   | type { $n = new ObjectConstruction($type.n); }
   ;
 
-baseCall
-  : objectConstruction
-  | objectConstruction As Ident
+baseCall returns [BaseCall n]
+  : objectConstruction { $n = new BaseCall($objectConstruction.n); }
+  | objectConstruction As Ident { $n = new BaseCall($objectConstruction.n, $Ident.text); }
   ;
 
 interfaceImpls
