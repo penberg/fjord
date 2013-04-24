@@ -388,8 +388,8 @@ valueDefn returns [Node n]
   : Mutable? access? pat typarDefns? returnType? Equals expr { $n = new ValueDefn($pat.n, $expr.n); }
   ;
 
-returnType
-  : Colon type
+returnType returns [Type n]
+  : Colon type { $n = $type; }
   ;
 
 functionOrValueDefns
