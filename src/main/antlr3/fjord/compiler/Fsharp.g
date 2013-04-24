@@ -612,7 +612,7 @@ typeDefn returns [Node n]
   | interfaceTypeDefn { $n = $interfaceTypeDefn.n; }
   | enumTypeDefn { $n = $enumTypeDefn.n; }
   | delegateTypeDefn
-  | typeExtension
+  | typeExtension { $n = $typeExtension.n; }
   ;
 
 typeName returns [TypeName n]
