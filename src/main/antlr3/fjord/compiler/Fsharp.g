@@ -798,8 +798,8 @@ memberSig
   | Ident typarDefns? Colon curriedSig With Set ',' Get
   ;
 
-curriedSig
-  : argsSpec RArrow (argsSpec RArrow)* type
+curriedSig returns [CurriedSig n]
+  : { $n = new CurriedSig(); } (ar1=argsSpec { $n.addChild($ar1.n); }) RArrow ((ar2=argsSpec { $n.addChild($ar2.n); }) RArrow)* type { $n.setType($type.n); }
   ;
 
 uncurriedSig returns [UncurriedSig n]
