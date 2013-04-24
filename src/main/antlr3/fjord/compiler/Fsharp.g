@@ -315,7 +315,7 @@ expr returns [Expr n]
     | Begin e1=expr End { $n = $e1.n; }
     | longIdentOrOp
     | prefixOp expr
-    | New type expr
+    | New ty1=type e1=expr { $n = new SimpleObjectExpression($ty1.n, $e1.n); }
     | LBrace New baseCall objectMembers interfaceImpl RBrace
     | LBrace fis=fieldInitializers RBrace { $n = new RecordExpression($fis.n); }
     | LBrace e1=expr With fis=fieldInitializers RBrace { $n = new RecordCloningExpression($e1.n, $fis.n); }
