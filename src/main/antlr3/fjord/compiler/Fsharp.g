@@ -62,8 +62,8 @@ namedModule returns [NamedModule n]
   : Module longIdent moduleElems { $n = new NamedModule($longIdent.n, $moduleElems.n); }
   ;
 
-anonymousModule
-  : moduleElems
+anonymousModule returns [AnonymousModule n]
+  : moduleElems { $n = new AnonymousModule($moduleElems.n); }
   ;
 
 namedModuleSignature
