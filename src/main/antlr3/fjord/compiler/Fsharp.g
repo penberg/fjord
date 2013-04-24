@@ -279,13 +279,12 @@ constraint returns [Constraint n]
   | ty1=typar Colon 'comparison' { $n = new ComparisonConstraint($ty1.n); }
   ;
   
-
 typarDefn returns [TyparDefn n]
   : attributes? typar { $n = new TyparDefn($typar.n); }
   ;
 
 typarDefns returns [TyparDefns n]
-  : { $n = new TyparDefns(); } '<' (t1=typarDefn { $n.addChild($t1.n); }) (',' (t2=typarDefn { $n.addChild($t2.n); }))* typarConstraints? '>'
+  : { $n = new TyparDefns(); } '<' (t1=typarDefn { $n.addChild($t1.n); }) (',' (t2=typarDefn { $n.addChild($t2.n); }))* typ=typarConstraints? { $n.setTyparConstraints($typ.n); } '>' 
   ;
 
 typarConstraints returns [List n]
