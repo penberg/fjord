@@ -2522,9 +2522,9 @@ LineDirective
  */
 
 identOrOp returns [String n]
-  : Ident
-  | '(' OpName ')'
-  | '(*)'
+  : Ident { $n = $Ident.text; }
+  | '(' OpName ')' { $n = OperatorStringifier.stringifyOperator($OpName.text); }
+  | '(*)' { $n = OperatorStringifier.stringifyOperator("*"); }
   ;
 
 fragment
