@@ -222,7 +222,4 @@ public interface NodeVisitor {
   
   void visit(ModuleFunctionDefinition moduleFunctionDefinition);
   
-  
-  
-  
 }

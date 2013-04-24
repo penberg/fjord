@@ -329,7 +329,7 @@ expr returns [Expr n]
     | Downcast e1=expr { $n = new DowncastExpression($e1.n); } 
     | Let functionDefn In e1=expr { $n = new FunctionDefinitionExpression($functionDefn.n, $e1.n); }
     | Let valueDefn In e1=expr { $n = new ValueDefinitionExpression($valueDefn.n, $e1.n); }
-    | Let Rec functionOrValueDefns In expr
+    | Let Rec fns=functionOrValueDefns In en=expr { $n = new RecursiveDefinitionExpression($fns.n, $en.n); }
     | Use i1=Ident Equals e1=expr In e2=expr { $n = new DeterministicDisposalExpression($i1.text, $e1.n, $e2.n); }
     | Fun argumentPats RArrow expr
     | Function r1=rules { $n = new MatchingFunctionExpression($r1.n); }
