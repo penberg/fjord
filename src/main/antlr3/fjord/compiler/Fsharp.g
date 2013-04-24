@@ -311,8 +311,8 @@ staticTypars returns [List n]
 
 expr returns [Expr n]
   : ( constant { $n = new ConstantExpression($constant.n); }
-    | LParen e1=expr RParen
-    | Begin expr End
+    | LParen e1=expr RParen { $n = $e1.n; }
+    | Begin e1=expr End { $n = $e1.n; }
     | longIdentOrOp
     | prefixOp expr
     | New type expr
@@ -420,9 +420,9 @@ fieldInitializers returns [List n]
   : { $n = new ArrayList(); } (f1=fieldInitializer { $n.add($f1.n); }) (Semicolon (f2=fieldInitializer { $n.add($f2.n); }))*
   ;
 
-objectConstruction
-  : type expr
-  | type
+objectConstruction returns [ObjectConstruction n]
+  : type expr { $n = new ObjectConstruction($type.n, $expr.n); }
+  | type { $n = new ObjectConstruction($type.n); }
   ;
 
 baseCall
