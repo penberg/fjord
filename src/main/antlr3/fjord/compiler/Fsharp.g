@@ -22,6 +22,7 @@ options {
   import fjord.ast.patparam.*;
   import fjord.ast.expr.*;
   import fjord.ast.type.*;
+  import fjord.ast.typedefn.*;
   import fjord.ast.type.constraint.*;
   import fjord.ast.type.atomic.*;
 }
@@ -650,9 +651,9 @@ recordTypeDefn
 recordFields returns [List n]
   : { $n = new ArrayList(); } (r1=recordField { $n.add($r1.n); }) (Semicolon (r2=recordField { $n.add($r2.n); }))* Semicolon?
   ;
-
-recordField returns [Node n]
-  : attributes? Mutable? access? Ident Colon type
+  
+recordField returns [RecordField n]
+  : attributes? Mutable? access? Ident Colon type { $n = new RecordField($attributes.n, $Mutable != null, $access.n, $Ident.text, $type.n); }
   ;
 
 classTypeDefn
@@ -896,7 +897,7 @@ attributeSet
   : LBrackLess attribute (Semicolon attribute)* GreaterRBrack
   ;
 
-attributes
+attributes returns [List n]
   : attributeSet+
   ;
 
