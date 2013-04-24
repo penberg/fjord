@@ -392,8 +392,8 @@ functionOrValueDefn returns [Node n]
   | valueDefn
   ;
 
-functionDefn
-  : Inline? access? identOrOp typarDefns? argumentPats returnType? Equals expr
+functionDefn returns [FunctionDefn n]
+  : Inline? access? identOrOp typarDefns? argumentPats returnType? Equals expr { $n = new FunctionDefn($Inline.text != null, $access.n, $identOrOp.n, $typarDefns.n, $argumentPats.n, $returnType.n, $expr.n); }
   ;
 
 valueDefn returns [Node n]
@@ -2521,7 +2521,7 @@ LineDirective
  * A.1.9.1 Operator Names
  */
 
-identOrOp
+identOrOp returns [String n]
   : Ident
   | '(' OpName ')'
   | '(*)'
