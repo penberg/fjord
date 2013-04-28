@@ -7,12 +7,6 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 
-import static me.qmx.jitescript.CodeBlock.newCodeBlock;
-import static me.qmx.jitescript.util.CodegenUtils.ci;
-import static me.qmx.jitescript.util.CodegenUtils.p;
-import static me.qmx.jitescript.util.CodegenUtils.sig;
-import me.qmx.jitescript.JiteClass;
-
 public class Compiler {
 
   public ScriptFragment parse(String input) throws Exception {
@@ -29,26 +23,11 @@ public class Compiler {
 
   public Value codegen(final ValueDefn defn) {
     try {
-      JiteClass jiteClass = new JiteClass(defn.pattern(), new String[] { p(Value.class) }) {{
-        defineDefaultConstructor();
-
-        defineMethod("eval", ACC_PUBLIC, sig(Object.class),
-          newCodeBlock()
-            .ldc(defn.expr())
-            .areturn()
-        );
-      }};
-      Class<?> klass = new JiteClassLoader().define(jiteClass);
-      return (Value) klass.newInstance();
+      Codegen codegen = new Codegen();
+      defn.accept(codegen);
+      return (Value) codegen.getKlass().newInstance();
     } catch (Exception e) {
       return new Value() { public Object eval() { return null; } };
-    }
-  }
-
-  private static class JiteClassLoader extends ClassLoader {
-    public Class<?> define(JiteClass jiteClass) {
-      byte[] classBytes = jiteClass.toBytes();
-      return super.defineClass(jiteClass.getClassName(), classBytes, 0, classBytes.length);
     }
   }
 }
