@@ -40,13 +40,15 @@ public class ValueDefn implements ModuleElem {
   }
 
   @Override public void accept(NodeVisitor visitor) {
-    visitor.visit(this);
+    visitor.visitBefore(this);
 
     if (pattern != null)
       pattern.accept(visitor);
 
     if (expr != null)
       expr.accept(visitor);
+
+    visitor.visitAfter(this);
   }
 
   @Override public String toString() {

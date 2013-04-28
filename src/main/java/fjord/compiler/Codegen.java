@@ -1,24 +1,34 @@
 package fjord.compiler;
 
-import fjord.Value;
+import fjord.ast.expr.*;
 import fjord.ast.*;
+import fjord.*;
 
 import static me.qmx.jitescript.CodeBlock.newCodeBlock;
 import static me.qmx.jitescript.util.CodegenUtils.ci;
 import static me.qmx.jitescript.util.CodegenUtils.p;
 import static me.qmx.jitescript.util.CodegenUtils.sig;
-import me.qmx.jitescript.JiteClass;
+import me.qmx.jitescript.*;
 
 public class Codegen extends DefaultNodeVisitor {
 
-  @Override public void visit(final ValueDefn defn) {
-    final JiteClass jiteClass = new JiteClass(defn.pattern(), new String[] { p(Value.class) }) {{
+  private CodeBlock code;
+
+  @Override public void visit(final ConstantExpression constant) {
+    Const cons = constant.getCons();
+    code.ldc(cons.toString());
+  }
+
+  @Override public void visitBefore(final ValueDefn defn) {
+    code = newCodeBlock();
+  }
+
+  @Override public void visitAfter(final ValueDefn defn) {
+    JiteClass jiteClass = new JiteClass(defn.pattern(), new String[] { p(Value.class) }) {{
       defineDefaultConstructor();
 
       defineMethod("eval", ACC_PUBLIC, sig(Object.class),
-        newCodeBlock()
-          .ldc(defn.expr())
-          .areturn()
+        code.areturn()
       );
     }};
     klass = new JiteClassLoader().define(jiteClass);

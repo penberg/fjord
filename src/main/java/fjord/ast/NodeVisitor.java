@@ -19,7 +19,8 @@ public interface NodeVisitor {
   void visit(Ident node);
   void visit(ImportDecl node);
   void visit(ScriptFragment node);
-  void visit(ValueDefn node);
+  void visitBefore(ValueDefn node);
+  void visitAfter(ValueDefn node);
   void visit(ApplicationExpression node);
   void visit(ArrayExpression node);
   void visit(AssertExpression node);

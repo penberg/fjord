@@ -49,7 +49,7 @@ public class Main {
     });
 
     node.accept(new DefaultNodeVisitor() {
-      @Override public void visit(ValueDefn defn) {
+      @Override public void visitAfter(ValueDefn defn) {
         Value val = compiler.codegen(defn);
 
         output.append(String.format("val %s = %s\n", defn.pattern(), val.eval()));
