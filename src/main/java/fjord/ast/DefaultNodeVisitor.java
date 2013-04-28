@@ -14,657 +14,122 @@ import fjord.ast.typedefn.*;
 
 public class DefaultNodeVisitor implements NodeVisitor {
 
-  @Override
-  public void visit(CompilerDirectiveDecl node) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(Const node) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(Ident node) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ImportDecl node) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ScriptFragment node) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ValueDefn node) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ApplicationExpression applicationExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ArrayExpression arrayExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(AssertExpression assertExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(AssignmentExpression assignmentExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(BaseCall baseCall) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ConstantExpression constantExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(
-      DeterministicDisposalExpression deterministicDisposalExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(DotLookupExpression dotLookupExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(DowncastExpression downcastExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ElifBranch elifBranch) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(FieldInitializer fieldInitializer) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(FunctionDefinitionExpression functionDefinitionExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(IfExpression ifExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(LazyExpression lazyExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ListExpression listExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(MatchExpression matchExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(MatchingFunctionExpression matchingFunctionExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NullExpression nullExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ObjectConstruction objectConstruction) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(RecordCloningExpression recordCloningExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(RecordExpression recordExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(SimpleForLoop simpleForLoop) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(SimpleObjectExpression simpleObjectExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TryFinallyExpression tryFinallyExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TryWithExpression tryWithExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TupleExpression tupleExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypeAnnotationExpression typeAnnotationExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypeApplicationExpression typeApplicationExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(UpcastExpression upcastExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ValueDefinitionExpression valueDefinitionExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(WhileExpression whileExpression) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ArrayPattern arrayPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(AsPattern asPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(AttributedPattern attributedPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ConjunctivePattern conjunctivePattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ConsPattern consPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ConstantPattern constantPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(DisjunctivePattern disjunctivePattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(DynamicTypeTestPattern dynamicTypeTestPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(FieldPattern fieldPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ListPattern listPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NamedPattern namedPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NullTestPattern nullTestPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(RecordPattern recordPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TuplePattern tuplePattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypeConstrainedPattern typeConstrainedPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(WildcardPattern wildcardPattern) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ConstantPatParam constantPatParam) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(IdentParamPatParam identParamPatParam) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(IdentPatParam identPatParam) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ListPatParam listPatParam) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NullPatParam nullPatParam) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TuplePatParam tuplePatParam) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypedPatParam typedPatParam) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypeVariable typeVariable) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(StaticHeadTypeVariable staticHeadTypeVariable) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(AnonymousTypeVariable anonymousTypeVariable) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TyparDefn typarDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TyparDefns typarDefns) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(
-      AnoymousWithSubtypeConstraintAtomicType anoymousWithSubtypeConstraintAtomicType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypeLongIdentAtomicType typeLongIdentAtomicType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypeTypeAtomicType typeTypeAtomicType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(CoercionConstraint coercionConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ComparisonConstraint comparisonConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(DefaultConstructorConstraint defaultConstructorConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(
-      DelegateDecompositionConstraint delegateDecompositionConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(EnumDecompositionConstraint enumDecompositionConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(EqualityConstraint equalityConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NullnessConstraint nullnessConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ReferenceTypeConstraint referenceTypeConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(StructConstraint structConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(UnmanagedConstraint unmanagedConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(
-      AnonymousTypeWithSubtypeConstraint anonymousTypeWithSubtypeConstraint) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ArrayType arrayType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ConstrainedType constrainedType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(FunctionType functionType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NamedType namedType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TupleType tupleType) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(AbbrevTypeDefn abbrevTypeDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ArgSpec argSpec) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ClassInheritsDecl classInheritsDecl) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(CurriedSig curriedSig) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(DelegateTypeDefn delegateTypeDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(EnumTypeCase enumTypeCase) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(EnumTypeDefn enumTypeDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ExceptionAbbreviation exceptionAbbreviation) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ExceptionDefinition exceptionDefinition) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(FunctionDefn functionDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(InterfaceSpec interfaceSpec) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(InterfaceTypeDefn interfaceTypeDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(MemberSig memberSig) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NAryUnionCase nAryUnionCase) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(NullaryUnionCase nullaryUnionCase) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(RecordTypeDefn recordTypeDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(TypeExtension typeExtension) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(UncurriedSig uncurriedSig) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(UncurriedSigUnionCase uncurriedSigUnionCase) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(UnionTypeCase unionTypeCase) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(UnionTypeDefn unionTypeDefn) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(AnonymousModule anonymousModule) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ModuleAbbrev moduleAbbrev) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void visit(ModuleFunctionDefinition moduleFunctionDefinition) {
-    // TODO Auto-generated method stub
-    
-  }
-
-
-}
+  @Override public void visit(CompilerDirectiveDecl node) { }
+  @Override public void visit(Const node) { }
+  @Override public void visit(Ident node) { }
+  @Override public void visit(ImportDecl node) { }
+  @Override public void visit(ScriptFragment node) { }
+  @Override public void visit(ValueDefn node) { }
+  @Override public void visit(ApplicationExpression node) { }
+  @Override public void visit(ArrayExpression node) { }
+  @Override public void visit(AssertExpression node) { }
+  @Override public void visit(AssignmentExpression node) { }
+  @Override public void visit(BaseCall node) { }
+  @Override public void visit(ConstantExpression node) { }
+  @Override public void visit(DeterministicDisposalExpression node) { }
+  @Override public void visit(DotLookupExpression node) { }
+  @Override public void visit(DowncastExpression node) { }
+  @Override public void visit(ElifBranch node) { }
+  @Override public void visit(FieldInitializer node) { }
+  @Override public void visit(FunctionDefinitionExpression node) { }
+  @Override public void visit(IfExpression node) { }
+  @Override public void visit(LazyExpression node) { }
+  @Override public void visit(ListExpression node) { }
+  @Override public void visit(MatchExpression node) { }
+  @Override public void visit(MatchingFunctionExpression node) { }
+  @Override public void visit(NullExpression node) { }
+  @Override public void visit(ObjectConstruction node) { }
+  @Override public void visit(RecordCloningExpression node) { }
+  @Override public void visit(RecordExpression node) { }
+  @Override public void visit(SimpleForLoop node) { }
+  @Override public void visit(SimpleObjectExpression node) { }
+  @Override public void visit(TryFinallyExpression node) { }
+  @Override public void visit(TryWithExpression node) { }
+  @Override public void visit(TupleExpression node) { }
+  @Override public void visit(TypeAnnotationExpression node) { }
+  @Override public void visit(TypeApplicationExpression node) { }
+  @Override public void visit(UpcastExpression node) { }
+  @Override public void visit(ValueDefinitionExpression node) { }
+  @Override public void visit(WhileExpression node) { }
+  
+  @Override public void visit(ArrayPattern node) { }
+  @Override public void visit(AsPattern node) { }
+  @Override public void visit(AttributedPattern node) { }
+  @Override public void visit(ConjunctivePattern node) { }
+  @Override public void visit(ConsPattern node) { }
+  @Override public void visit(ConstantPattern node) { }
+  @Override public void visit(DisjunctivePattern node) { }
+  @Override public void visit(DynamicTypeTestPattern node) { }
+  @Override public void visit(FieldPattern node) { }
+  @Override public void visit(ListPattern node) { }
+  @Override public void visit(NamedPattern node) { }
+  @Override public void visit(NullTestPattern node) { }
+  @Override public void visit(RecordPattern node) { }
+  @Override public void visit(TuplePattern node) { }
+  @Override public void visit(TypeConstrainedPattern node) { }
+  @Override public void visit(WildcardPattern node) { }
+  
+  @Override public void visit(ConstantPatParam node) { }
+  @Override public void visit(IdentParamPatParam node) { }
+  @Override public void visit(IdentPatParam node) { }
+  @Override public void visit(ListPatParam node) { }
+  @Override public void visit(NullPatParam node) { }
+  @Override public void visit(TuplePatParam node) { }
+  @Override public void visit(TypedPatParam node) { }
+  
+  @Override public void visit(TypeVariable node) { }
+  @Override public void visit(StaticHeadTypeVariable node) { }
+  @Override public void visit(AnonymousTypeVariable node) { }
+  
+  @Override public void visit(TyparDefn node) { }
+  @Override public void visit(TyparDefns node) { }
+  @Override public void visit(AnoymousWithSubtypeConstraintAtomicType node) { }
+  @Override public void visit(TypeLongIdentAtomicType node) { }
+  @Override public void visit(TypeTypeAtomicType node) { }
+  
+  @Override public void visit(CoercionConstraint node) { }
+  @Override public void visit(ComparisonConstraint node) { }
+  @Override public void visit(DefaultConstructorConstraint node) { }
+  @Override public void visit(DelegateDecompositionConstraint node) { }
+  @Override public void visit(EnumDecompositionConstraint node) { }
+  @Override public void visit(EqualityConstraint node) { }
+  @Override public void visit(NullnessConstraint node) { }
+  @Override public void visit(ReferenceTypeConstraint node) { }
+  @Override public void visit(StructConstraint node) { }
+  @Override public void visit(UnmanagedConstraint node) { }
+  
+  @Override public void visit(AnonymousTypeWithSubtypeConstraint node) { }
+  @Override public void visit(ArrayType node) { }
+  @Override public void visit(ConstrainedType node) { }
+  @Override public void visit(FunctionType node) { }
+  @Override public void visit(NamedType node) { }
+  @Override public void visit(TupleType node) { }
+  
+  @Override public void visit(AbbrevTypeDefn node) { }
+  @Override public void visit(ArgSpec node) { }
+  @Override public void visit(ClassInheritsDecl node) { }
+  @Override public void visit(CurriedSig node) { }
+  @Override public void visit(DelegateTypeDefn node) { }
+  @Override public void visit(EnumTypeCase node) { }
+  @Override public void visit(EnumTypeDefn node) { }
+  @Override public void visit(ExceptionAbbreviation node) { }
+  @Override public void visit(ExceptionDefinition node) { }
+  @Override public void visit(FunctionDefn node) { }
+  @Override public void visit(InterfaceSpec node) { }
+  @Override public void visit(InterfaceTypeDefn node) { }
+  @Override public void visit(MemberSig node) { }
+  @Override public void visit(NAryUnionCase node) { }
+  @Override public void visit(NullaryUnionCase node) { }
+  @Override public void visit(RecordTypeDefn node) { }
+  @Override public void visit(TypeExtension node) { }
+  @Override public void visit(UncurriedSig node) { }
+  @Override public void visit(UncurriedSigUnionCase node) { }
+  @Override public void visit(UnionTypeCase node) { }
+  @Override public void visit(UnionTypeDefn node) { }
+  
+  @Override public void visit(AnonymousModule node) { }
+  @Override public void visit(ModuleAbbrev node) { }
+  
+  @Override public void visit(ModuleFunctionDefinition node) { }
+  
+}    
