@@ -14,7 +14,18 @@ options {
 @header {
   package fjord.compiler;
 
+  import java.util.Collections;
+  import java.util.Arrays;
+
   import fjord.ast.*;
+  import fjord.ast.typar.*;
+  import fjord.ast.pat.*;
+  import fjord.ast.patparam.*;
+  import fjord.ast.expr.*;
+  import fjord.ast.type.*;
+  import fjord.ast.typedefn.*;
+  import fjord.ast.type.constraint.*;
+  import fjord.ast.type.atomic.*;
 }
 
 @lexer::header {
@@ -47,12 +58,12 @@ signatureFile
   | namedModuleSignature
   ;
 
-namedModule
-  : Module longIdent moduleElems
+namedModule returns [NamedModule n]
+  : Module longIdent moduleElems { $n = new NamedModule($longIdent.n, $moduleElems.n); }
   ;
 
-anonymousModule
-  : moduleElems
+anonymousModule returns [AnonymousModule n]
+  : moduleElems { $n = new AnonymousModule($moduleElems.n); }
   ;
 
 namedModuleSignature
@@ -71,32 +82,31 @@ scriptFragment returns [ScriptFragment n]
  * A.2.1.1 Namespaces and modules
  */
 
-namespaceDeclGroup
-  : Namespace longIdent moduleElems
-  | Namespace Global moduleElems
+namespaceDeclGroup returns [Node n]
+  : Namespace longIdent moduleElems { $n = new NamespaceDeclGroup($longIdent.n, $moduleElems.n); }
+  | Namespace Global moduleElems { $n = new NamespaceDeclGroup("global", $moduleElems.n); }
   ;
 
-moduleDefn
-  : attributes? Module access? Ident Equals Begin? moduleDefnBody End?
+moduleDefn returns [ModuleElem n]
+  : attributes? Module access? Ident Equals Begin? moduleDefnBody End? { $n = new ModuleDefn($attributes.n, $access.n, $Ident.text, $moduleDefnBody.n); }
   ;
 
-moduleDefnBody
-  : Begin moduleElems? End
+moduleDefnBody returns [List n]
+  : Begin moduleElems? End { $n = $moduleElems.n != null ? $moduleElems.n : Collections.<ModuleElem>emptyList(); }
   ;
-
 
 moduleElem returns [Node n]
   : moduleFunctionOrValueDefn { $n = $moduleFunctionOrValueDefn.n; }
-  | typeDefns
-  | exceptionDefn
-  | moduleDefn
-  | moduleAbbrev
+  | typeDefns                 { $n = $typeDefns.n; }
+  | exceptionDefn             { $n = $exceptionDefn.n; }
+  | moduleDefn                { $n = $moduleDefn.n; }
+  | moduleAbbrev              { $n = $moduleAbbrev.n; }
   | importDecl                { $n = $importDecl.n; }
   | compilerDirectiveDecl     { $n = $compilerDirectiveDecl.n; }
   ;
 
 moduleFunctionOrValueDefn returns [Node n]
-  : attributes? Let functionDefn
+  : attributes? Let functionDefn { $n = new ModuleFunctionDefinition($attributes.n, $functionDefn.n); }
   | attributes? Let valueDefn { $n = $valueDefn.n; }
   | attributes? Let Rec? functionOrValueDefns
   | attributes? Do expr
@@ -106,23 +116,23 @@ importDecl returns [ImportDecl n]
   : Open longIdent { $n = new ImportDecl($longIdent.n); }
   ;
 
-moduleAbbrev
-  : Module Ident Equals longIdent
+moduleAbbrev returns [ModuleAbbrev n]
+  : Module Ident Equals longIdent { $n = new ModuleAbbrev($Ident.text, $longIdent.n); }
   ;
 
 compilerDirectiveDecl returns [CompilerDirectiveDecl n]
   : Hash Ident { $n = new CompilerDirectiveDecl($Ident.text); }
   ;
 
-moduleElems returns [ArrayList n]
+moduleElems returns [List n]
   : { $n = new ArrayList(); }
     (moduleElem { $n.add($moduleElem.n); } )+
   ;
 
-access
-  : Private
-  | Internal
-  | Public
+access returns [Access n]
+  : Private { $n = Access.Private;}
+  | Internal { $n = Access.Internal; }
+  | Public { $n = Access.Public; }
   ;
 
 /*
@@ -230,117 +240,125 @@ typeExtensionElementsSignature
  * A.2.2 Types and type constraints
  */
 
-type
-  : Hash type
-  | LParen type RParen
-  | ( typar (ColonGreater type)?
-    | longIdent ('<' types? '>')?
+type returns [Type n]
+  : Hash t1=type { $n = new AnonymousTypeWithSubtypeConstraint($t1.n); }
+  | LParen t1=type RParen { $n = $t1.n; }
+  | ty1=typar { $n = $ty1.n; }
+  | l1=longIdent { $n = new NamedType($l1.n); }
+  | l1=longIdent '<' ty=types '>' { $n = new NamedType($l1.n, $ty.n); }
+  | l1=longIdent '<' '>' { $n = new NamedType($l1.n); }
+  ( RArrow t2=type { $n = new FunctionType($n, $t2.n); }
+  | { $n = new TupleType($n); } ('*' (t2=type { ((TupleType)$n).addChild($t2.n); }))+
+  | l1=longIdent { $n = new NamedType($l1.n, Arrays.asList($n)); }
+  | LBrack dims=(','*) RBrack { $n = new ArrayType($n, ($dims.text != null ? $dims.text : "").length() + 1); }
+  | typarDefns { $n = new ConstrainedType($n, $typarDefns.n); }
+  )?
+  ;
+
+types returns [List n]
+  : { $n = new ArrayList(); } (t1=type { $n.add($t1.n); }) (',' (t2=type { $n.add($t2.n); }))*
+  ;
+
+atomicType returns [AtomicType n]
+  : ty1=type Colon 
+    (Hash ty2=type { $n = new AnoymousWithSubtypeConstraintAtomicType($ty1.n, $ty2.n); } 
+    | LParen ty2=type RParen { $n = new TypeTypeAtomicType($ty1.n, $ty2.n); }
+    | l1=longIdent { $n = new TypeLongIdentAtomicType($ty1.n, $l1.n); } 
+    | l1=longIdent '<' types '>'{ $n = new TypeLongIdentAtomicType($ty1.n, $l1.n, $types.n); }
     )
-    ( RArrow type
-    | ('*' type)+
-    | longIdent
-    | LBrack type (',' type)* RBrack
-    | typarDefns
-    )?
   ;
 
-types
-  : type (',' type)*
+typar returns [Typar n]
+  : '_' { $n = Typar.anonymousTypeVariable(); }
+  | '\'' Ident { $n = Typar.typeVariable($Ident.text); }
+  | '^' Ident { $n = Typar.staticHeadTypeVariable($Ident.text); }
   ;
 
-atomicType
-  : type Colon (Hash type | LParen type RParen | longIdent | longIdent '<' types '>')
-  ;
-
-typar
-  : '_'
-  | '\'' Ident
-  | '^' Ident
-  ;
-
-constraint
-  : typar ColonGreater type
-  | typar Colon 'null'
+constraint returns [Constraint n]
+  : ty1=typar ColonGreater t1=type { $n = new CoercionConstraint($ty1.n, $t1.n); }
+  | ty1=typar Colon 'null' { $n = new NullnessConstraint($ty1.n); }
   | staticTypars Colon LParen memberSig RParen
-  | typar Colon LParen New Colon Unit RArrow '\'T' RParen
-  | typar Colon Struct
-  | typar Colon 'not' Struct
-  | typar Colon 'enum' '<' type '>'
-  | typar Colon 'unmanaged'
-  | typar Colon Delegate '<' type ',' type '>'
+  | ty1=typar Colon LParen New Colon Unit RArrow '\'T' RParen { $n = new DefaultConstructorConstraint($ty1.n); }
+  | ty1=typar Colon Struct { $n = new StructConstraint($ty1.n); }
+  | ty1=typar Colon 'not' Struct { $n = new ReferenceTypeConstraint($ty1.n); }
+  | ty1=typar Colon 'enum' '<' t1=type '>' { $n = new EnumDecompositionConstraint($ty1.n, $t1.n); } 
+  | ty1=typar Colon 'unmanaged' { $n = new UnmanagedConstraint($ty1.n); }
+  | ty1=typar Colon Delegate '<' t1=type ',' t2=type '>' { $n = new DelegateDecompositionConstraint($ty1.n, $t1.n, $t2.n); }
+  | ty1=typar Colon 'equality' { $n = new EqualityConstraint($ty1.n); }
+  | ty1=typar Colon 'comparison' { $n = new ComparisonConstraint($ty1.n); }
+  ;
+  
+typarDefn returns [TyparDefn n]
+  : attributes? typar { $n = new TyparDefn($typar.n); }
   ;
 
-typarDefn
-  : attributes? typar
+typarDefns returns [TyparDefns n]
+  : { $n = new TyparDefns(); } '<' (t1=typarDefn { $n.addChild($t1.n); }) (',' (t2=typarDefn { $n.addChild($t2.n); }))* typ=typarConstraints? { $n.setTyparConstraints($typ.n); } '>' 
   ;
 
-typarDefns
-  : '<' typarDefn (',' typarDefn)* typarConstraints? '>'
+typarConstraints returns [List n]
+  : { $n = new ArrayList(); } When (c1=constraint { $n.add($c1.n); }) (And (c2=constraint { $n.add($c2.n); }))*
   ;
 
-typarConstraints
-  : When constraint (And constraint)*
-  ;
-
-staticTypars
-  : '^' Ident
-  | LParen '^'Ident (Or '^'Ident)* RParen
+staticTypars returns [List n]
+  : '^' Ident { $n = Arrays.asList($Ident.text); }
+  | { $n = new ArrayList(); } LParen '^'(id1=Ident { $n.add($id1.text); }) (Or '^'(id2=Ident { $n.add($id2.text); }))* RParen
   ;
 
 /*
  * A.2.3 Expressions
  */
 
-expr returns [Node n]
-  : ( constant { $n = $constant.n; }
-    | LParen expr RParen
-    | Begin expr End
+expr returns [Expr n]
+  : ( constant { $n = new ConstantExpression($constant.n); }
+    | LParen e1=expr RParen { $n = $e1.n; }
+    | Begin e1=expr End { $n = $e1.n; }
     | longIdentOrOp
     | prefixOp expr
-    | New type expr
+    | New ty1=type e1=expr { $n = new SimpleObjectExpression($ty1.n, $e1.n); }
     | LBrace New baseCall objectMembers interfaceImpl RBrace
-    | LBrace fieldInitializers RBrace
-    | LBrace expr With fieldInitializers RBrace
-    | LBrack expr (Semicolon expr)* RBrack
-    | LBrackBar expr (Semicolon expr)* BarRBrack
+    | LBrace fis=fieldInitializers RBrace { $n = new RecordExpression($fis.n); }
+    | LBrace e1=expr With fis=fieldInitializers RBrace { $n = new RecordCloningExpression($e1.n, $fis.n); }
+    | { $n = new ListExpression(); } LBrack (e1=expr { ((ListExpression)$n).addExpr($e1.n); }) (Semicolon (e2=expr { ((ListExpression)$n).addExpr($e2.n); }))* RBrack
+    | { $n = new ArrayExpression(); } LBrackBar (e1=expr { ((ArrayExpression)$n).addExpr($e1.n); }) (Semicolon (e2=expr { ((ArrayExpression)$n).addExpr($e2.n); }))* BarRBrack
     | LBrack compOrRangeExpr RBrack
     | LBrackBar compOrRangeExpr BarRBrack
-    | Lazy expr
-    | Null
-    | Upcast expr
-    | Downcast expr
-    | Let functionDefn In expr
-    | Let valueDefn In expr
-    | Let Rec functionOrValueDefns In expr
-    | Use Ident Equals expr In expr
-    | Fun argumentPats RArrow expr
-    | Function rules
-    | Match expr With rules
-    | Try expr With rules
-    | Try expr Finally expr
-    | If expr Then expr elifBranches?
-    | While expr Do expr Done
-    | For Ident Equals expr To expr Do expr Done
+    | Lazy e1=expr { $n = new LazyExpression($e1.n); }
+    | Null { $n = new NullExpression(); }
+    | Upcast e1=expr { $n = new UpcastExpression($e1.n); } 
+    | Downcast e1=expr { $n = new DowncastExpression($e1.n); } 
+    | Let functionDefn In e1=expr { $n = new FunctionDefinitionExpression($functionDefn.n, $e1.n); }
+    | Let valueDefn In e1=expr { $n = new ValueDefinitionExpression($valueDefn.n, $e1.n); }
+    | Let Rec fns=functionOrValueDefns In en=expr { $n = new RecursiveDefinitionExpression($fns.n, $en.n); }
+    | Use i1=Ident Equals e1=expr In e2=expr { $n = new DeterministicDisposalExpression($i1.text, $e1.n, $e2.n); }
+    | Fun ar=argumentPats RArrow e1=expr { $n = new FunctionExpression($ar.n, $e1.n); }
+    | Function r1=rules { $n = new MatchingFunctionExpression($r1.n); }
+    | Match e1=expr With r1=rules { $n = new MatchExpression($e1.n, $r1.n); }
+    | Try e1=expr With r1=rules { $n = new TryWithExpression($e1.n, $r1.n); } 
+    | Try e1=expr Finally e2=expr { $n = new TryFinallyExpression($e1.n, $e2.n); }
+    | If e1=expr Then e2=expr elifBranches? e4=elseBranch? { $n = new IfExpression($e1.n, $e2.n, $elifBranches.n, $e4.n); }
+    | While e1=expr Do e2=expr Done { $n = new WhileExpression($e1.n, $e2.n); } 
+    | For i1=Ident Equals e1=expr To e2=expr Do e3=expr Done { $n = new SimpleForLoop($i1.text, $e1.n, $e2.n, $e3.n); }
     | For pat In exprOrRangeExpr Do expr Done
-    | Assert expr
+    | Assert e1=expr { $n = new AssertExpression($e1.n); }
     | LQuote expr RQuote
     | LQuoteUntyped expr RQuoteUntyped
     | '%' expr
     | '%%' expr
     | LParen staticTypars Colon LParen memberSig RParen expr RParen
     )
-    ( Dot longIdentOrOp
-    | expr
-    | LParen expr RParen
-    | '<' types '>'
+    ( Dot liop=longIdentOrOp { $n = new DotLookupExpression($n, $liop.n); }
+    | en=expr { $n = new ApplicationExpression($n, $en.n); }
+    | LParen en=expr RParen { $n = new ApplicationExpression($n, $en.n); }
+    | '<' types '>' { $n = new TypeApplicationExpression($n, $types.n); }
     | infixOp expr
     | Dot LBrack expr RBrack
     | Dot LBrack sliceRange RBrack
     | Dot LBrack sliceRange ',' sliceRange RBrack
-    | LArrow expr
-    | (',' expr)+
+    | LArrow en=expr { $n = new AssignmentExpression($n, $en.n); }
+    | { $n = new TupleExpression($n); } (',' (en=expr { ((TupleExpression)$n).addChild($en.n); }))+
     | LBrace compOrRangeExpr RBrace
-    | Colon type
+    | Colon ty=type { $n = new TypeAnnotationExpression($n, $ty.n); }
     | ColonGreater type
     | ColonQMark type
     | ColonQMarkGreater type
@@ -357,59 +375,59 @@ exprOrRangeExpr
   | rangeExpr
   ;
 
-elifBranches
-  : elifBranch+
+elifBranches returns [List n]
+  : { $n = new ArrayList(); } (elifBranch {$n.add($elifBranch.n); })+
   ;
 
-elifBranch
-  : Elif expr Then expr
+elifBranch returns [ElifBranch n]
+  : Elif e1=expr Then e2=expr { $n = new ElifBranch($e1.n, $e2.n); }
   ;
 
-elseBranch
-  : Else expr
+elseBranch returns [Expr n]
+  : Else expr { $n = $expr.n; }
   ;
 
-functionOrValueDefn
-  : functionDefn
-  | valueDefn
+functionOrValueDefn returns [Node n]
+  : functionDefn { $n = $functionDefn.n; }
+  | valueDefn { $n = $valueDefn.n; }
   ;
 
-functionDefn
-  : Inline? access? identOrOp typarDefns? argumentPats returnType? Equals expr
+functionDefn returns [FunctionDefn n]
+  : Inline? access? identOrOp typarDefns? argumentPats returnType? Equals expr { $n = new FunctionDefn($Inline.text != null, $access.n, $identOrOp.n, $typarDefns.n, $argumentPats.n, $returnType.n, $expr.n); }
   ;
 
-valueDefn returns [Node n]
-  : Mutable? access? pat typarDefns? returnType? Equals expr { $n = new ValueDefn($pat.n, $expr.n); }
+valueDefn returns [ValueDefn n]
+  : Mutable? access? pat typarDefns? returnType? Equals expr { $n = new ValueDefn($Mutable.text != null, $access.n, $pat.n, $typarDefns.n, $returnType.n, $expr.n); }
   ;
 
-returnType
-  : Colon type
+returnType returns [Type n]
+  : Colon type { $n = $type.n; }
   ;
 
-functionOrValueDefns
-  : functionOrValueDefn (And functionOrValueDefn)+
+functionOrValueDefns returns [List n]
+  : { $n = new ArrayList(); } (f1=functionOrValueDefn { $n.add($f1.n); }) (And (f2=functionOrValueDefn { $n.add($f2.n); }))+
   ;
 
-argumentPats
-  : atomicPat+
+argumentPats returns [List n]
+  : { $n = new ArrayList(); } (atomicPat { $n.add($atomicPat.n); })+
   ;
 
-fieldInitializer
-  : longIdent Equals expr
+fieldInitializer returns [FieldInitializer n]
+  : longIdent Equals expr { $n = new FieldInitializer($longIdent.n, $expr.n); }
   ;
 
-fieldInitializers
-  : fieldInitializer (Semicolon fieldInitializer)*
+fieldInitializers returns [List n]
+  : { $n = new ArrayList(); } (f1=fieldInitializer { $n.add($f1.n); }) (Semicolon (f2=fieldInitializer { $n.add($f2.n); }))*
   ;
 
-objectConstruction
-  : type expr
-  | type
+objectConstruction returns [ObjectConstruction n]
+  : type expr { $n = new ObjectConstruction($type.n, $expr.n); }
+  | type { $n = new ObjectConstruction($type.n); }
   ;
 
-baseCall
-  : objectConstruction
-  | objectConstruction As Ident
+baseCall returns [BaseCall n]
+  : objectConstruction { $n = new BaseCall($objectConstruction.n); }
+  | objectConstruction As Ident { $n = new BaseCall($objectConstruction.n, $Ident.text); }
   ;
 
 interfaceImpls
@@ -460,16 +478,16 @@ compExpr
   | expr
   )
   (
-    | Semicolon compExpr
+    Semicolon compExpr
   )?
   ;
 
-compRule
+compRule returns [Node n]
   : pat patternGuard? RArrow compExpr
   ;
 
-compRules
-  : Bar? compRule (Bar compRule)*
+compRules returns [List n]
+  : { $n = new ArrayList(); } Bar? (c1=compRule { $n.add($c1.n); }) (Bar c2=compRule { $n.add($c2.n); })*
   ;
 
 shortCompExpr
@@ -492,74 +510,81 @@ sliceRange
  * A.2.4 Patterns
  */
 
-rule
-  : pat patternGuard? RArrow expr
+rule returns [Rule n]
+  : pat patternGuard? RArrow expr { $n = new Rule($pat.n, $patternGuard.n, $expr.n); }
   ;
 
-patternGuard
-  : When expr
+patternGuard returns [Expr n]
+  : When expr { $n = $expr.n; }
   ;
 
-pat returns [Node n]
-  : (constant
-  | longIdent patParam? pat? { $n = $longIdent.n; }
-  | Underscore
-  | LParen pat RParen
-  | listPat
-  | arrayPat
-  | recordPat
-  | ColonQMark atomicType
-  | ColonQMark atomicType As Ident
-  | Null
-  | attributes pat
+pat returns [Pat n]
+  : (constant { $n = new ConstantPattern($constant.n); }
+  | longIdent patParam? pat? { $n = new NamedPattern($longIdent.n); }
+  | Underscore { $n = new WildcardPattern(); }
+  | LParen p1=pat RParen { $n = $p1.n; }
+  | listPat { $n = $listPat.n; }
+  | arrayPat { $n = $arrayPat.n; }
+  | recordPat { $n = $recordPat.n; }
+  | ColonQMark at1=atomicType { $n = new DynamicTypeTestPattern($at1.n); }
+  | ColonQMark atomicType As i1=Ident { $n = new AsPattern(new DynamicTypeTestPattern($at1.n), $i1.text);}
+  | Null { $n = new NullTestPattern(); }
+  | attributes p1=pat { $n = new AttributedPattern($p1.n); }
   )
   (
-    | As Ident
-    | Bar pat
-    | '&' pat
-    | ColonColon pat
-    | Colon pat
-    | (',' pat)+
+      As i1=Ident { $n = new AsPattern($n, $i1.text); }
+    | Bar p1=pat { $n = new DisjunctivePattern($n, $p1.n); }
+    | '&' p1=pat { $n = new ConjunctivePattern($n, $p1.n); }
+    | ColonColon p1=pat { $n = new ConsPattern($n, $p1.n); }
+    | Colon ty=type { $n = new TypeConstrainedPattern($n, $ty.n); }
+    | { $n = new TuplePattern($n); } (',' (p2=pat { ((TuplePattern)$n).addChild($p2.n); }))+
   )?
-
   ;
 
-listPat
-  : LBrack RBrack
-  | LBrack pat (Semicolon pat)* RBrack
+listPat returns [ListPattern n]
+  : LBrack RBrack { $n = new ListPattern(); }
+  | {$n = new ListPattern(); } LBrack (p1=pat { $n.addChild($p1.n); }) (Semicolon (p2=pat { $n.addChild($p2.n); }))* RBrack 
   ;
 
-arrayPat
-  : LBrackBar BarRBrack
-  | LBrackBar pat (Semicolon pat)* BarRBrack
+arrayPat returns [ArrayPattern n]
+  : LBrackBar BarRBrack { $n = new ArrayPattern(); }
+  | { $n = new ArrayPattern(); } LBrackBar (p1=pat { $n.addChild($p1.n); }) (Semicolon (p2=pat { $n.addChild($p2.n); }))* BarRBrack
   ;
 
-recordPat
-  : LBrace fieldPat (Semicolon fieldPat)* RBrace
+recordPat returns [RecordPattern n]
+  : { $n = new RecordPattern(); } LBrace (f1=fieldPat { $n.addChild($f1.n); }) (Semicolon (f2=fieldPat { $n.addChild($f2.n); }))* RBrace
   ;
 
-atomicPat
-  : pat Colon (constant | longIdent | listPat | recordPat | arrayPat | LParen pat RParen | ColonQMark atomicType | Null | Underscore)
+atomicPat returns [Node n]
+  : constant { $n = new ConstantPattern($constant.n); }
+  | longIdent { $n = new NamedPattern($longIdent.n); }
+  | listPat { $n = $listPat.n; }
+  | arrayPat { $n = $arrayPat.n; }
+  | recordPat { $n = $recordPat.n; }
+  | LParen pat RParen { $n = $pat.n; }
+  | ColonQMark at1=atomicType { $n = new DynamicTypeTestPattern($at1.n); }
+  | Null { $n = new NullTestPattern(); }
+  | Underscore { $n = new WildcardPattern(); }
   ;
 
-fieldPat
-  : longIdent Equals pat
+fieldPat returns [FieldPattern n]
+  : longIdent Equals pat { $n = new FieldPattern($longIdent.n, $pat.n); }
   ;
 
-patParam
-  :( constant
-  | longIdent
-  | LBrack patParam (Semicolon patParam) RBrack
-  | LParen patParam (',' patParam) RParen
-  | longIdent patParam
+patParam returns [PatParam n]
+  :( constant { $n = new ConstantPatParam($constant.n); }
+  | l1=longIdent { $n = new IdentPatParam($l1.n); } 
+  | { $n = new ListPatParam(); } LBrack (p1=patParam { ((ListPatParam)$n).addChild($p1.n); }) (Semicolon (p2=patParam { ((ListPatParam)$n).addChild($p2.n); }))* RBrack
+  | { $n = new TuplePatParam(); } LParen (p1=patParam { ((TuplePatParam)$n).addChild($p1.n); }) (',' (p2=patParam { ((TuplePatParam)$n).addChild($p2.n); })) RParen
+  | li1=longIdent p1=patParam { $n = new IdentParamPatParam($li1.n, $p1.n); }
 /*
   | '<@' expr '@>'
   | '<@@' expr '@@>'
 */
-  | Null
+  | Null { $n = new NullPatParam(); }
   )
   (
-  | patParam Colon type
+   Colon type { $n = new TypedPatParam($n, $type.n); }
   )?
   ;
 
@@ -567,12 +592,12 @@ pats
   : pat (',' pat)*
   ;
 
-fieldPats
-  : fieldPat (Semicolon fieldPat)*
+fieldPats returns [List n]
+  : { $n = new ArrayList(); } (f1=fieldPat { $n.add($f1.n); }) (Semicolon (f2=fieldPat { $n.add($f2.n); }))*
   ;
 
-rules
-  : Bar? rule (Bar rule)*
+rules returns [List n]
+  : { $n = new ArrayList(); }Bar? (r1=rule { $n.add($r1.n); }) (Bar (r2=rule { $n.add($r2.n); }))*
   ;
 
 
@@ -580,79 +605,79 @@ rules
  * A.2.5 Type Definitions
  */
 
-typeDefns
-  : typeDefn+
+typeDefns returns [ModuleElem n]
+  : Type typeDefn { $n = $typeDefn.n; }
   ;
 
-typeDefn
-  : abbrevTypeDefn
-  | recordTypeDefn
-  | unionTypeDefn
-  | anonTypeDefn
+typeDefn returns [ModuleElem n]
+  : abbrevTypeDefn { $n = $abbrevTypeDefn.n; } 
+  | recordTypeDefn { $n = $recordTypeDefn.n; }
+  | unionTypeDefn { $n = $unionTypeDefn.n; }
+  | anonTypeDefn 
   | classTypeDefn
   | structTypeDefn
-  | interfaceTypeDefn
-  | enumTypeDefn
+  | interfaceTypeDefn { $n = $interfaceTypeDefn.n; }
+  | enumTypeDefn { $n = $enumTypeDefn.n; }
   | delegateTypeDefn
-  | typeExtension
+  | typeExtension { $n = $typeExtension.n; }
   ;
 
-typeName
-  : attributes? access? Ident typarDefns?
+typeName returns [TypeName n]
+  : attributes? access? Ident typarDefns? { $n = new TypeName($attributes.n, $access.n, $Ident.text, $typarDefns.n); }
   ;
 
-abbrevTypeDefn
-  : typeName Equals type
+abbrevTypeDefn returns [AbbrevTypeDefn n]
+  : typeName Equals type { $n = new AbbrevTypeDefn($typeName.n, $type.n); }
   ;
 
-unionTypeDefn
-  : typeName Equals unionTypeCases typeExtensionElements?
+unionTypeDefn returns [UnionTypeDefn n]
+  : typeName Equals unionTypeCases typeExtensionElements? { $n = new UnionTypeDefn($typeName.n, $unionTypeCases.n, $typeExtensionElements.n); }
   ;
 
-unionTypeCases
-  : Bar? unionTypeCase (Bar unionTypeCase)*
+unionTypeCases returns [List n]
+  : {$n = new ArrayList(); } Bar? (u1=unionTypeCase { $n.add($u1.n); }) (Bar (u2=unionTypeCase { $n.add($u2.n); }))*
   ;
 
-unionTypeCase
-  : attributes? unionTypeCaseData
+unionTypeCase returns [UnionTypeCase n]
+  : attributes? unionTypeCaseData { $n = new UnionTypeCase($attributes.n, $unionTypeCaseData.n);}
   ;
 
-unionTypeCaseData
-  : Ident
-  | Ident Of type ('*' type)*
-  | Ident Colon uncurriedSig
+unionTypeCaseData returns [UnionTypeCaseData n]
+  : Ident { $n = new NullaryUnionCase($Ident.text); }
+  | Ident { $n = new NAryUnionCase($Ident.text); } Of (t1=type { ((NAryUnionCase)$n).addChild($t1.n); }) ('*' (t2=type { ((NAryUnionCase)$n).addChild($t2.n); }))* 
+  | Ident Colon uncurriedSig { $n = new UncurriedSigUnionCase($Ident.text, $uncurriedSig.n); }
   ;
 
 anonTypeDefn
   :  typeName primaryConstrArgs? valueDefn? Equals Begin classTypeBody End
   ;
 
-recordTypeDefn
-  : typeName Equals LBrace recordFields RBrace typeExtensionElements?
+recordTypeDefn returns [RecordTypeDefn n]
+  : typeName Equals LBrace recordFields RBrace typeExtensionElements? { $n = new RecordTypeDefn($typeName.n, $recordFields.n, $typeExtensionElements.n); }
   ;
 
-recordFields
-  : recordField (Semicolon recordField)* Semicolon?
+recordFields returns [List n]
+  : { $n = new ArrayList(); } (r1=recordField { $n.add($r1.n); }) (Semicolon (r2=recordField { $n.add($r2.n); }))* Semicolon?
   ;
-
-recordField
-  : attributes? Mutable? access? Ident Colon type
+  
+recordField returns [RecordField n]
+  : attributes? Mutable? access? Ident Colon type { $n = new RecordField($attributes.n, $Mutable != null, $access.n, $Ident.text, $type.n); }
   ;
 
 classTypeDefn
   :  typeName primaryConstrArgs? valueDefn? Equals Class classTypeBody End
   ;
 
-asDefn
-  : As Ident
+asDefn returns [String n]
+  : As Ident { $n = $Ident.text; }
   ;
 
 classTypeBody
   : Begin? classInheritsDecl? classFunctionOrValueDefns? typeDefnElements? End?
   ;
 
-classInheritsDecl
-  : Inherit type expr?
+classInheritsDecl returns [ClassInheritsDecl n]
+  : Inherit type expr? { $n = new ClassInheritsDecl($type.n, $expr.n); }
   ;
 
 /* This rule is mentioned in spec but it's not declared anywhere :S */
@@ -669,59 +694,59 @@ structTypeDefn
   : typeName primaryConstrArgs? asDefn? Equals Struct structTypeBody End
   ;
 
-structTypeBody
-  : typeDefnElements
+structTypeBody returns [List n]
+  : typeDefnElements { $n = $typeDefnElements.n; }
   ;
 
-interfaceTypeDefn
-  : typeName Equals Interface interfaceTypeBody End
+interfaceTypeDefn returns [InterfaceTypeDefn n]
+  : typeName Equals Interface interfaceTypeBody End { $n = new InterfaceTypeDefn($typeName.n, $interfaceTypeBody.n); }
   ;
 
-interfaceTypeBody
-  : typeDefnElements
+interfaceTypeBody returns [List n]
+  : typeDefnElements { $n = $typeDefnElements.n; }
   ;
 
-exceptionDefn
-  : attributes? Exception unionTypeCaseData
-  | attributes? Exception Ident Equals longIdent
+exceptionDefn returns [Node n]
+  : attributes? Exception unionTypeCaseData { $n = new ExceptionDefinition($attributes.n, $unionTypeCaseData.n); }
+  | attributes? Exception Ident Equals longIdent { $n = new ExceptionAbbreviation($attributes.n, $Ident.text, $longIdent.n); }
   ;
 
-enumTypeDefn
-  : typeName Equals enumTypeCases
+enumTypeDefn returns [EnumTypeDefn n]
+  : typeName Equals enumTypeCases { $n = new EnumTypeDefn($typeName.n, $enumTypeCases.n); }
   ;
 
-enumTypeCases
-  : Bar? enumTypeCase (Bar enumTypeCase)*
+enumTypeCases returns [List n]
+  : { $n = new ArrayList(); } Bar? (e1=enumTypeCase { $n.add($e1.n); }) (Bar (e2=enumTypeCase { $n.add($e2.n); }))*
   ;
 
-enumTypeCase
-  : Ident Equals constant
+enumTypeCase returns [EnumTypeCase n]
+  : Ident Equals constant { $n = new EnumTypeCase($Ident.text, $constant.n); }
   ;
 
-delegateTypeDefn
-  : typeName Equals delegateSig
+delegateTypeDefn returns [DelegateTypeDefn n]
+  : typeName Equals delegateSig { $n = new DelegateTypeDefn($typeName.n, $delegateSig.n); }
   ;
 
-delegateSig
-  : Delegate Of uncurriedSig
+delegateSig returns [UncurriedSig n]
+  : Delegate Of uncurriedSig { $n = $uncurriedSig.n; }
   ;
 
-typeExtension
-  : typeName typeExtensionElements
+typeExtension returns [TypeExtension n]
+  : typeName typeExtensionElements { $n = new TypeExtension($typeName.n, $typeExtensionElements.n); }
   ;
 
-typeExtensionElements
-  : With typeDefnElements End
+typeExtensionElements returns [List n]
+  : With typeDefnElements End { $n = $typeDefnElements.n; }
   ;
 
-typeDefnElement
+typeDefnElement returns [TypeDefnElement n]
   : memberDefn
   | interfaceImpl
   /*FIXME: |  interfaceSignature */
   ;
 
-typeDefnElements
-  : typeDefnElement+
+typeDefnElements returns [List n]
+  : { $n = new ArrayList(); } (t=typeDefnElement { $n.add($t.n); })+
   ;
 
 primaryConstrArgs
@@ -730,7 +755,7 @@ primaryConstrArgs
 
 simplePat
   : Ident
-  (| simplePat Colon Type)?
+  (| Colon Type)?
   ;
 
 additionalConstrDefn
@@ -762,7 +787,6 @@ memberDefn
   | additionalConstrDefn
   ;
 
-/* Spec says 'exp' - possibly ment expression */
 methodOrPropDefn
   : Ident? functionDefn
   | Ident? valueDefn
@@ -774,36 +798,36 @@ methodOrPropDefn
   | Member Ident Equals expr With Set ',' Get
   ;
 
-memberSig
-  : Ident typarDefns? Colon curriedSig
-  | Ident typarDefns? Colon curriedSig With Get
-  | Ident typarDefns? Colon curriedSig With Set
-  | Ident typarDefns? Colon curriedSig With Get ',' Set
-  | Ident typarDefns? Colon curriedSig With Set ',' Get
+memberSig returns [MemberSig n]
+  : Ident typarDefns? Colon curriedSig { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n); }
+  | Ident typarDefns? Colon curriedSig With Get { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Get); }
+  | Ident typarDefns? Colon curriedSig With Set { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Set); }
+  | Ident typarDefns? Colon curriedSig With Get ',' Set { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Get, MemberSig.Property.Set); }
+  | Ident typarDefns? Colon curriedSig With Set ',' Get { $n = new MemberSig($Ident.text, $typarDefns.n, $curriedSig.n, MemberSig.Property.Get, MemberSig.Property.Set); }
   ;
 
-curriedSig
-  : argsSpec RArrow (argsSpec RArrow)* type
+curriedSig returns [CurriedSig n]
+  : { $n = new CurriedSig(); } (ar1=argsSpec { $n.addChild($ar1.n); }) RArrow ((ar2=argsSpec { $n.addChild($ar2.n); }) RArrow)* type { $n.setType($type.n); }
   ;
 
-uncurriedSig
-  : argsSpec RArrow type
+uncurriedSig returns [UncurriedSig n]
+  : argsSpec RArrow type { $n = new UncurriedSig($argsSpec.n, $type.n); }
   ;
 
-argsSpec
-  : argSpec ('*' argSpec)*
+argsSpec returns [List n]
+  : { $n = new ArrayList(); } (a1=argSpec { $n.add($a1.n); }) ('*' (a2=argSpec { $n.add($a2.n); }))*
   ;
 
-argSpec
-  : attributes? argNameSpec? type
+argSpec returns [ArgSpec n]
+  : attributes? argNameSpec? type { $n = new ArgSpec($attributes.n, $argNameSpec.n, $type.n); }
   ;
 
-argNameSpec
-  : Qmark? Ident Colon
+argNameSpec returns [ArgNameSpec n]
+  : Qmark? Ident Colon { $n = new ArgNameSpec($Ident.text); }
   ;
 
-interfaceSpec
-  : Interface type
+interfaceSpec returns [InterfaceSpec n]
+  : Interface type { $n = new InterfaceSpec($type.n); }
   ;
 
 /*
@@ -881,7 +905,7 @@ attributeSet
   : LBrackLess attribute (Semicolon attribute)* GreaterRBrack
   ;
 
-attributes
+attributes returns [List n]
   : attributeSet+
   ;
 
@@ -950,18 +974,18 @@ EndifDirective
  * A.1.4.2 Long identifiers
  */
 
-longIdent returns [Ident n]
-  : LongIdentWithDots { $n = new Ident($LongIdentWithDots.text); }
-  | Ident             { $n = new Ident($Ident.text);             }
+longIdent returns [String n]
+  : LongIdentWithDots { $n = $LongIdentWithDots.text; }
+  | Ident             { $n = $Ident.text;             }
   ;
 
 LongIdentWithDots
   : Ident (Dot Ident)+
   ;
 
-longIdentOrOp returns [Node n]
-  : longIdent Dot identOrOp
-  | identOrOp
+longIdentOrOp returns [String n]
+  : longIdent Dot identOrOp { $n = $longIdent.n + "." + $identOrOp.n; }
+  | identOrOp { $n = $identOrOp.n; }
   ;
 
 /*
@@ -2504,10 +2528,10 @@ LineDirective
  * A.1.9.1 Operator Names
  */
 
-identOrOp
-  : Ident
-  | '(' OpName ')'
-  | '(*)'
+identOrOp returns [String n]
+  : Ident { $n = $Ident.text; }
+  | '(' OpName ')' { $n = OperatorStringifier.stringifyOperator($OpName.text); }
+  | '(*)' { $n = OperatorStringifier.stringifyOperator("*"); }
   ;
 
 fragment
@@ -2639,7 +2663,7 @@ infixOp
  * A.1.9.4 Constants
  */
 
-constant returns [Node n]
+constant returns [Const n]
   : Sbyte              { $n = new Const($Sbyte.text);              }
   | Int16              { $n = new Const($Int16.text);              }
   | Int32              { $n = new Const($Int32.text);              }
