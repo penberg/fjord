@@ -8,7 +8,7 @@ import fjord.ast.pat.Rule;
 public class MatchingFunctionExpression implements Expr {
 
   private final List<Rule> rules;
-  
+
   public MatchingFunctionExpression(List<Rule> rules) {
     this.rules = rules;
   }

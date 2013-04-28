@@ -7,14 +7,14 @@ import fjord.ast.NodeVisitor;
 public class EnumTypeCase implements Node {
 
   private final String ident;
-  
+
   private final Const constant;
-  
+
   public EnumTypeCase(String ident, Const constant) {
     this.ident = ident;
     this.constant = constant;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
@@ -27,5 +27,5 @@ public class EnumTypeCase implements Node {
   public Const getConstant() {
     return constant;
   }
-  
+
 }

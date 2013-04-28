@@ -10,20 +10,20 @@ import fjord.ast.NodeVisitor;
 public class IfExpression implements Expr {
 
   private final Expr condition;
-  
+
   private final Expr thenExpr;
-  
+
   private final List<ElifBranch> elifBranches;
-  
+
   private final Optional<Expr> elseExpr;
-  
+
   public IfExpression(Expr condition, Expr thenExpr, List<ElifBranch> elifBranches, Expr elseExpr) {
     this.condition = condition;
     this.thenExpr = thenExpr;
     this.elifBranches = elifBranches != null ? elifBranches : Collections.<ElifBranch>emptyList();
     this.elseExpr = Optional.of(elseExpr);
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);

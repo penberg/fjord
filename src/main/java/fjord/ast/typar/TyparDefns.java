@@ -11,12 +11,12 @@ import fjord.ast.type.constraint.Constraint;
 public class TyparDefns extends NodeWithChildren<TyparDefn> implements Type {
 
   private List<Constraint> typarConstraints = Collections.emptyList();
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
   public void setTyparConstraints(List<Constraint> constraints) {
     this.typarConstraints = constraints != null ? constraints : Collections.<Constraint>emptyList();
   }
@@ -24,5 +24,5 @@ public class TyparDefns extends NodeWithChildren<TyparDefn> implements Type {
   public List<Constraint> getTyparConstraints() {
     return typarConstraints;
   }
-  
+
 }

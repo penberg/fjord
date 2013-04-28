@@ -9,5 +9,5 @@ public class ListPatParam extends NodeWithChildren<PatParam> implements PatParam
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

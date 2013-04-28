@@ -8,9 +8,9 @@ import fjord.ast.pat.Rule;
 public class TryWithExpression implements Expr {
 
   private final Expr tryExpr;
-  
+
   private final List<Rule> rules;
-  
+
   public TryWithExpression(Expr tryExpr, List<Rule> rules) {
     this.tryExpr = tryExpr;
     this.rules = rules;

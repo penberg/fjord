@@ -15,20 +15,20 @@ import fjord.ast.type.Type;
 
 public class FunctionDefn implements Node {
 
-  private final boolean inline; 
-  
+  private final boolean inline;
+
   private final Access access;
-  
+
   private final String ident;
-  
+
   private final Optional<TyparDefns> typarDefns;
-  
-  private final List<AtomicPattern> argumentPats; 
-  
+
+  private final List<AtomicPattern> argumentPats;
+
   private final Optional<Type> returnType;
-  
+
   private final Expr expr;
-  
+
   public FunctionDefn(boolean inline, Access access, String ident, TyparDefns typarDefns, List<AtomicPattern> argumentPats, Type returnType, Expr expr) {
     this.inline = inline;
     this.access = access != null ? access : Access.Public;
@@ -38,7 +38,7 @@ public class FunctionDefn implements Node {
     this.returnType = Optional.fromNullable(returnType);
     this.expr = expr;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
@@ -71,5 +71,5 @@ public class FunctionDefn implements Node {
   public String getIdent() {
     return ident;
   }
-  
+
 }

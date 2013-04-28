@@ -51,7 +51,7 @@ public class DefaultNodeVisitor implements NodeVisitor {
   @Override public void visit(UpcastExpression node) { }
   @Override public void visit(ValueDefinitionExpression node) { }
   @Override public void visit(WhileExpression node) { }
-  
+
   @Override public void visit(ArrayPattern node) { }
   @Override public void visit(AsPattern node) { }
   @Override public void visit(AttributedPattern node) { }
@@ -68,7 +68,7 @@ public class DefaultNodeVisitor implements NodeVisitor {
   @Override public void visit(TuplePattern node) { }
   @Override public void visit(TypeConstrainedPattern node) { }
   @Override public void visit(WildcardPattern node) { }
-  
+
   @Override public void visit(ConstantPatParam node) { }
   @Override public void visit(IdentParamPatParam node) { }
   @Override public void visit(IdentPatParam node) { }
@@ -76,17 +76,17 @@ public class DefaultNodeVisitor implements NodeVisitor {
   @Override public void visit(NullPatParam node) { }
   @Override public void visit(TuplePatParam node) { }
   @Override public void visit(TypedPatParam node) { }
-  
+
   @Override public void visit(TypeVariable node) { }
   @Override public void visit(StaticHeadTypeVariable node) { }
   @Override public void visit(AnonymousTypeVariable node) { }
-  
+
   @Override public void visit(TyparDefn node) { }
   @Override public void visit(TyparDefns node) { }
   @Override public void visit(AnoymousWithSubtypeConstraintAtomicType node) { }
   @Override public void visit(TypeLongIdentAtomicType node) { }
   @Override public void visit(TypeTypeAtomicType node) { }
-  
+
   @Override public void visit(CoercionConstraint node) { }
   @Override public void visit(ComparisonConstraint node) { }
   @Override public void visit(DefaultConstructorConstraint node) { }
@@ -97,14 +97,14 @@ public class DefaultNodeVisitor implements NodeVisitor {
   @Override public void visit(ReferenceTypeConstraint node) { }
   @Override public void visit(StructConstraint node) { }
   @Override public void visit(UnmanagedConstraint node) { }
-  
+
   @Override public void visit(AnonymousTypeWithSubtypeConstraint node) { }
   @Override public void visit(ArrayType node) { }
   @Override public void visit(ConstrainedType node) { }
   @Override public void visit(FunctionType node) { }
   @Override public void visit(NamedType node) { }
   @Override public void visit(TupleType node) { }
-  
+
   @Override public void visit(AbbrevTypeDefn node) { }
   @Override public void visit(ArgSpec node) { }
   @Override public void visit(ClassInheritsDecl node) { }
@@ -126,10 +126,10 @@ public class DefaultNodeVisitor implements NodeVisitor {
   @Override public void visit(UncurriedSigUnionCase node) { }
   @Override public void visit(UnionTypeCase node) { }
   @Override public void visit(UnionTypeDefn node) { }
-  
+
   @Override public void visit(AnonymousModule node) { }
   @Override public void visit(ModuleAbbrev node) { }
-  
+
   @Override public void visit(ModuleFunctionDefinition node) { }
-  
-}    
+
+}

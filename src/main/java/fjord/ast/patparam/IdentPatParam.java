@@ -9,7 +9,7 @@ public class IdentPatParam implements PatParam {
   public IdentPatParam(String ident) {
     this.ident = ident;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);

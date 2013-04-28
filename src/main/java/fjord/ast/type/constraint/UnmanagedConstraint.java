@@ -10,7 +10,7 @@ public class UnmanagedConstraint implements Constraint {
   public UnmanagedConstraint(Typar typar) {
     this.typar = typar;
   }
-  
+
   public Typar getTypar() {
     return typar;
   }
@@ -19,5 +19,5 @@ public class UnmanagedConstraint implements Constraint {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

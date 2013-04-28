@@ -9,11 +9,11 @@ import fjord.ast.NodeVisitor;
 public class RecordTypeDefn implements ModuleElem {
 
   private final TypeName typeName;
-  
+
   private final List<RecordField> recordFields;
-  
+
   private final List<TypeDefnElement> typeDefnElements;
-  
+
   public RecordTypeDefn(TypeName typeName, List<RecordField> recordField, List<TypeDefnElement> typeDefnElements) {
     this.typeName = typeName;
     this.recordFields = recordField;
@@ -36,5 +36,5 @@ public class RecordTypeDefn implements ModuleElem {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

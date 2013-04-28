@@ -9,7 +9,7 @@ public class UpcastExpression implements Expr {
   public UpcastExpression(Expr castExpression) {
     this.castExpression = castExpression;
   }
-  
+
   public Expr getCastExpression() {
     return castExpression;
   }
@@ -18,5 +18,5 @@ public class UpcastExpression implements Expr {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

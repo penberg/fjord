@@ -6,7 +6,7 @@ import fjord.ast.type.atomic.AtomicType;
 public class DynamicTypeTestPattern implements Pat {
 
   private final AtomicType atomicType;
-  
+
   public DynamicTypeTestPattern(AtomicType atomicType) {
     this.atomicType = atomicType;
   }
@@ -19,5 +19,5 @@ public class DynamicTypeTestPattern implements Pat {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

@@ -12,13 +12,13 @@ import fjord.ast.typar.TyparDefns;
 public class TypeName {
 
   private final List<Attribute> attributes;
-  
+
   private final Access access;
-  
+
   private final String ident;
-  
+
   private final Optional<TyparDefns> typarDefns;
-  
+
   public TypeName(List<Attribute> attributes, Access access, String ident, TyparDefns typarDefns) {
     this.attributes = attributes != null ? attributes : Collections.<Attribute>emptyList();
     this.access = access != null ? access : Access.Public;
@@ -41,5 +41,5 @@ public class TypeName {
   public Optional<TyparDefns> getTyparDefns() {
     return typarDefns;
   }
-  
+
 }

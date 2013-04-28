@@ -10,7 +10,7 @@ public class TupleType extends NodeWithChildren<Type> implements Type {
   }
 
   @Override
-  public void accept(NodeVisitor visitor) { 
+  public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
 

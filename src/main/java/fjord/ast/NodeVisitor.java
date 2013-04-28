@@ -51,7 +51,7 @@ public interface NodeVisitor {
   void visit(UpcastExpression node);
   void visit(ValueDefinitionExpression node);
   void visit(WhileExpression node);
-  
+
   void visit(ArrayPattern node);
   void visit(AsPattern node);
   void visit(AttributedPattern node);
@@ -68,7 +68,7 @@ public interface NodeVisitor {
   void visit(TuplePattern node);
   void visit(TypeConstrainedPattern node);
   void visit(WildcardPattern node);
-  
+
   void visit(ConstantPatParam node);
   void visit(IdentParamPatParam node);
   void visit(IdentPatParam node);
@@ -76,17 +76,17 @@ public interface NodeVisitor {
   void visit(NullPatParam node);
   void visit(TuplePatParam node);
   void visit(TypedPatParam node);
-  
+
   void visit(TypeVariable node);
   void visit(StaticHeadTypeVariable node);
   void visit(AnonymousTypeVariable node);
-  
+
   void visit(TyparDefn node);
   void visit(TyparDefns node);
   void visit(AnoymousWithSubtypeConstraintAtomicType node);
   void visit(TypeLongIdentAtomicType node);
   void visit(TypeTypeAtomicType node);
-  
+
   void visit(CoercionConstraint node);
   void visit(ComparisonConstraint node);
   void visit(DefaultConstructorConstraint node);
@@ -97,14 +97,14 @@ public interface NodeVisitor {
   void visit(ReferenceTypeConstraint node);
   void visit(StructConstraint node);
   void visit(UnmanagedConstraint node);
-  
+
   void visit(AnonymousTypeWithSubtypeConstraint node);
   void visit(ArrayType node);
   void visit(ConstrainedType node);
   void visit(FunctionType node);
   void visit(NamedType node);
   void visit(TupleType node);
-  
+
   void visit(AbbrevTypeDefn node);
   void visit(ArgSpec node);
   void visit(ClassInheritsDecl node);
@@ -126,10 +126,10 @@ public interface NodeVisitor {
   void visit(UncurriedSigUnionCase node);
   void visit(UnionTypeCase node);
   void visit(UnionTypeDefn node);
-  
+
   void visit(AnonymousModule node);
   void visit(ModuleAbbrev node);
-  
+
   void visit(ModuleFunctionDefinition node);
-  
+
 }

@@ -6,14 +6,14 @@ import fjord.ast.type.Type;
 public class TypedPatParam implements PatParam {
 
   private final PatParam patParam;
-  
+
   private final Type type;
 
   public TypedPatParam(PatParam patParam, Type type) {
     this.patParam = patParam;
     this.type = type;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
@@ -26,5 +26,5 @@ public class TypedPatParam implements PatParam {
   public Type getType() {
     return type;
   }
-  
+
 }

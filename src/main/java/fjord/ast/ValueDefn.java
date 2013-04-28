@@ -11,17 +11,17 @@ import fjord.ast.type.Type;
 public class ValueDefn implements ModuleElem {
 
   private final boolean mutable;
-  
+
   private final Access access;
-  
+
   private final Pat pattern;
-  
+
   private final Optional<TyparDefns> typarDefns;
-  
+
   private final Optional<Type> returnType;
-  
+
   private final Expr expr;
-  
+
   public ValueDefn(boolean mutable, Access access, Pat pattern, TyparDefns typarDefns, Type returnType, Expr expr) {
     this.mutable = mutable;
     this.access = access != null ? access : Access.Public;
@@ -30,7 +30,7 @@ public class ValueDefn implements ModuleElem {
     this.returnType = Optional.fromNullable(returnType);
     this.expr = expr;
   }
-  
+
   public String pattern() {
     return pattern.toString();
   }
@@ -56,7 +56,7 @@ public class ValueDefn implements ModuleElem {
   public Pat getPattern() {
     return pattern;
   }
-  
+
   public boolean isMutable() {
     return mutable;
   }

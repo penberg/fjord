@@ -6,11 +6,11 @@ import fjord.ast.NodeVisitor;
 public class ConstantExpression implements Expr {
 
   private final Const cons;
-  
+
   public ConstantExpression(Const cons) {
     this.cons = cons;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
@@ -24,5 +24,5 @@ public class ConstantExpression implements Expr {
   public String toString() {
     return cons.toString();
   }
-  
+
 }

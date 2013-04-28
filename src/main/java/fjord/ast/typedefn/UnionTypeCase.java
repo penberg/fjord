@@ -10,14 +10,14 @@ import fjord.ast.attribute.Attribute;
 public class UnionTypeCase implements Node {
 
   private final List<Attribute> attributes;
-  
+
   private final UnionTypeCaseData unionTypeCaseData;
-  
+
   public UnionTypeCase(List<Attribute> attributes, UnionTypeCaseData unionTypeCaseData) {
     this.attributes = attributes != null ? attributes : Collections.<Attribute>emptyList();
     this.unionTypeCaseData = unionTypeCaseData;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);

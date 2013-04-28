@@ -7,11 +7,11 @@ import fjord.ast.type.Type;
 public class NAryUnionCase extends NodeWithChildren<Type> implements UnionTypeCaseData {
 
   private final String ident;
-  
+
   public NAryUnionCase(String ident) {
     this.ident = ident;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
@@ -20,5 +20,5 @@ public class NAryUnionCase extends NodeWithChildren<Type> implements UnionTypeCa
   public String getIdent() {
     return ident;
   }
-  
+
 }

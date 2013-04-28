@@ -10,7 +10,7 @@ public class DefaultConstructorConstraint implements Constraint {
   public DefaultConstructorConstraint(Typar typar) {
     this.typar = typar;
   }
-  
+
   public Typar getTypar() {
     return typar;
   }
@@ -19,5 +19,5 @@ public class DefaultConstructorConstraint implements Constraint {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

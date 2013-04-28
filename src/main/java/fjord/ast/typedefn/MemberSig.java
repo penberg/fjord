@@ -12,30 +12,30 @@ import fjord.ast.typar.TyparDefns;
 public class MemberSig implements Node {
 
   public static enum Property {
-    
+
     None,
-    
+
     Get,
-    
+
     Set
-    
+
   }
-  
+
   private final String ident;
-  
+
   private final Optional<TyparDefns> typarDefns;
-  
+
   private final CurriedSig curriedSig;
-  
+
   private final Set<Property> properties;
-  
+
   public MemberSig(String ident, TyparDefns typarDefns, CurriedSig curriedSig, Property... properties) {
     this.ident = ident;
     this.typarDefns = Optional.fromNullable(typarDefns);
     this.curriedSig = curriedSig;
     this.properties  = Sets.newHashSet(properties);
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
@@ -56,5 +56,5 @@ public class MemberSig implements Node {
   public Set<Property> getProperties() {
     return properties;
   }
-  
+
 }

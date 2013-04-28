@@ -9,9 +9,9 @@ import fjord.ast.type.Type;
 public class ObjectConstruction implements Node {
 
   private final Type type;
-  
+
   private final Optional<Expr> expr;
-  
+
   public ObjectConstruction(Type type) {
     this(type, null);
   }
@@ -20,7 +20,7 @@ public class ObjectConstruction implements Node {
     this.type = type;
     this.expr = Optional.fromNullable(expr);
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);

@@ -6,7 +6,7 @@ import fjord.ast.typar.Typar;
 public class StructConstraint implements Constraint {
 
   private final Typar typar;
-  
+
   public StructConstraint(Typar typar) {
     this.typar = typar;
   }
@@ -19,5 +19,5 @@ public class StructConstraint implements Constraint {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

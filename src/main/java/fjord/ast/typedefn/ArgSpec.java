@@ -13,17 +13,17 @@ import fjord.ast.type.Type;
 public class ArgSpec implements Node {
 
   private final List<Attribute> attributes;
-  
+
   private final Optional<ArgNameSpec> argNameSpec;
-  
+
   private final Type type;
-  
+
   public ArgSpec(List<Attribute> attributes, ArgNameSpec argNameSpec, Type type) {
     this.attributes = attributes != null ? attributes : Collections.<Attribute>emptyList();
     this.argNameSpec = Optional.fromNullable(argNameSpec);
     this.type = type;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);

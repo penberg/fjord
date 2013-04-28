@@ -6,14 +6,14 @@ import fjord.ast.type.Type;
 public class SimpleObjectExpression implements Expr {
 
   private final Type type;
-  
+
   private final Expr expr;
-  
+
   public SimpleObjectExpression(Type type, Expr expr) {
     this.type = type;
     this.expr = expr;
   }
-  
+
   @Override
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);

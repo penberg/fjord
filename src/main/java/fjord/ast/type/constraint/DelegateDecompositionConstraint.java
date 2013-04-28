@@ -7,9 +7,9 @@ import fjord.ast.type.Type;
 public class DelegateDecompositionConstraint implements Constraint {
 
   private final Typar typar;
-  
+
   private final Type type1;
-  
+
   private final Type type2;
 
   public DelegateDecompositionConstraint(Typar typar, Type type1, Type type2) {
@@ -17,7 +17,7 @@ public class DelegateDecompositionConstraint implements Constraint {
     this.type1 = type1;
     this.type2 = type2;
   }
-  
+
   public Typar getTypar() {
     return typar;
   }
@@ -34,5 +34,5 @@ public class DelegateDecompositionConstraint implements Constraint {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

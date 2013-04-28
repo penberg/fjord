@@ -10,7 +10,7 @@ public class NullnessConstraint implements Constraint {
   public NullnessConstraint(Typar typar) {
     this.typar = typar;
   }
-  
+
   public Typar getTypar() {
     return typar;
   }
@@ -19,5 +19,5 @@ public class NullnessConstraint implements Constraint {
   public void accept(NodeVisitor visitor) {
     visitor.visit(this);
   }
-  
+
 }

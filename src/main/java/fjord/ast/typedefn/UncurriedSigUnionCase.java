@@ -5,9 +5,9 @@ import fjord.ast.NodeVisitor;
 public class UncurriedSigUnionCase implements UnionTypeCaseData {
 
   private final String ident;
-  
-  private final UncurriedSig uncurriedSig; 
-  
+
+  private final UncurriedSig uncurriedSig;
+
   public UncurriedSigUnionCase(String ident, UncurriedSig uncurriedSig) {
     this.ident = ident;
     this.uncurriedSig = uncurriedSig;
@@ -25,5 +25,5 @@ public class UncurriedSigUnionCase implements UnionTypeCaseData {
   public UncurriedSig getUncurriedSig() {
     return uncurriedSig;
   }
-  
+
 }
