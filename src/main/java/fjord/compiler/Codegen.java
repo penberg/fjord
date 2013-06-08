@@ -1,16 +1,22 @@
 package fjord.compiler;
 
 import fjord.ast.expr.*;
+import fjord.runtime.*;
 import fjord.ast.*;
 import fjord.*;
 
 import static me.qmx.jitescript.CodeBlock.newCodeBlock;
+import static me.qmx.jitescript.JiteClass.*;
 import static me.qmx.jitescript.util.CodegenUtils.ci;
 import static me.qmx.jitescript.util.CodegenUtils.p;
 import static me.qmx.jitescript.util.CodegenUtils.sig;
 import me.qmx.jitescript.*;
 
 public class Codegen extends DefaultNodeVisitor {
+
+  private JiteClass jiteClass = new JiteClass("ScriptFragment", new String[] { p(Value.class) }) {{
+    defineDefaultConstructor();
+  }};
 
   private CodeBlock code;
 
@@ -24,26 +30,13 @@ public class Codegen extends DefaultNodeVisitor {
   }
 
   @Override public void visitAfter(final ValueDefn defn) {
-    JiteClass jiteClass = new JiteClass(defn.pattern(), new String[] { p(Value.class) }) {{
-      defineDefaultConstructor();
-
-      defineMethod("eval", ACC_PUBLIC, sig(Object.class),
-        code.areturn()
-      );
-    }};
-    klass = new JiteClassLoader().define(jiteClass);
+    jiteClass.defineMethod(defn.pattern(), ACC_PUBLIC | ACC_STATIC, sig(Object.class),
+      code.areturn()
+    );
+    jiteClass.defineMethod("eval", ACC_PUBLIC, sig(Object.class), new CodeBlock() {{
+      invokedynamic(defn.pattern(), sig(Object.class), Bootstrap.HANDLE);
+      areturn();
+    }});
+    JiteClassLoader.INSTANCE.define(jiteClass);
   }
-
-  private static class JiteClassLoader extends ClassLoader {
-    public Class<?> define(JiteClass jiteClass) {
-      byte[] classBytes = jiteClass.toBytes();
-      return super.defineClass(jiteClass.getClassName(), classBytes, 0, classBytes.length);
-    }
-  }
-
-  public Class<?> getKlass() {
-    return klass;
-  }
-
-  private Class<?> klass;
 }

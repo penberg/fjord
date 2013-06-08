@@ -1,5 +1,6 @@
 package fjord.compiler;
 
+import fjord.runtime.*;
 import fjord.Value;
 import fjord.ast.*;
 
@@ -25,7 +26,7 @@ public class Compiler {
     try {
       Codegen codegen = new Codegen();
       defn.accept(codegen);
-      return (Value) codegen.getKlass().newInstance();
+      return (Value) JiteClassLoader.INSTANCE.loadClass("ScriptFragment").newInstance();
     } catch (Exception e) {
       return new Value() { public Object eval() { return null; } };
     }
