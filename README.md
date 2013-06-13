@@ -47,8 +47,7 @@ For help type #help
 ## Want to help?
 
 Want to help? Grab the [F# specification][F# specification], fork the GitHub
-repository, and send a pull request! Things to work on can be found on Fjord's
-[Trello board].
+repository, and send a pull request!
 
 For questions and comments, drop me a line on [Twitter] or on #fjord at
 irc.freenode.net, or send me email at penberg@iki.fi.
@@ -81,4 +80,3 @@ limitations under the License.
 [F# specification]: http://fsharp.org/about/files/spec.pdf
 [F#]: http://fsharp.org/
 [Twitter]: https://twitter.com/penberg
-[Trello board]: https://trello.com/board/fjord/5143b7e9185dfcc13200153a
