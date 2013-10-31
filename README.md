@@ -20,6 +20,7 @@ Fjord is built and packaged with [Apache Maven][Apache Maven] and requires Java
 To build F#, run:
 
 ```
+export MAVEN_OPTS="-Xmx1g"
 mvn package
 ```
 
