@@ -13,7 +13,7 @@ hacking on F# implementation for the JVM, welcome on board!
 ### Requirements
 
 Fjord is built and packaged with [Apache Maven][Apache Maven] and requires Java
-1.7 or higher to build and run.
+1.8 or higher to build and run.
 
 ### Building from sources
 
