@@ -1,7 +1,9 @@
 package fjord;
 
 import java.lang.reflect.Method;
-import java.io.Console;
+import java.io.PrintWriter;
+
+import jline.console.ConsoleReader;
 
 import fjord.compiler.Compiler;
 import fjord.ast.*;
@@ -9,22 +11,23 @@ import fjord.ast.*;
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    Console con = System.console();
+    ConsoleReader reader = new ConsoleReader();
+    reader.setPrompt("> ");
 
-    con.printf(banner());
+    PrintWriter out = new PrintWriter(reader.getOutput());
+    out.println(banner());
 
     Environment env = new Environment();
 
     while (!env.isHalted()) {
-      con.printf("> ");
-
-      String input = con.readLine();
-      if (input == null)
+      String line = reader.readLine();
+      if (line == null)
         break;
 
-      String output = eval(env, input);
+      String output = eval(env, line);
 
-      con.printf(output);
+      out.println(output);
+      out.flush();
     }
   }
 
