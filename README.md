@@ -57,7 +57,7 @@ irc.freenode.net, or send me email at penberg@iki.fi.
 
 Copyright © 2013 Pekka Enberg and contributors.
 
-Hornet is distributed under the Apache License, Version 2.0.
+Fjord is distributed under the Apache License, Version 2.0.
 
 ## Credits
 
