@@ -21,7 +21,8 @@ public class DefaultNodeVisitor implements NodeVisitor {
   @Override public void visit(ScriptFragment node) { }
   @Override public void visitBefore(ValueDefn node) { }
   @Override public void visitAfter(ValueDefn node) { }
-  @Override public void visit(ApplicationExpression node) { }
+  @Override public void visitBefore(ApplicationExpression node) { }
+  @Override public void visitAfter(ApplicationExpression node) { }
   @Override public void visit(ArrayExpression node) { }
   @Override public void visit(AssertExpression node) { }
   @Override public void visit(AssignmentExpression node) { }

@@ -19,7 +19,10 @@ public class ApplicationExpression implements Expr {
 
   @Override
   public void accept(NodeVisitor visitor) {
-    visitor.visit(this);
+    visitor.visitBefore(this);
+    left.accept(visitor);
+    right.accept(visitor);
+    visitor.visitAfter(this);
   }
 
   public Expr getRight() {

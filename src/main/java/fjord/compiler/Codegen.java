@@ -22,17 +22,32 @@ public class Codegen extends DefaultNodeVisitor {
 
   @Override public void visit(final ConstantExpression constant) {
     Const cons = constant.getCons();
-    code.ldc(cons.toString());
+    code.ldc(Integer.parseInt(cons.toString()));
+  }
+
+  @Override public void visitBefore(final ApplicationExpression expr) {
+  }
+
+  @Override public void visitAfter(final ApplicationExpression expr) {
+    if (expr.op() == Operators.PLUS) {
+      code.iadd();
+    } else if (expr.op() == Operators.MINUS) {
+      code.isub();
+    } else {
+      throw new IllegalStateException("operator " + expr.op() + " not supported.");
+    }
   }
 
   @Override public void visitBefore(final ValueDefn defn) {
     code = newCodeBlock();
+    code.newobj(p(Integer.class));
+    code.dup();
   }
 
   @Override public void visitAfter(final ValueDefn defn) {
-    jiteClass.defineMethod(defn.pattern(), ACC_PUBLIC | ACC_STATIC, sig(Object.class),
-      code.areturn()
-    );
+    code.invokespecial(p(Integer.class), "<init>", sig(void.class, int.class));
+    code.areturn();
+    jiteClass.defineMethod(defn.pattern(), ACC_PUBLIC | ACC_STATIC, sig(Object.class), code);
     jiteClass.defineMethod("eval", ACC_PUBLIC, sig(Object.class), new CodeBlock() {{
       invokedynamic(defn.pattern(), sig(Object.class), Bootstrap.HANDLE);
       areturn();
