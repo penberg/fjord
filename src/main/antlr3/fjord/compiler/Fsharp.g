@@ -348,10 +348,8 @@ expr returns [Expr n]
     | LParen staticTypars Colon LParen memberSig RParen expr RParen
     )
     ( Dot liop=longIdentOrOp { $n = new DotLookupExpression($n, $liop.n); }
-    | en=expr { $n = new ApplicationExpression($n, $en.n); }
-    | LParen en=expr RParen { $n = new ApplicationExpression($n, $en.n); }
+    | infixOp en=expr { $n = new ApplicationExpression($n, $en.n); }
     | '<' types '>' { $n = new TypeApplicationExpression($n, $types.n); }
-    | infixOp expr
     | Dot LBrack expr RBrack
     | Dot LBrack sliceRange RBrack
     | Dot LBrack sliceRange ',' sliceRange RBrack
