@@ -348,7 +348,7 @@ expr returns [Expr n]
     | LParen staticTypars Colon LParen memberSig RParen expr RParen
     )
     ( Dot liop=longIdentOrOp { $n = new DotLookupExpression($n, $liop.n); }
-    | infixOp en=expr { $n = new ApplicationExpression($n, $en.n); }
+    | op=infixOp en=expr { $n = new ApplicationExpression($n, $op.o, $en.n); }
     | '<' types '>' { $n = new TypeApplicationExpression($n, $types.n); }
     | Dot LBrack expr RBrack
     | Dot LBrack sliceRange RBrack
@@ -2611,9 +2611,9 @@ SymbolicOp
  * A.1.9.3 Infix and prefix operators
  */
 
-infixOrPrefixOp
-  : '+'
-  | '-'
+infixOrPrefixOp returns [Operator o]
+  : '+' { $o = Operators.PLUS;  }
+  | '-' { $o = Operators.MINUS; }
   | '+.'
   | '-.'
   | '%'
@@ -2634,8 +2634,8 @@ prefixOp
   | (~('!='))=> '!' OP
   ;
 
-infixOp
-  : infixOrPrefixOp
+infixOp returns [Operator o]
+  : op=infixOrPrefixOp { $o = $op.o; }
   | (~('-.'))=> '-' OP
   | (~('+.'))=> '+' OP
   | '||'
