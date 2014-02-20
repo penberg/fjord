@@ -2613,8 +2613,7 @@ SymbolicOp
  * A.1.9.3 Infix and prefix operators
  */
 
-fragment
-InfixOrPrefixOp
+infixOrPrefixOp
   : '+'
   | '-'
   | '+.'
@@ -2630,7 +2629,7 @@ OP
   ;
 
 prefixOp
-  : InfixOrPrefixOp
+  : infixOrPrefixOp
   | '~'
   | '~~'
   | '~~~'
@@ -2638,7 +2637,7 @@ prefixOp
   ;
 
 infixOp
-  : InfixOrPrefixOp
+  : infixOrPrefixOp
   | (~('-.'))=> '-' OP
   | (~('+.'))=> '+' OP
   | '||'
