@@ -10,6 +10,8 @@ import fjord.ast.*;
 
 public class Main {
 
+  private static int counter;
+
   public static void main(String[] args) throws Exception {
     ConsoleReader reader = new ConsoleReader();
     reader.setPrompt("> ");
@@ -32,7 +34,7 @@ public class Main {
   }
 
   public static String eval(final Environment env, String input) throws Exception {
-    final Compiler compiler = new Compiler();
+    final Compiler compiler = new Compiler(String.format("ScriptFragment$%d", counter++));
 
     Node node = compiler.parse(input);
     if (node == null)

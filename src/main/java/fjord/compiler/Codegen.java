@@ -14,11 +14,16 @@ import me.qmx.jitescript.*;
 
 public class Codegen extends DefaultNodeVisitor {
 
-  private JiteClass jiteClass = new JiteClass("ScriptFragment", new String[] { p(Value.class) }) {{
-    defineDefaultConstructor();
-  }};
-
+  private JiteClass jiteClass;
   private CodeBlock code;
+  private String klass;
+
+  public Codegen(String klass) {
+    this.klass = klass;
+    this.jiteClass = new JiteClass(klass, new String[] { p(Value.class) }) {{
+      defineDefaultConstructor();
+    }};
+  }
 
   @Override public void visit(final ConstantExpression constant) {
     Const cons = constant.getCons();
@@ -49,7 +54,7 @@ public class Codegen extends DefaultNodeVisitor {
     code.areturn();
     jiteClass.defineMethod(defn.pattern(), ACC_PUBLIC | ACC_STATIC, sig(Object.class), code);
     jiteClass.defineMethod("eval", ACC_PUBLIC, sig(Object.class), new CodeBlock() {{
-      invokedynamic(defn.pattern(), sig(Object.class), Bootstrap.HANDLE, "ScriptFragment");
+      invokedynamic(defn.pattern(), sig(Object.class), Bootstrap.HANDLE, klass);
       areturn();
     }});
     JiteClassLoader.INSTANCE.define(jiteClass);
