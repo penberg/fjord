@@ -49,7 +49,7 @@ public class Codegen extends DefaultNodeVisitor {
     code.areturn();
     jiteClass.defineMethod(defn.pattern(), ACC_PUBLIC | ACC_STATIC, sig(Object.class), code);
     jiteClass.defineMethod("eval", ACC_PUBLIC, sig(Object.class), new CodeBlock() {{
-      invokedynamic(defn.pattern(), sig(Object.class), Bootstrap.HANDLE);
+      invokedynamic(defn.pattern(), sig(Object.class), Bootstrap.HANDLE, "ScriptFragment");
       areturn();
     }});
     JiteClassLoader.INSTANCE.define(jiteClass);

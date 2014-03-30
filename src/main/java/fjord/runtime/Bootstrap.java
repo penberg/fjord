@@ -17,11 +17,11 @@ public class Bootstrap {
                      Opcodes.H_INVOKESTATIC,
                      p(Bootstrap.class),
                      "bootstrap",
-                     MethodType.methodType(CallSite.class, Lookup.class, String.class, MethodType.class).toMethodDescriptorString());
+                     MethodType.methodType(CallSite.class, Lookup.class, String.class, MethodType.class, String.class).toMethodDescriptorString());
   }
 
-  public static CallSite bootstrap(Lookup lookup, String name, MethodType type) throws Throwable {
-    MethodHandle target = lookup.findStatic(JiteClassLoader.INSTANCE.loadClass("ScriptFragment"), name, type);
+  public static CallSite bootstrap(Lookup lookup, String name, MethodType type, String klass) throws Throwable {
+    MethodHandle target = lookup.findStatic(JiteClassLoader.INSTANCE.loadClass(klass), name, type);
     return new ConstantCallSite(target);
   }
 
