@@ -41,6 +41,13 @@ For help type #help
 > _
 ```
 
+You can then evaluate F# expressions:
+
+```
+> let x = 1 + 2
+val x = 3
+```
+
 ## Features
 
 * Aims at F# 3.0 language compatibility
