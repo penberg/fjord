@@ -7,8 +7,16 @@ public class InteractiveTest {
   private Main.Environment env = new Main.Environment();
 
   @Test public void valueDefn() throws Exception {
-    String output = Main.eval(env, "let x = 1");
-    assertEquals("val x = 1\n", output);
+    assertEval("let x = 1", "val x = 1\n");
+  }
+
+  @Test public void applicationExpr() throws Exception {
+    assertEval("let x = 1 + 2", "val x = 3\n");
+    assertEval("let x = 1 - 2", "val x = -1\n");
+  }
+
+  private void assertEval(String input, String output) throws Exception {
+    assertEquals(input, output, Main.eval(env, input));
   }
 
   @Test public void quit() throws Exception {
