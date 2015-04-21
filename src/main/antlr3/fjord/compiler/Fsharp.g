@@ -17,6 +17,8 @@ options {
   import java.util.Collections;
   import java.util.Arrays;
 
+  import fjord.types.Types;
+
   import fjord.ast.*;
   import fjord.ast.typar.*;
   import fjord.ast.pat.*;
@@ -2661,27 +2663,27 @@ infixOp returns [Operator o]
  */
 
 constant returns [Const n]
-  : Sbyte              { $n = new Const($Sbyte.text);              }
-  | Int16              { $n = new Const($Int16.text);              }
-  | Int32              { $n = new Const($Int32.text);              }
-  | Int64              { $n = new Const($Int64.text);              }
-  | Byte               { $n = new Const($Byte.text);               }
-  | Uint16             { $n = new Const($Uint16.text);             }
-  | Uint32             { $n = new Const($Uint32.text);             }
-  | Uint64             { $n = new Const($Uint64.text);             }
-  | Ieee32             { $n = new Const($Ieee32.text);             }
-  | Ieee64             { $n = new Const($Ieee64.text);             }
-  | Bignum             { $n = new Const($Bignum.text);             }
-  | Char               { $n = new Const($Char.text);               }
-  | String             { $n = new Const($String.text);             }
-  | VerbatimString     { $n = new Const($VerbatimString.text);     }
-  | TripleQuotedString { $n = new Const($TripleQuotedString.text); }
-  | Bytearray          { $n = new Const($Bytearray.text);          }
-  | VerbatimBytearray  { $n = new Const($VerbatimBytearray.text);  }
-  | Bytechar           { $n = new Const($Bytechar.text);           }
-  | False              { $n = new Const($False.text);              }
-  | True               { $n = new Const($True.text);               }
-  | '()'               { $n = new Const("()");                     }
+  : Sbyte              { $n = new Const($Sbyte.text,  Types.SBYTE);  }
+  | Int16              { $n = new Const($Int16.text,  Types.INT16);  }
+  | Int32              { $n = new Const($Int32.text,  Types.INT32);  }
+  | Int64              { $n = new Const($Int64.text,  Types.INT64);  }
+  | Byte               { $n = new Const($Byte.text,   Types.BYTE);   }
+  | Uint16             { $n = new Const($Uint16.text, Types.UINT16); }
+  | Uint32             { $n = new Const($Uint32.text, Types.UINT32); }
+  | Uint64             { $n = new Const($Uint64.text, Types.UINT64); }
+  | Ieee32             { $n = new Const($Ieee32.text);               }
+  | Ieee64             { $n = new Const($Ieee64.text);               }
+  | Bignum             { $n = new Const($Bignum.text);               }
+  | Char               { $n = new Const($Char.text);                 }
+  | String             { $n = new Const($String.text);               }
+  | VerbatimString     { $n = new Const($VerbatimString.text);       }
+  | TripleQuotedString { $n = new Const($TripleQuotedString.text);   }
+  | Bytearray          { $n = new Const($Bytearray.text);            }
+  | VerbatimBytearray  { $n = new Const($VerbatimBytearray.text);    }
+  | Bytechar           { $n = new Const($Bytechar.text);             }
+  | False              { $n = new Const($False.text);                }
+  | True               { $n = new Const($True.text);                 }
+  | '()'               { $n = new Const("()");                       }
   | Sbyte '<' measureLiteral '>'
   | Int16 '<' measureLiteral '>'
   | Int32 '<' measureLiteral '>'

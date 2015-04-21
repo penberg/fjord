@@ -2,10 +2,12 @@ package fjord;
 
 import java.lang.reflect.Method;
 import java.io.PrintWriter;
+import java.util.*;
 
 import jline.console.ConsoleReader;
 
 import fjord.compiler.Compiler;
+import fjord.types.*;
 import fjord.ast.*;
 
 public class Main {
@@ -53,11 +55,16 @@ public class Main {
       }
     });
 
+    final Map<String, Type> typeEnv = new HashMap<String, Type>();
+    final TypeSystem typeSystem = new TypeSystem();
+
     node.accept(new DefaultNodeVisitor() {
       @Override public void visitAfter(ValueDefn defn) {
         Value val = compiler.codegen(defn);
 
-        output.append(String.format("val %s = %s\n", defn.pattern(), val.eval()));
+        Type ty = typeSystem.analyse(typeEnv, defn);
+
+        output.append(String.format("val %s : %s = %s\n", defn.pattern(), ty, val.eval()));
       }
     });
 

@@ -59,6 +59,10 @@ public class ValueDefn implements ModuleElem {
     return pattern;
   }
 
+  public Expr getExpr() {
+    return expr;
+  }
+
   public boolean isMutable() {
     return mutable;
   }
