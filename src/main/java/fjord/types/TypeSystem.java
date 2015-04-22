@@ -39,8 +39,8 @@ public class TypeSystem {
     return prune(ty);
   }
 
-  public Variable newVariable() {
-    return new Variable(variableIds++);
+  public TypeVariable newVariable() {
+    return new TypeVariable(variableIds++);
   }
 
   public void unify(Type t1, Type t2) {
@@ -49,8 +49,8 @@ public class TypeSystem {
   }
 
   public Type prune(Type ty) {
-    if (ty instanceof Variable) {
-      Variable v = (Variable) ty;
+    if (ty instanceof TypeVariable) {
+      TypeVariable v = (TypeVariable) ty;
       if (v.instance.isPresent()) {
         Type inst = prune(v.instance.get());
         v.instance = Optional.of(inst);
