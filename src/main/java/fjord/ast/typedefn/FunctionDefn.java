@@ -3,7 +3,7 @@ package fjord.ast.typedefn;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import fjord.ast.Access;
 import fjord.ast.Node;
@@ -33,9 +33,9 @@ public class FunctionDefn implements Node {
     this.inline = inline;
     this.access = access != null ? access : Access.Public;
     this.ident = ident;
-    this.typarDefns = Optional.fromNullable(typarDefns);
+    this.typarDefns = Optional.ofNullable(typarDefns);
     this.argumentPats = argumentPats != null ? argumentPats : Collections.<AtomicPattern>emptyList();
-    this.returnType = Optional.fromNullable(returnType);
+    this.returnType = Optional.ofNullable(returnType);
     this.expr = expr;
   }
 

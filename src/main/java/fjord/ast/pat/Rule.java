@@ -4,7 +4,7 @@ import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
 import fjord.ast.expr.Expr;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public class Rule implements Node {
 
@@ -16,7 +16,7 @@ public class Rule implements Node {
 
   public Rule(Pat pattern, Expr guardExpr, Expr ruleExpr) {
     this.pattern = pattern;
-    this.guardExpr = Optional.fromNullable(guardExpr);
+    this.guardExpr = Optional.ofNullable(guardExpr);
     this.ruleExpr = ruleExpr;
   }
 

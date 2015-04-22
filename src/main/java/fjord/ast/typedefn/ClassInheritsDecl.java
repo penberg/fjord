@@ -1,6 +1,6 @@
 package fjord.ast.typedefn;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
@@ -15,7 +15,7 @@ public class ClassInheritsDecl implements Node {
 
   public ClassInheritsDecl(Type type, Expr expr) {
     this.type = type;
-    this.expr = Optional.fromNullable(expr);
+    this.expr = Optional.ofNullable(expr);
   }
 
   @Override

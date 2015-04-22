@@ -2,7 +2,7 @@ package fjord.ast.typedefn;
 
 import java.util.Set;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.Sets;
 
 import fjord.ast.Node;
@@ -31,7 +31,7 @@ public class MemberSig implements Node {
 
   public MemberSig(String ident, TyparDefns typarDefns, CurriedSig curriedSig, Property... properties) {
     this.ident = ident;
-    this.typarDefns = Optional.fromNullable(typarDefns);
+    this.typarDefns = Optional.ofNullable(typarDefns);
     this.curriedSig = curriedSig;
     this.properties  = Sets.newHashSet(properties);
   }

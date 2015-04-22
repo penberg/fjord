@@ -3,7 +3,7 @@ package fjord.ast.typedefn;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
@@ -20,7 +20,7 @@ public class ArgSpec implements Node {
 
   public ArgSpec(List<Attribute> attributes, ArgNameSpec argNameSpec, Type type) {
     this.attributes = attributes != null ? attributes : Collections.<Attribute>emptyList();
-    this.argNameSpec = Optional.fromNullable(argNameSpec);
+    this.argNameSpec = Optional.ofNullable(argNameSpec);
     this.type = type;
   }
 

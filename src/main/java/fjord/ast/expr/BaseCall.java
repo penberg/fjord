@@ -1,6 +1,6 @@
 package fjord.ast.expr;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import fjord.ast.Node;
 import fjord.ast.NodeVisitor;
@@ -17,7 +17,7 @@ public class BaseCall implements Node {
 
   public BaseCall(ObjectConstruction objectConstruction, String ident) {
     this.objectConstruction = objectConstruction;
-    this.ident = Optional.fromNullable(ident);
+    this.ident = Optional.ofNullable(ident);
   }
 
   @Override

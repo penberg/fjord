@@ -3,7 +3,7 @@ package fjord.ast.expr;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import fjord.ast.NodeVisitor;
 

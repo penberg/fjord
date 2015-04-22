@@ -3,7 +3,7 @@ package fjord.ast.typedefn;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import fjord.ast.Access;
 import fjord.ast.attribute.Attribute;
@@ -23,7 +23,7 @@ public class TypeName {
     this.attributes = attributes != null ? attributes : Collections.<Attribute>emptyList();
     this.access = access != null ? access : Access.Public;
     this.ident = ident;
-    this.typarDefns = Optional.fromNullable(typarDefns);
+    this.typarDefns = Optional.ofNullable(typarDefns);
   }
 
   public List<Attribute> getAttributes() {

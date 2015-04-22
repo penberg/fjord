@@ -1,6 +1,6 @@
 package fjord.ast;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import fjord.ast.expr.Expr;
 import fjord.ast.pat.Pat;
@@ -26,8 +26,8 @@ public class ValueDefn implements ModuleElem {
     this.mutable = mutable;
     this.access = access != null ? access : Access.Public;
     this.pattern = pattern;
-    this.typarDefns = Optional.fromNullable(typarDefns);
-    this.returnType = Optional.fromNullable(returnType);
+    this.typarDefns = Optional.ofNullable(typarDefns);
+    this.returnType = Optional.ofNullable(returnType);
     this.expr = expr;
   }
 
