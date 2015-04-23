@@ -8,6 +8,7 @@ public class InteractiveTest {
 
   @Test public void valueDefn() throws Exception {
     assertEval("let x = 1", "val x : int32 = 1\n");
+    assertEval("let x = 1.0", "val x : float = 1.0\n");
   }
 
   @Test public void applicationExpr() throws Exception {
