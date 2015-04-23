@@ -51,4 +51,9 @@ public class Types {
       return Double.parseDouble(s);
     }
   };
+  public static final TypeClass BOOL = new OperType("bool", Boolean.class, boolean.class) {
+    @Override public Object parseValue(String s) {
+      return Boolean.parseBoolean(s);
+    }
+  };
 }

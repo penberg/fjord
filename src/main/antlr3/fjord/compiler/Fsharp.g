@@ -2681,8 +2681,8 @@ constant returns [Const n]
   | Bytearray          { $n = new Const($Bytearray.text);            }
   | VerbatimBytearray  { $n = new Const($VerbatimBytearray.text);    }
   | Bytechar           { $n = new Const($Bytechar.text);             }
-  | False              { $n = new Const($False.text);                }
-  | True               { $n = new Const($True.text);                 }
+  | False              { $n = new Const($False.text, Types.BOOL);    }
+  | True               { $n = new Const($True.text, Types.BOOL);     }
   | '()'               { $n = new Const("()");                       }
   | Sbyte '<' measureLiteral '>'
   | Int16 '<' measureLiteral '>'
