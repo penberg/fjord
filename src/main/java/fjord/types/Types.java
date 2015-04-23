@@ -56,4 +56,9 @@ public class Types {
       return Boolean.parseBoolean(s);
     }
   };
+  public static final TypeClass CHAR = new OperType("char", Character.class, char.class) {
+    @Override public Object parseValue(String s) {
+      return new Character(s.charAt(1));
+    }
+  };
 }
