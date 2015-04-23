@@ -61,4 +61,9 @@ public class Types {
       return new Character(s.charAt(1));
     }
   };
+  public static final TypeClass STRING = new OperType("string", String.class, String.class) {
+    @Override public Object parseValue(String s) {
+      return s.substring(1, s.length()-1);
+    }
+  };
 }

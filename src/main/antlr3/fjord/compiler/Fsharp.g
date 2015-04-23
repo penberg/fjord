@@ -2675,7 +2675,7 @@ constant returns [Const n]
   | Ieee64             { $n = new Const($Ieee64.text, Types.IEEE64); }
   | Bignum             { $n = new Const($Bignum.text);               }
   | Char               { $n = new Const($Char.text, Types.CHAR);     }
-  | String             { $n = new Const($String.text);               }
+  | String             { $n = new Const($String.text, Types.STRING); }
   | VerbatimString     { $n = new Const($VerbatimString.text);       }
   | TripleQuotedString { $n = new Const($TripleQuotedString.text);   }
   | Bytearray          { $n = new Const($Bytearray.text);            }
