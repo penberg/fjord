@@ -2671,8 +2671,8 @@ constant returns [Const n]
   | Uint16             { $n = new Const($Uint16.text, Types.UINT16); }
   | Uint32             { $n = new Const($Uint32.text, Types.UINT32); }
   | Uint64             { $n = new Const($Uint64.text, Types.UINT64); }
-  | Ieee32             { $n = new Const($Ieee32.text);               }
-  | Ieee64             { $n = new Const($Ieee64.text);               }
+  | Ieee32             { $n = new Const($Ieee32.text, Types.IEEE32); }
+  | Ieee64             { $n = new Const($Ieee64.text, Types.IEEE64); }
   | Bignum             { $n = new Const($Bignum.text);               }
   | Char               { $n = new Const($Char.text);                 }
   | String             { $n = new Const($String.text);               }

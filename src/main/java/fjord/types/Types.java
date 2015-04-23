@@ -9,4 +9,6 @@ public class Types {
   public static final TypeClass UINT16 = new OperType("uint16");
   public static final TypeClass UINT32 = new OperType("uint32");
   public static final TypeClass UINT64 = new OperType("uint64");
+  public static final TypeClass IEEE32 = new OperType("float32");
+  public static final TypeClass IEEE64 = new OperType("float");
 }
