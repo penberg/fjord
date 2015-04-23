@@ -6,7 +6,7 @@ import fjord.ast.expr.Expr;
 import fjord.ast.pat.Pat;
 import fjord.ast.typar.TyparDefns;
 import fjord.ast.type.Type;
-
+import fjord.types.TypeClass;
 
 public class ValueDefn implements ModuleElem {
 
@@ -21,6 +21,8 @@ public class ValueDefn implements ModuleElem {
   private final Optional<Type> returnType;
 
   private final Expr expr;
+
+  private Optional<TypeClass> typeClass = Optional.empty();
 
   public ValueDefn(boolean mutable, Access access, Pat pattern, TyparDefns typarDefns, Type returnType, Expr expr) {
     this.mutable = mutable;
@@ -79,4 +81,11 @@ public class ValueDefn implements ModuleElem {
     return returnType;
   }
 
+  public void setTypeClass(TypeClass ty) {
+    this.typeClass = Optional.of(ty);
+  }
+
+  public TypeClass getTypeClass() {
+    return typeClass.get();
+  }
 }

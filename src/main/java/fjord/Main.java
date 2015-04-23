@@ -60,9 +60,11 @@ public class Main {
 
     node.accept(new DefaultNodeVisitor() {
       @Override public void visitAfter(ValueDefn defn) {
-        Value val = compiler.codegen(defn);
-
         TypeClass ty = typeSystem.analyse(typeEnv, defn);
+
+        defn.setTypeClass(ty);
+
+        Value val = compiler.codegen(defn);
 
         output.append(String.format("val %s : %s = %s\n", defn.pattern(), ty, val.eval()));
       }

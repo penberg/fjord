@@ -7,7 +7,6 @@ import fjord.*;
 
 import static me.qmx.jitescript.CodeBlock.newCodeBlock;
 import static me.qmx.jitescript.JiteClass.*;
-import static me.qmx.jitescript.util.CodegenUtils.ci;
 import static me.qmx.jitescript.util.CodegenUtils.p;
 import static me.qmx.jitescript.util.CodegenUtils.sig;
 import me.qmx.jitescript.*;
@@ -27,7 +26,7 @@ public class Codegen extends DefaultNodeVisitor {
 
   @Override public void visit(final ConstantExpression constant) {
     Const cons = constant.getCons();
-    code.ldc(Integer.parseInt(cons.toString()));
+    code.ldc(cons.parseValue());
   }
 
   @Override public void visitBefore(final ApplicationExpression expr) {
@@ -45,12 +44,12 @@ public class Codegen extends DefaultNodeVisitor {
 
   @Override public void visitBefore(final ValueDefn defn) {
     code = newCodeBlock();
-    code.newobj(p(Integer.class));
+    code.newobj(p(defn.getTypeClass().getRefType()));
     code.dup();
   }
 
   @Override public void visitAfter(final ValueDefn defn) {
-    code.invokespecial(p(Integer.class), "<init>", sig(void.class, int.class));
+    code.invokespecial(p(defn.getTypeClass().getRefType()), "<init>", sig(void.class, defn.getTypeClass().getPrimType()));
     code.areturn();
     jiteClass.defineMethod(defn.pattern(), ACC_PUBLIC | ACC_STATIC, sig(Object.class), code);
     jiteClass.defineMethod("eval", ACC_PUBLIC, sig(Object.class), new CodeBlock() {{

@@ -13,6 +13,10 @@ public class Const implements Node {
     this.typeClass = typeClass;
   }
 
+  public Object parseValue() {
+    return typeClass.parseValue(value);
+  }
+
   public TypeClass getTypeClass() {
     return typeClass;
   }
