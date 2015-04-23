@@ -1,12 +1,12 @@
 package fjord.types;
 
 public class Types {
-  public static final Type SBYTE  = new TypeOperator("sbyte");
-  public static final Type INT16  = new TypeOperator("int16");
-  public static final Type INT32  = new TypeOperator("int32");
-  public static final Type INT64  = new TypeOperator("int64");
-  public static final Type BYTE   = new TypeOperator("byte");
-  public static final Type UINT16 = new TypeOperator("uint16");
-  public static final Type UINT32 = new TypeOperator("uint32");
-  public static final Type UINT64 = new TypeOperator("uint64");
+  public static final TypeClass SBYTE  = new OperType("sbyte");
+  public static final TypeClass INT16  = new OperType("int16");
+  public static final TypeClass INT32  = new OperType("int32");
+  public static final TypeClass INT64  = new OperType("int64");
+  public static final TypeClass BYTE   = new OperType("byte");
+  public static final TypeClass UINT16 = new OperType("uint16");
+  public static final TypeClass UINT32 = new OperType("uint32");
+  public static final TypeClass UINT64 = new OperType("uint64");
 }

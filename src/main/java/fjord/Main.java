@@ -55,14 +55,14 @@ public class Main {
       }
     });
 
-    final Map<String, Type> typeEnv = new HashMap<String, Type>();
+    final Map<String, TypeClass> typeEnv = new HashMap<String, TypeClass>();
     final TypeSystem typeSystem = new TypeSystem();
 
     node.accept(new DefaultNodeVisitor() {
       @Override public void visitAfter(ValueDefn defn) {
         Value val = compiler.codegen(defn);
 
-        Type ty = typeSystem.analyse(typeEnv, defn);
+        TypeClass ty = typeSystem.analyse(typeEnv, defn);
 
         output.append(String.format("val %s : %s = %s\n", defn.pattern(), ty, val.eval()));
       }

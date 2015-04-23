@@ -1,18 +1,20 @@
 package fjord.ast;
 
+import fjord.types.TypeClass;
+
 public class Const implements Node {
   public Const(String value) {
     this.value = value;
-    this.type = null;
+    this.typeClass = null;
   }
 
-  public Const(String value, fjord.types.Type type) {
+  public Const(String value, TypeClass typeClass) {
     this.value = value;
-    this.type = type;
+    this.typeClass = typeClass;
   }
 
-  public fjord.types.Type getType() {
-    return type;
+  public TypeClass getTypeClass() {
+    return typeClass;
   }
 
   @Override public void accept(NodeVisitor visitor) {
@@ -24,5 +26,5 @@ public class Const implements Node {
   }
 
   private final String value;
-  private final fjord.types.Type type;
+  private final TypeClass typeClass;
 }

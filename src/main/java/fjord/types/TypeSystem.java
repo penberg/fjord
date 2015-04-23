@@ -7,7 +7,7 @@ import fjord.ast.expr.*;
 public class TypeSystem {
   private int variableIds = 0;
 
-  public Type analyse(Map<String, Type> env, Node node) {
+  public TypeClass analyse(Map<String, TypeClass> env, Node node) {
     if (node instanceof Ident) {
       Ident ident = (Ident) node;
       return getType(ident.getValue(), env);
@@ -16,11 +16,11 @@ public class TypeSystem {
       return analyse(env, def.getExpr());
     } else if (node instanceof ConstantExpression) {
       ConstantExpression cons = (ConstantExpression) node;
-      return cons.getCons().getType();
+      return cons.getCons().getTypeClass();
     } else if (node instanceof ApplicationExpression) {
       ApplicationExpression ap = (ApplicationExpression) node;
-      Type left = analyse(env, ap.getLeft());
-      Type right = analyse(env, ap.getRight());
+      TypeClass left = analyse(env, ap.getLeft());
+      TypeClass right = analyse(env, ap.getRight());
       unify(left, right);
       return left;
     } else {
@@ -28,31 +28,31 @@ public class TypeSystem {
     }
   }
 
-  private Type getType(String name, Map<String, Type> env) {
+  private TypeClass getType(String name, Map<String, TypeClass> env) {
     if (env.containsKey(name)) {
       return fresh(env.get(name));
     }
     throw new RuntimeException("Undefined symbol: " + name);
   }
 
-  private Type fresh(Type ty) {
+  private TypeClass fresh(TypeClass ty) {
     return prune(ty);
   }
 
-  public TypeVariable newVariable() {
-    return new TypeVariable(variableIds++);
+  public VarType newVariable() {
+    return new VarType(variableIds++);
   }
 
-  public void unify(Type t1, Type t2) {
-    Type type1 = prune(t1);
-    Type type2 = prune(t2);
+  public void unify(TypeClass t1, TypeClass t2) {
+    TypeClass typeClass1 = prune(t1);
+    TypeClass typeClass2 = prune(t2);
   }
 
-  public Type prune(Type ty) {
-    if (ty instanceof TypeVariable) {
-      TypeVariable v = (TypeVariable) ty;
+  public TypeClass prune(TypeClass ty) {
+    if (ty instanceof VarType) {
+      VarType v = (VarType) ty;
       if (v.instance.isPresent()) {
-        Type inst = prune(v.instance.get());
+        TypeClass inst = prune(v.instance.get());
         v.instance = Optional.of(inst);
         return inst;
       } else {

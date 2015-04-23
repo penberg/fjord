@@ -1,9 +1,9 @@
 package fjord.types;
 
-public class TypeOperator implements Type {
+public class OperType implements TypeClass {
   private final String name;
 
-  public TypeOperator(String name) {
+  public OperType(String name) {
     this.name = name;
   }
 
